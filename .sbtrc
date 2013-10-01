@@ -1,0 +1,4 @@
+alias c=compile
+alias tc=test:compile
+alias gi=gen-idea
+alias bench=nearly-complete-binary-tree-core/test:run
