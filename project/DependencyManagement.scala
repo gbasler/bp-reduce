@@ -65,4 +65,12 @@ object DependencyManagement {
    */
   def Fastutil = "it.unimi.dsi" % "fastutil" % "6.5.9"
 
+
+  /**
+   * kiama A Scala library for language processing
+   *
+   * http://code.google.com/p/kiama/
+   */
+  def Kiama = "com.googlecode.kiama" %% "kiama" % "1.5.1"
+
 }

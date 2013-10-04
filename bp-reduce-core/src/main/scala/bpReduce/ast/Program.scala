@@ -1,5 +1,3 @@
 package bpReduce.ast
 
-case class Program {
-
-}
+case class Program(globals: VariableHolder, functions: List[Function])

@@ -16,13 +16,11 @@ object Expr {
 
   final case class Equiv(a: Expr, b: Expr) extends Expr
 
-  final case class Schoose(a: Expr, b: Expr) extends Expr
+  final case class Schoose(pos: Expr, neg: Expr) extends Expr
 
   final case class Not(a: Expr) extends Expr
 
-  final case class Const(name: String) extends Expr {
-    override def toString = name
-  }
+  final case class Const(value: Boolean) extends Expr
 
   final case class Id(name: String) extends Expr {
     varNames += name;

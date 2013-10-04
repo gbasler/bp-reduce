@@ -27,11 +27,11 @@ object build extends Build {
   )
 
   lazy val bpReduceCore = Project(
-    id = "bp-reduce-core",
+    id = "bp-reduce",
     base = file("bp-reduce-core"),
     settings = Defaults.defaultSettings ++ standardSettings ++ Seq(
       libraryDependencies ++= Seq(ScalazCore, ScalazConcurrent, Specs, JUnit, Scalacheck, MockitoAll, CommonsIo,
-        TreeHugger, JodaConvert, JodaTime, CommonsLang, Fastutil)
+        TreeHugger, JodaConvert, JodaTime, CommonsLang, Fastutil, Kiama)
     )
   )
 
