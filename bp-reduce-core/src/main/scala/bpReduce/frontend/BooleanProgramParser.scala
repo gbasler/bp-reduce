@@ -24,7 +24,7 @@ import bpReduce.ast.Stmt.Goto
 import bpReduce.ast.Stmt.Return
 
 
-final class Parser extends RegexParsers {
+final class BooleanProgramParser extends RegexParsers {
 
   // TODO parens ~
 
@@ -103,9 +103,9 @@ final class Parser extends RegexParsers {
 
   lazy val enforce: Parser[Expr] = "enforce" ~> expr <~ ";"
 
-  lazy val statementList: Parser[List[Stmt]] = repsep(labelledStmt, ";")
+  lazy val statementList: Parser[List[Stmt]] = rep(labelledStmt <~ ";")
 
-  lazy val labelledStmt: Parser[Stmt] = repsep(id, ":") ~ concurrentStatement ^^ {
+  lazy val labelledStmt: Parser[Stmt] = rep(id <~ ":") ~ concurrentStatement ^^ {
     case labels ~ stmt => /*labels ->*/ stmt
   }
 
@@ -216,7 +216,7 @@ final class Parser extends RegexParsers {
 
   lazy val const: Parser[Boolean] = "[Tt1]".r ^^^ true | "[Ff0]".r ^^^ false
 
-  lazy val id: Parser[String] = """[a-z]\w*""".r
+  lazy val id: Parser[String] = """[A-Za-z]\w*""".r
 
   lazy val number: Parser[Int] =
     """(\d+)""".r ^^ {

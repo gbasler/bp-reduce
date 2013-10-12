@@ -2,6 +2,6 @@ package bpReduce.ast
 
 case class Function(name: String,
                     locals: VariableHolder,
-                    args: List[String],
+                    args: Seq[String],
                     returns: Int,
-                    stmts: List[Stmt])
+                    stmts: Seq[Stmt])
