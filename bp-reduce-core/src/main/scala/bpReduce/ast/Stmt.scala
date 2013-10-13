@@ -4,23 +4,23 @@ sealed abstract class Stmt
 
 object Stmt {
 
-  final case class Assign() extends Stmt
+  final case class Assign(assigns: Seq[(Sym, Expr)]) extends Stmt
 
   final case class Assume(e: Expr) extends Stmt
 
   final case class Assert(e: Expr) extends Stmt
 
-  final case class Call(name: String, args: List[Expr]) extends Stmt
+  final case class Call(name: String, assigns: Seq[Option[Sym]], args: Seq[Expr]) extends Stmt
 
-  final case class Dead(vars: List[String]) extends Stmt
+  final case class Dead(vars: Seq[String]) extends Stmt
 
-  final case class Goto(targets: List[String]) extends Stmt
+  final case class Goto(targets: Seq[String]) extends Stmt
 
-  final case class If(condition: Expr, pos: List[String], neg: List[String]) extends Stmt
+  final case class If(condition: Expr, pos: Seq[String], neg: Seq[String]) extends Stmt
 
   case object Skip extends Stmt
 
-  final case class Return(values: List[Expr]) extends Stmt
+  final case class Return(values: Seq[Expr]) extends Stmt
 
   case object AtomicBegin extends Stmt
 

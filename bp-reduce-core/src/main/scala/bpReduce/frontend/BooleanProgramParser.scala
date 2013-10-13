@@ -19,7 +19,6 @@ import bpReduce.ast.Expr.And
 import bpReduce.ast.Stmt.Assume
 import bpReduce.ast.Expr.Xor
 import bpReduce.ast.Stmt.StartThread
-import bpReduce.ast.Expr.Const
 import bpReduce.ast.Stmt.Goto
 import bpReduce.ast.Stmt.Return
 
@@ -62,7 +61,6 @@ final class BooleanProgramParser extends RegexParsers {
     }
   }
 
-
   lazy val program: Parser[Program] = decls ~ rep(function) ^^ {
     case globals ~ functions => Program(globals, functions)
   }
@@ -71,7 +69,7 @@ final class BooleanProgramParser extends RegexParsers {
     listOfDecls => VariableHolder(listOfDecls.flatten)
   }
 
-  lazy val decl: Parser[List[Sym]] = "decl" ~> repsep(id, ",") <~ ";" ^^ {
+  lazy val decl: Parser[List[Sym]] = "decl" ~> rep1sep(id, ",") <~ ";" ^^ {
     list =>
       val vars = list.map {
         name =>
@@ -105,7 +103,7 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val statementList: Parser[List[Stmt]] = rep(labelledStmt <~ ";")
 
-  lazy val labelledStmt: Parser[Stmt] = rep(id <~ ":") ~ concurrentStatement ^^ {
+  lazy val labelledStmt: Parser[Stmt] = rep(label) ~ concurrentStatement  ^^ {
     case labels ~ stmt => /*labels ->*/ stmt
   }
 
@@ -124,14 +122,18 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val statement: Parser[Stmt] = dead | assign | assertStmt | assume | call | selection_statement | jump_statement
 
-  lazy val dead: Parser[Stmt] = "dead" ~> repsep(id, ",") ^^ {
+  lazy val dead: Parser[Stmt] = "dead" ~> rep1sep(id, ",") ^^ {
     Dead
   }
 
   lazy val assign: Parser[Stmt] = parallelAssign | callAssign
 
-  lazy val parallelAssign: Parser[Stmt] = rep1sep(assignId, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
+  lazy val parallelAssign: Parser[Stmt] = rep1sep(id, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
     case vars ~ _ ~ exprs ~ Some(constrain) => Skip //Assign
+    case vars ~ _ ~ exprs ~ None            =>
+      require(vars.size == exprs.size, "Number of variables must be same as number of expressions")
+      val syms = vars.map(Sym(_))
+      Assign(syms.zip(exprs))
   }
 
   lazy val callAssign: Parser[Stmt] = rep1sep(assignId, ",") ~ ":=" ~ "call" <~ id ^^ {
@@ -160,8 +162,8 @@ final class BooleanProgramParser extends RegexParsers {
     Assume
   }
 
-  lazy val call: Parser[Stmt] = id ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
-    case id ~ _ ~ args ~ _ => Call(id, args)
+  lazy val call: Parser[Stmt] = opt(repsep(id, ",") <~ ":=") ~ id ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
+    case vars ~ id ~ _ ~ args ~ _ => Skip // Call(id, args)
   }
 
   lazy val selection_statement: Parser[Stmt] =
@@ -209,14 +211,16 @@ final class BooleanProgramParser extends RegexParsers {
     case _ ~ x       => x
   }
 
-  lazy val atom: Parser[Expr] = (const ^^ Const
-    | id ^^ Id
-    | "(" ~> expr <~ ")"
-    )
+  lazy val atom: Parser[Expr] = const ^^ {
+    case true  => Expr.True
+    case false => Expr.False
+  } | id ^^ Id | "(" ~> expr <~ ")"
 
   lazy val const: Parser[Boolean] = "[Tt1]".r ^^^ true | "[Ff0]".r ^^^ false
 
   lazy val id: Parser[String] = """[A-Za-z]\w*""".r
+
+  lazy val label: Parser[String] = """[A-Za-z]\w*:""".r
 
   lazy val number: Parser[Int] =
     """(\d+)""".r ^^ {

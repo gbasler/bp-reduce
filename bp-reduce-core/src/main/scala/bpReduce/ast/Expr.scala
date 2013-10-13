@@ -20,7 +20,9 @@ object Expr {
 
   final case class Not(a: Expr) extends Expr
 
-  final case class Const(value: Boolean) extends Expr
+  case object True extends Expr
+
+  case object False extends Expr
 
   final case class Id(name: String) extends Expr {
     varNames += name;
