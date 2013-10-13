@@ -4,26 +4,19 @@ import util.parsing.combinator.RegexParsers
 import bpReduce.ast.Stmt._
 import bpReduce.ast._
 import scala.collection.mutable
-import bpReduce.ast.Expr.Or
-import bpReduce.ast.Expr.Equiv
-import bpReduce.ast.Expr.Id
 import bpReduce.ast.Stmt.Dead
-import bpReduce.ast.Expr.Schoose
-import bpReduce.ast.Expr.Not
 import bpReduce.ast.Function
 import bpReduce.ast.Sym
 import bpReduce.ast.Stmt.Assert
-import bpReduce.ast.Expr.Impl
-import bpReduce.ast.Stmt.Call
-import bpReduce.ast.Expr.And
 import bpReduce.ast.Stmt.Assume
-import bpReduce.ast.Expr.Xor
 import bpReduce.ast.Stmt.StartThread
 import bpReduce.ast.Stmt.Goto
 import bpReduce.ast.Stmt.Return
 
 
 final class BooleanProgramParser extends RegexParsers {
+
+  import Expr._
 
   // TODO parens ~
 
@@ -103,7 +96,7 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val statementList: Parser[List[Stmt]] = rep(labelledStmt <~ ";")
 
-  lazy val labelledStmt: Parser[Stmt] = rep(label) ~ concurrentStatement  ^^ {
+  lazy val labelledStmt: Parser[Stmt] = rep(label) ~ concurrentStatement ^^ {
     case labels ~ stmt => /*labels ->*/ stmt
   }
 
@@ -123,7 +116,7 @@ final class BooleanProgramParser extends RegexParsers {
   lazy val statement: Parser[Stmt] = dead | assign | assertStmt | assume | call | selection_statement | jump_statement
 
   lazy val dead: Parser[Stmt] = "dead" ~> rep1sep(id, ",") ^^ {
-    Dead
+    case vars => Dead(vars.map(Sym(_)))
   }
 
   lazy val assign: Parser[Stmt] = parallelAssign | callAssign
@@ -212,9 +205,11 @@ final class BooleanProgramParser extends RegexParsers {
   }
 
   lazy val atom: Parser[Expr] = const ^^ {
-    case true  => Expr.True
-    case false => Expr.False
-  } | id ^^ Id | "(" ~> expr <~ ")"
+    case true  => True
+    case false => False
+  } | id ^^ {
+    case id => Var(Sym(id))
+  } | "(" ~> expr <~ ")"
 
   lazy val const: Parser[Boolean] = "[Tt1]".r ^^^ true | "[Ff0]".r ^^^ false
 

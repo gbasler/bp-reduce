@@ -12,7 +12,7 @@ object Stmt {
 
   final case class Call(name: String, assigns: Seq[Option[Sym]], args: Seq[Expr]) extends Stmt
 
-  final case class Dead(vars: Seq[String]) extends Stmt
+  final case class Dead(vars: Seq[Sym]) extends Stmt
 
   final case class Goto(targets: Seq[String]) extends Stmt
 

@@ -5,6 +5,7 @@ import bpReduce.ast._
 import bpReduce.ast.VariableHolder
 import bpReduce.ast.Function
 import bpReduce.ast.Program
+import bpReduce.ast.Expr.{True, Var, And}
 
 class ParserTest extends BaseSpecification {
   "variables" should {
@@ -38,6 +39,38 @@ class ParserTest extends BaseSpecification {
     val parser = new BooleanProgramParser()
     parser.parseAll(parser.labelledStmt, program) must beLike {
       case parser.Success(Stmt.Assign(Seq((Sym("g"), Expr.True))), _) => ok
+    }
+  }
+
+  "dead stmt" in {
+    val program = """dead g, l""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Success(Stmt.Dead(Seq(Sym("g"), Sym("l"))), _) => ok
+    }
+  }
+
+  "assume stmt" in {
+    val program = """assume(g & l)""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Success(Stmt.Assume(And(Var(Sym("g")), Var(Sym("l")))), _) => ok
+    }
+  }
+
+  "assert stmt" in {
+    val program = """assert(g & l)""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Success(Stmt.Assert(And(Var(Sym("g")), Var(Sym("l")))), _) => ok
+    }
+  }
+
+  "return stmt" in {
+    val program = """return g & l, T""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Success(Stmt.Return(Seq(And(Var(Sym("g")), Var(Sym("l"))), True)), _) => ok
     }
   }
 

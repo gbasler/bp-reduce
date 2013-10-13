@@ -1,6 +1,5 @@
 package bpReduce.ast
 
-import scala.collection.mutable
 
 sealed abstract class Expr
 
@@ -24,11 +23,5 @@ object Expr {
 
   case object False extends Expr
 
-  final case class Id(name: String) extends Expr {
-    varNames += name;
-
-    override def toString = name
-  }
-
-  var varNames = mutable.Set[String]()
+  final case class Var(name: Sym) extends Expr
 }
