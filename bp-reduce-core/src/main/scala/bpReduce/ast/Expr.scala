@@ -23,5 +23,8 @@ object Expr {
 
   case object False extends Expr
 
-  final case class Var(name: Sym) extends Expr
+  case object Nondet extends Expr
+
+  final case class Var(name: Sym, primed: Boolean = false) extends Expr
+
 }

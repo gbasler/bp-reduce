@@ -4,7 +4,7 @@ sealed abstract class Stmt
 
 object Stmt {
 
-  final case class Assign(assigns: Seq[(Sym, Expr)]) extends Stmt
+  final case class Assign(assigns: Seq[(Sym, Expr)], constrain: Option[Expr]) extends Stmt
 
   final case class Assume(e: Expr) extends Stmt
 
