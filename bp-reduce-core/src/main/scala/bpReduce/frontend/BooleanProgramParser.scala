@@ -49,7 +49,7 @@ final class BooleanProgramParser extends RegexParsers {
   def parse(programStr: String): Program = {
     parseAll(program, programStr) match {
       case Success(program, _) => program
-      case e: NoSuccess        => sys.error("parse error: " + e.toString)
+      case e: NoSuccess => sys.error("parse error: " + e.toString)
     }
   }
 
@@ -88,7 +88,7 @@ final class BooleanProgramParser extends RegexParsers {
     0
   } | "bool" ~> opt("<" ~> number <~ ">") ^^ {
     case Some(x) => x
-    case None    => 1
+    case None => 1
   }
 
   lazy val enforce: Parser[Expr] = "enforce" ~> expr <~ ";"
@@ -118,17 +118,11 @@ final class BooleanProgramParser extends RegexParsers {
     case vars => Dead(vars.map(Sym(_)))
   }
 
-  lazy val assign: Parser[Stmt] = parallelAssign // TODO: really? | callAssign
-
-  lazy val parallelAssign: Parser[Stmt] = rep1sep(id, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
+  lazy val assign: Parser[Stmt] = rep1sep(id, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
     case vars ~ _ ~ exprs ~ constrain =>
       require(vars.size == exprs.size, "Number of variables must be same as number of expressions")
       val syms = vars.map(Sym(_))
       Assign(syms.zip(exprs), constrain)
-  }
-
-  lazy val callAssign: Parser[Stmt] = rep1sep(assignId, ",") ~ ":=" ~ id ^^ {
-    case vars ~ _ ~ call => Skip //Assign
   }
 
   lazy val assignId: Parser[Option[String]] = id ^^ {
@@ -153,8 +147,20 @@ final class BooleanProgramParser extends RegexParsers {
     Assume
   }
 
-  lazy val call: Parser[Stmt] = opt(repsep(id, ",") <~ ":=") ~ id ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
-    case vars ~ id ~ _ ~ args ~ _ => Call(id, Seq(), Seq()) // TODO
+  lazy val call: Parser[Stmt] = opt(rep1sep(id | "_", ",") <~ ":=") ~ id ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
+    case vars ~ id ~ _ ~ args ~ _ =>
+      val varsList = for {
+        vs <- vars.toList
+        v <- vs
+      } yield {
+        if (v == "_") {
+          None
+        } else {
+          Some(Sym(v))
+        }
+      }
+
+      Call(id, varsList, args)
   }
 
   lazy val selection_statement: Parser[Stmt] =
@@ -166,7 +172,7 @@ final class BooleanProgramParser extends RegexParsers {
           // add last else to innermost if
           val e: List[Stmt] = elsifs.foldRight(elseStmtsOpt.toList.flatten) {
             case (expr ~ _ ~ stmts, elseStmts) =>
-            List(If(expr, stmts, elseStmts))
+              List(If(expr, stmts, elseStmts))
           }
 
           If(expr, posStmts, e)
@@ -207,11 +213,11 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val not: Parser[Expr] = opt("!") ~ atom ^^ {
     case Some(_) ~ x => Not(x)
-    case _ ~ x       => x
+    case _ ~ x => x
   }
 
   lazy val atom: Parser[Expr] = const ^^ {
-    case true  => True
+    case true => True
     case false => False
   } | "*" ^^^ {
     Nondet
@@ -223,7 +229,7 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val currentOrNextStateId: Parser[Var] = """'?[A-Za-z]\w*""".r ^^ {
     s => s.split("'") match {
-      case Array(s)    => Var(Sym(s), primed = false)
+      case Array(s) => Var(Sym(s), primed = false)
       case Array(_, s) => Var(Sym(s), primed = true)
     }
   }

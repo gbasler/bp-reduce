@@ -8,7 +8,7 @@ import bpReduce.ast.Program
 import bpReduce.ast.Expr._
 import bpReduce.ast.Stmt._
 
-class ParserTest extends BaseSpecification {
+class BooleanProgramParserTest extends BaseSpecification {
   "variables" should {
     "alpha vars" in {
       val program = """decl g;""".stripMargin
@@ -72,6 +72,22 @@ class ParserTest extends BaseSpecification {
     val parser = new BooleanProgramParser()
     parser.parseAll(parser.labelledStmt, program) must beLike {
       case parser.Success(Call("error_1", Seq(), Seq()), _) => ok
+    }
+  }
+
+  "function call with args" in {
+    val program = """error_1(g != l)""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Success(Call("error_1", Seq(), Seq(Xor(Var(Sym("g"), false), Var(Sym("l"), false)))), _) => ok
+    }
+  }
+
+  "function call with assign" in {
+    val program = """a, _, b := foo()""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Success(Call("foo", Seq(Some(Sym("a")), None, Some(Sym("b"))), Seq()), _) => ok
     }
   }
 
