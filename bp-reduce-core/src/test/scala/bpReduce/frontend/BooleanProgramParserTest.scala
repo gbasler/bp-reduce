@@ -31,7 +31,7 @@ class BooleanProgramParserTest extends BaseSpecification {
     val program = """error""".stripMargin
     val parser = new BooleanProgramParser()
     parser.parseAll(parser.labelledStmt, program) must beLike {
-      case parser.Failure(_, _) => ok
+      case parser.Failure(_, _) => ok // TODO: better error message
     }
   }
 
@@ -107,6 +107,14 @@ class BooleanProgramParserTest extends BaseSpecification {
     }
   }
 
+  "assume with wrong expr" in {
+    val program = """assume(T & 42)""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Failure(msg, _) => ok // TODO: better error message
+    }
+  }
+
   "assert" in {
     val program = """assert(g & l)""".stripMargin
     val parser = new BooleanProgramParser()
@@ -144,6 +152,14 @@ class BooleanProgramParserTest extends BaseSpecification {
     val parser = new BooleanProgramParser()
     parser.parseAll(parser.labelledStmt, program) must beLike {
       case parser.Success(If(False, Seq(Goto(Seq("l6"))), Seq(If(True, Seq(Goto(Seq("l7"))), Seq(Goto(Seq("l8")))))), _) => ok
+    }
+  }
+
+  "if-elif-else: correct ordering" in {
+    val program = """if 0 then goto l6; elif 1 then goto l7; elif 0 then goto l8; else goto l9; fi""".stripMargin
+    val parser = new BooleanProgramParser()
+    parser.parseAll(parser.labelledStmt, program) must beLike {
+      case parser.Success(If(False, Seq(Goto(Seq("l6"))), Seq(If(True, Seq(Goto(Seq("l7"))), Seq(If(False, Seq(Goto(Seq("l8"))), Seq(Goto(Seq("l9")))))))), _) => ok
     }
   }
 

@@ -95,13 +95,23 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val statementList: Parser[List[Stmt]] = rep(labelledStmt <~ ";")
 
-  lazy val labelledStmt: Parser[Stmt] = rep(label) ~ concurrentStatement ^^ {
+  lazy val labelledStmt: Parser[Stmt] = rep(label) ~ statement ^^ {
     case labels ~ stmt => /*labels ->*/ stmt
   }
 
-  lazy val concurrentStatement: Parser[Stmt] = statement | startThread | endThread | atomicBegin | atomicEnd |
+  lazy val statement: Parser[Stmt] = dead |
+    assign |
+    assertStmt |
+    assume |
+    call |
+    selectionStatement |
+    jumpStatement |
+    startThread |
+    endThread |
+    atomicBegin |
+    atomicEnd |
     failure("statement expected")
-
+    
   lazy val startThread: Parser[Stmt] = "start_thread" ~> "goto" ~> id ^^ {
     StartThread
   }
@@ -111,8 +121,6 @@ final class BooleanProgramParser extends RegexParsers {
   lazy val atomicBegin: Parser[Stmt] = "atomic_begin" ^^^ AtomicBegin
 
   lazy val atomicEnd: Parser[Stmt] = "atomic_end" ^^^ AtomicEnd
-
-  lazy val statement: Parser[Stmt] = dead | assign | assertStmt | assume | call | selection_statement | jump_statement
 
   lazy val dead: Parser[Stmt] = "dead" ~> rep1sep(id, ",") ^^ {
     case vars => Dead(vars.map(Sym(_)))
@@ -163,23 +171,23 @@ final class BooleanProgramParser extends RegexParsers {
       Call(id, varsList, args)
   }
 
-  lazy val selection_statement: Parser[Stmt] =
+  lazy val selectionStatement: Parser[Stmt] =
     "if" ~> expr ~ ("then" ~> statementList) ~ rep("elif" ~> expr ~ "then" ~ statementList) ~ opt("else" ~> statementList) <~ "fi" ^^ {
       case expr ~ posStmts ~ elsifs ~ elseStmtsOpt =>
         if (elsifs.isEmpty) {
           If(expr, posStmts, elseStmtsOpt.map(_.toSeq).toSeq.flatten)
         } else {
           // add last else to innermost if
-          val e: List[Stmt] = elsifs.foldRight(elseStmtsOpt.toList.flatten) {
+          val elifs = elsifs.foldRight(elseStmtsOpt.toList.flatten) {
             case (expr ~ _ ~ stmts, elseStmts) =>
               List(If(expr, stmts, elseStmts))
           }
 
-          If(expr, posStmts, e)
+          If(expr, posStmts, elifs)
         }
     }
 
-  lazy val jump_statement: Parser[Stmt] = "return" ~> repsep(expr, ",") ^^ {
+  lazy val jumpStatement: Parser[Stmt] = "return" ~> repsep(expr, ",") ^^ {
     Return
   } | "skip" ^^^ {
     Skip
