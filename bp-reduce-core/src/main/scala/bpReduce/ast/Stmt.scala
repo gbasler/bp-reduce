@@ -16,7 +16,7 @@ object Stmt {
 
   final case class Goto(targets: Seq[String]) extends Stmt
 
-  final case class If(condition: Expr, pos: Seq[String], neg: Seq[String]) extends Stmt
+  final case class If(condition: Expr, pos: Seq[Stmt], neg: Seq[Stmt]) extends Stmt
 
   case object Skip extends Stmt
 

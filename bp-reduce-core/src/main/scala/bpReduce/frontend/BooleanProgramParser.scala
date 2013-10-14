@@ -13,7 +13,6 @@ import bpReduce.ast.Stmt.StartThread
 import bpReduce.ast.Stmt.Goto
 import bpReduce.ast.Stmt.Return
 
-
 final class BooleanProgramParser extends RegexParsers {
 
   import Expr._
@@ -77,7 +76,7 @@ final class BooleanProgramParser extends RegexParsers {
       vars
   }
 
-  lazy val function: Parser[Function] = functionHeading ~ label ~ functionParams ~ "begin" ~ decls ~ opt(enforce) ~ statementList <~ "end" ^^ {
+  lazy val function: Parser[Function] = functionHeading ~ id ~ functionParams ~ "begin" ~ decls ~ opt(enforce) ~ statementList <~ "end" ^^ {
     case heading ~ name ~ params ~ _ ~ vars ~ _ ~ stmts => Function(name, vars, params, heading, stmts)
   }
 
@@ -103,7 +102,7 @@ final class BooleanProgramParser extends RegexParsers {
   lazy val concurrentStatement: Parser[Stmt] = statement | startThread | endThread | atomicBegin | atomicEnd |
     failure("statement expected")
 
-  lazy val startThread: Parser[Stmt] = "start_thread" ~> "goto" ~> label ^^ {
+  lazy val startThread: Parser[Stmt] = "start_thread" ~> "goto" ~> id ^^ {
     StartThread
   }
 
@@ -119,7 +118,7 @@ final class BooleanProgramParser extends RegexParsers {
     case vars => Dead(vars.map(Sym(_)))
   }
 
-  lazy val assign: Parser[Stmt] = parallelAssign | callAssign
+  lazy val assign: Parser[Stmt] = parallelAssign // TODO: really? | callAssign
 
   lazy val parallelAssign: Parser[Stmt] = rep1sep(id, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
     case vars ~ _ ~ exprs ~ constrain =>
@@ -128,7 +127,7 @@ final class BooleanProgramParser extends RegexParsers {
       Assign(syms.zip(exprs), constrain)
   }
 
-  lazy val callAssign: Parser[Stmt] = rep1sep(assignId, ",") ~ ":=" ~ "call" <~ id ^^ {
+  lazy val callAssign: Parser[Stmt] = rep1sep(assignId, ",") ~ ":=" ~ id ^^ {
     case vars ~ _ ~ call => Skip //Assign
   }
 
@@ -154,33 +153,41 @@ final class BooleanProgramParser extends RegexParsers {
     Assume
   }
 
-  lazy val call: Parser[Stmt] = opt(repsep(id, ",") <~ ":=") ~ label ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
-    case vars ~ id ~ _ ~ args ~ _ => Skip // Call(id, args)
+  lazy val call: Parser[Stmt] = opt(repsep(id, ",") <~ ":=") ~ id ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
+    case vars ~ id ~ _ ~ args ~ _ => Call(id, Seq(), Seq()) // TODO
   }
 
   lazy val selection_statement: Parser[Stmt] =
-    "if" ~> expr ~ ("then" ~> statementList) ~ rep("elif" ~> expr <~ "then" ~ statementList) ~ opt("else" ~> statementList) <~ "fi" ^^ {
-      case expr ~ posStmts ~ elsifs ~ Some(stmts) => Skip
+    "if" ~> expr ~ ("then" ~> statementList) ~ rep("elif" ~> expr ~ "then" ~ statementList) ~ opt("else" ~> statementList) <~ "fi" ^^ {
+      case expr ~ posStmts ~ elsifs ~ elseStmtsOpt =>
+        if (elsifs.isEmpty) {
+          If(expr, posStmts, elseStmtsOpt.map(_.toSeq).toSeq.flatten)
+        } else {
+          // add last else to innermost if
+          val e: List[Stmt] = elsifs.foldRight(elseStmtsOpt.toList.flatten) {
+            case (expr ~ _ ~ stmts, elseStmts) =>
+            List(If(expr, stmts, elseStmts))
+          }
+
+          If(expr, posStmts, e)
+        }
     }
-  //  lazy val selection_statement: Parser[Stmt] =
-  //    "if" ~> expr ~ ("then" ~> labelledStmt) ~ ("else" ~> labelledStmt) ~ "fi" ^^^ Skip |
-  //    "if" ~> expr ~ ("then" ~> labelledStmt) ~ "fi" ^^^ Skip
 
   lazy val jump_statement: Parser[Stmt] = "return" ~> repsep(expr, ",") ^^ {
     Return
   } | "skip" ^^^ {
     Skip
-  } | "goto" ~> rep1sep(label, ",") ^^ {
+  } | "goto" ~> rep1sep(id, ",") ^^ {
     Goto
   }
 
   lazy val expr: Parser[Expr] = xor
 
-  lazy val xor: Parser[Expr] = rep1sep(equiv, "^") ^^ {
+  lazy val xor: Parser[Expr] = rep1sep(equiv, "^" | "!=") ^^ {
     _.reduceLeft(Xor)
   }
 
-  lazy val equiv: Parser[Expr] = rep1sep(impl, "<->") ^^ {
+  lazy val equiv: Parser[Expr] = rep1sep(impl, "=") ^^ {
     _.reduceLeft(Equiv)
   }
 
@@ -208,18 +215,23 @@ final class BooleanProgramParser extends RegexParsers {
     case false => False
   } | "*" ^^^ {
     Nondet
-  } | id ^^ {
-    case id => Var(Sym(id))
-  } | "(" ~> expr <~ ")"
+  } | currentOrNextStateId | "(" ~> expr <~ ")"
 
   lazy val const: Parser[Boolean] = "[Tt1]".r ^^^ true | "[Ff0]".r ^^^ false
 
-  lazy val id: Parser[String] = """['A-Za-z]\w*""".r
+  lazy val id: Parser[String] = """[A-Za-z]\w*""".r
+
+  lazy val currentOrNextStateId: Parser[Var] = """'?[A-Za-z]\w*""".r ^^ {
+    s => s.split("'") match {
+      case Array(s)    => Var(Sym(s), primed = false)
+      case Array(_, s) => Var(Sym(s), primed = true)
+    }
+  }
 
   lazy val label: Parser[String] = """[A-Za-z]\w*:""".r
 
   lazy val number: Parser[Int] =
-    """(\d+)""".r ^^ {
+    """\d+""".r ^^ {
       _.toInt
     }
 
