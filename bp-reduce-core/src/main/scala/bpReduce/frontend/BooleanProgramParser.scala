@@ -12,6 +12,7 @@ import bpReduce.ast.Stmt.Assume
 import bpReduce.ast.Stmt.StartThread
 import bpReduce.ast.Stmt.Goto
 import bpReduce.ast.Stmt.Return
+import scala.util.matching.Regex
 
 final class BooleanProgramParser extends RegexParsers {
 
@@ -111,7 +112,7 @@ final class BooleanProgramParser extends RegexParsers {
     atomicBegin |
     atomicEnd |
     failure("statement expected")
-    
+
   lazy val startThread: Parser[Stmt] = "start_thread" ~> "goto" ~> id ^^ {
     StartThread
   }
@@ -126,11 +127,11 @@ final class BooleanProgramParser extends RegexParsers {
     case vars => Dead(vars.map(Sym(_)))
   }
 
-  lazy val assign: Parser[Stmt] = rep1sep(id, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
+  lazy val assign: Parser[Stmt] = rep1sep(currentOrNextStateId, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
     case vars ~ _ ~ exprs ~ constrain =>
       require(vars.size == exprs.size, "Number of variables must be same as number of expressions")
-      val syms = vars.map(Sym(_))
-      Assign(syms.zip(exprs), constrain)
+      // in fact, vars always refer to next state...
+      Assign(vars.zip(exprs), constrain)
   }
 
   lazy val assignId: Parser[Option[String]] = id ^^ {
@@ -233,13 +234,15 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val const: Parser[Boolean] = "[Tt1]".r ^^^ true | "[Ff0]".r ^^^ false
 
-  lazy val id: Parser[String] = """[A-Za-z]\w*""".r
+  lazy val id: Parser[String] = """$?[A-Za-z]\w*""".r
 
-  lazy val currentOrNextStateId: Parser[Var] = """'?[A-Za-z]\w*""".r ^^ {
-    s => s.split("'") match {
-      case Array(s) => Var(Sym(s), primed = false)
-      case Array(_, s) => Var(Sym(s), primed = true)
-    }
+  lazy val VarRegex: Regex = """('?)(\$?)(.*?)""".r
+
+  lazy val currentOrNextStateId: Parser[Var] = """'?$?[A-Za-z]\w*""".r ^^ {
+    case VarRegex(primed, mixed, s) =>
+      val isPrimed = primed == "'"
+      val isMixed = mixed == "$"
+      Var(Sym(s), isPrimed, isMixed)
   }
 
   lazy val label: Parser[String] = """[A-Za-z]\w*:""".r

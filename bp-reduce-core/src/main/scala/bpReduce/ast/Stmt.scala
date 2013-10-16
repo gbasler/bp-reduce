@@ -1,10 +1,12 @@
 package bpReduce.ast
 
+import bpReduce.ast.Expr.Var
+
 sealed abstract class Stmt
 
 object Stmt {
 
-  final case class Assign(assigns: Seq[(Sym, Expr)], constrain: Option[Expr]) extends Stmt
+  final case class Assign(assigns: Seq[(Var, Expr)], constrain: Option[Expr]) extends Stmt
 
   final case class Assume(e: Expr) extends Stmt
 

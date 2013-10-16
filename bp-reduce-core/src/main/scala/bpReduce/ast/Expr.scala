@@ -1,5 +1,36 @@
 package bpReduce.ast
 
+sealed abstract class StateIdentifier
+
+object StateIdentifier {
+
+  /**
+   * E.g., {{{g}}}
+   */
+  case object Current extends StateIdentifier
+
+  /**
+   * E.g., {{{'g}}}
+   */
+  case object Next extends StateIdentifier
+
+}
+
+sealed abstract class MixedIdentifier
+
+object MixedIdentifier {
+
+  /**
+   * E.g., {{{$l}}}
+   */
+  case object Mixed extends MixedIdentifier
+
+  /**
+   * E.g., {{{l}}}
+   */
+  case object NonMixed extends MixedIdentifier
+
+}
 
 sealed abstract class Expr
 
@@ -25,6 +56,6 @@ object Expr {
 
   case object Nondet extends Expr
 
-  final case class Var(name: Sym, primed: Boolean = false) extends Expr
+  final case class Var(name: Sym, primed: Boolean = false, mixed: Boolean = false) extends Expr
 
 }
