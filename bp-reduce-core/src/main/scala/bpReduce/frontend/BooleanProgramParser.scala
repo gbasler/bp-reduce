@@ -54,6 +54,8 @@ final class BooleanProgramParser extends RegexParsers {
     }
   }
 
+  protected override val whiteSpace = """(\s|//.*|(?m)/\*(\*(?!/)|[^*])*\*/)+""".r
+
   lazy val program: Parser[Program] = decls ~ rep(function) ^^ {
     case globals ~ functions => Program(globals, functions)
   }
