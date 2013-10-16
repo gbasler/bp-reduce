@@ -7,12 +7,16 @@ object StateIdentifier {
   /**
    * E.g., {{{g}}}
    */
-  case object Current extends StateIdentifier
+  case object Current extends StateIdentifier {
+    override def toString = ""
+  }
 
   /**
    * E.g., {{{'g}}}
    */
-  case object Next extends StateIdentifier
+  case object Next extends StateIdentifier {
+    override def toString = "'"
+  }
 
 }
 
@@ -23,12 +27,16 @@ object MixedIdentifier {
   /**
    * E.g., {{{$l}}}
    */
-  case object Mixed extends MixedIdentifier
+  case object Mixed extends MixedIdentifier {
+    override def toString = "$"
+  }
 
   /**
    * E.g., {{{l}}}
    */
-  case object NonMixed extends MixedIdentifier
+  case object NonMixed extends MixedIdentifier {
+    override def toString = ""
+  }
 
 }
 
@@ -56,6 +64,10 @@ object Expr {
 
   case object Nondet extends Expr
 
-  final case class Var(name: Sym, primed: Boolean = false, mixed: Boolean = false) extends Expr
+  import StateIdentifier._
+  import MixedIdentifier._
+  final case class Var(sym: Sym, primed: StateIdentifier = Current, mixed: MixedIdentifier = NonMixed) extends Expr {
+    override def toString = s"$primed$mixed${sym.name}"
+  }
 
 }
