@@ -56,24 +56,23 @@ class BooleanProgramParserTest extends BaseSpecification {
       }
     }
 
-//    "big and" in {
-//      val expr = """(((a | (!b)) & (!c) & (!d)) | ((!c) & (!d) & a & b)) & (((!c) & (!d) & a & b) | (*))""".stripMargin
-//      val parser = new BooleanProgramParser()
-//      parser.parseAll(parser.expr, expr) must beLike {
-//        case parser.Success(
-//
-//
-//        And(Or(And(And(Or(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed))),
-//        Not(Var(Sym("c"), Current, NonMixed))), Not(Var(Sym("d"), Current, NonMixed))),
-//        And(
-//        Not(Var(Sym("c"), Current, NonMixed)), Not(Var(Sym("d"), Current, NonMixed)),
-//        Var(Sym("a"), Current, NonMixed), Var(Sym("b"), Current, NonMixed))),
-//        Or(And(
-//        Not(Var(Sym("c"), Current, NonMixed)), Not(Var(Sym("d"), Current, NonMixed)),
-//        Var(Sym("a"), Current, NonMixed), Var(Sym("b"), Current, NonMixed)) ,Nondet)
-//        ), _) => ok
-//      }
-//    }
+    "big and" in {
+      val expr = """(((a | (!b)) & (!c) & (!d)) | ((!c) & (!d) & a & b)) & (((!c) & (!d) & a & b) | (*))""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.expr, expr) must beLike {
+        case parser.Success(
+        And(Or(And(And(Or(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed))),
+        Not(Var(Sym("c"), Current, NonMixed))), Not(Var(Sym("d"), Current, NonMixed))),
+        And(And(
+        And(Not(Var(Sym("c"), Current, NonMixed)), Not(Var(Sym("d"), Current, NonMixed))),
+        Var(Sym("a"), Current, NonMixed)), Var(Sym("b"), Current, NonMixed))),
+        Or(And(And(
+        And(Not(Var(Sym("c"), Current, NonMixed)), Not(Var(Sym("d"), Current, NonMixed))),
+        Var(Sym("a"), Current, NonMixed)), Var(Sym("b"), Current, NonMixed)), Nondet)
+        ), _) => ok
+      }
+    }
+
     "big and in if" in {
       val expr = """if (((a | (!b)) & (!c) & (!d)) | ((!c) & (!d) & a & b)) & (((!c) & (!d) & a & b) | (*)) then goto l2; fi""".stripMargin
       val parser = new BooleanProgramParser()
