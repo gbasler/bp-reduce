@@ -9,7 +9,7 @@ object build extends Build {
   val standardSettings: Seq[Project.Setting[_]] =
     Seq[Project.Setting[_]](
       ivyXML := DependencyManagement.ivyExclusionsAndOverrides,
-      scalaVersion := "2.10.2",
+      scalaVersion := "2.10.3",
       resolvers ++= Seq("snapshots" at "http://scala-tools.org/repo-snapshots",
         "releases" at "http://scala-tools.org/repo-releases")
     )
@@ -27,7 +27,7 @@ object build extends Build {
   )
 
   lazy val bpReduceCore = Project(
-    id = "bp-reduce",
+    id = "bp-reduce-core",
     base = file("bp-reduce-core"),
     settings = Defaults.defaultSettings ++ standardSettings ++ Seq(
       libraryDependencies ++= Seq(ScalazCore, ScalazConcurrent, Specs, JUnit, Scalacheck, MockitoAll, CommonsIo,
