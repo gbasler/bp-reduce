@@ -26,7 +26,7 @@ object DependencyManagement {
 
   def ScalazConcurrent = "org.scalaz" %% "scalaz-concurrent" % "7.0.0"
 
-  def SpringCore = "org.springframework" % "spring-core" % "2.5.6"
+  def SpringCore = "org.springframework" % "spring-core" % "3.2.4.RELEASE"
 
   /**
    * Specs, unit testing framework
