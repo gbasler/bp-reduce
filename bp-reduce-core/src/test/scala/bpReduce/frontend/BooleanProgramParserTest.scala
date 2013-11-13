@@ -80,6 +80,7 @@ class BooleanProgramParserTest extends BaseSpecification {
         case parser.Success(_, _) => ok
       }
     }
+
     "big and in if2" in {
       val expr =
         """if ((!d)) & T then goto l2; fi""".stripMargin
@@ -88,6 +89,43 @@ class BooleanProgramParserTest extends BaseSpecification {
         case parser.Success(_, _) => ok
       }
     }
+
+    "big and in if3" in {
+      val expr =
+        """if !d & T then goto l2; fi""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.labelledStmt, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
+    "big and in if4" in {
+      val expr =
+        """if d then goto l2; fi""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.labelledStmt, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
+    "big and in if6" in {
+      val expr =
+        """if (!d) then goto l2; fi""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.labelledStmt, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
+    "big and in if5" in {
+      val expr =
+        """if (!d) & T then goto l2; fi""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.labelledStmt, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
   }
 
   "statements" should {
