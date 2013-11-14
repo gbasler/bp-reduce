@@ -238,7 +238,7 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val id: Parser[String] = """$?[A-Za-z]\w*""".r
 
-  lazy val VarRegex: Regex = """('?)(.*?)(\$?)""".r
+  lazy val VarRegex: Regex = """('?)([A-Za-z]\w*)(\$?)""".r
 
   lazy val currentOrNextStateId: Parser[Var] = """'?[A-Za-z]\w*\$?""".r ^^ {
     case VarRegex(primed, s, mixed) =>
