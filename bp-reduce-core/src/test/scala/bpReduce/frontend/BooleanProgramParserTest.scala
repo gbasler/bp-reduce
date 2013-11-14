@@ -108,11 +108,20 @@ class BooleanProgramParserTest extends BaseSpecification {
       }
     }
 
-    "big and in if6" in {
+    "and with single arg parens" in {
       val expr =
         """if (!d) then goto l2; fi""".stripMargin
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.labelledStmt, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
+    "single arg parens" in {
+      val expr =
+        """(!d)""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.expr, expr) must beLike {
         case parser.Success(_, _) => ok
       }
     }
