@@ -33,7 +33,7 @@ object DependencyManagement {
    *
    * http://code.google.com/p/specs/
    */
-  def Specs = "org.specs2" %% "specs2" % "2.3" % "test" intransitive()
+  def Specs = "org.specs2" %% "specs2" % "2.3.3" % "test" intransitive()
 
   def JUnit = "junit" % "junit" % "4.8.1" % "test" intransitive()
 
