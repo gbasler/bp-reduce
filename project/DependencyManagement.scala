@@ -44,7 +44,7 @@ object DependencyManagement {
    *
    * We use this through Specs.
    */
-  def Scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
+  def Scalacheck = "org.scalacheck" %% "scalacheck" % "1.11.0" % "test"
 
   /** Dependency of Specs */
   def MockitoAll = "org.mockito" % "mockito-all" % "1.8.4" % "test"
