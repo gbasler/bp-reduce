@@ -81,25 +81,7 @@ class BooleanProgramParserTest extends BaseSpecification {
       }
     }
 
-    "big and in if2" in {
-      val expr =
-        """if ((!d)) & T then goto l2; fi""".stripMargin
-      val parser = new BooleanProgramParser()
-      parser.parseAll(parser.labelledStmt, expr) must beLike {
-        case parser.Success(_, _) => ok
-      }
-    }
-
-    "big and in if3" in {
-      val expr =
-        """if !d & T then goto l2; fi""".stripMargin
-      val parser = new BooleanProgramParser()
-      parser.parseAll(parser.labelledStmt, expr) must beLike {
-        case parser.Success(_, _) => ok
-      }
-    }
-
-    "big and in if4" in {
+    "simple if" in {
       val expr =
         """if d then goto l2; fi""".stripMargin
       val parser = new BooleanProgramParser()
@@ -108,7 +90,16 @@ class BooleanProgramParserTest extends BaseSpecification {
       }
     }
 
-    "and with single arg parens" in {
+    "if with and" in {
+      val expr =
+        """if !d & T then goto l2; fi""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.labelledStmt, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
+    "if with single arg parens" in {
       val expr =
         """if (!d) then goto l2; fi""".stripMargin
       val parser = new BooleanProgramParser()
@@ -126,7 +117,16 @@ class BooleanProgramParserTest extends BaseSpecification {
       }
     }
 
-    "big and in if5" in {
+    "and with single arg parens" in {
+      val expr =
+        """(!d) & T""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.expr, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
+    "if with single arg parens and const" in {
       val expr =
         """if (!d) & T then goto l2; fi""".stripMargin
       val parser = new BooleanProgramParser()
@@ -134,6 +134,16 @@ class BooleanProgramParserTest extends BaseSpecification {
         case parser.Success(_, _) => ok
       }
     }
+
+    "if with double arg parens and const" in {
+      val expr =
+        """if ((!d)) & T then goto l2; fi""".stripMargin
+      val parser = new BooleanProgramParser()
+      parser.parseAll(parser.labelledStmt, expr) must beLike {
+        case parser.Success(_, _) => ok
+      }
+    }
+
 
   }
 

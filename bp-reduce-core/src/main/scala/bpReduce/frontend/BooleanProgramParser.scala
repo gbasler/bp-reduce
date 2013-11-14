@@ -50,7 +50,7 @@ final class BooleanProgramParser extends RegexParsers {
   def parse(programStr: String): Program = {
     parseAll(program, programStr) match {
       case Success(program, _) => program
-      case e: NoSuccess => sys.error("parse error: " + e.toString)
+      case e: NoSuccess        => sys.error("parse error: " + e.toString)
     }
   }
 
@@ -91,7 +91,7 @@ final class BooleanProgramParser extends RegexParsers {
     0
   } | "bool" ~> opt("<" ~> number <~ ">") ^^ {
     case Some(x) => x
-    case None => 1
+    case None    => 1
   }
 
   lazy val enforce: Parser[Expr] = "enforce" ~> expr <~ ";"
@@ -102,11 +102,11 @@ final class BooleanProgramParser extends RegexParsers {
     case labels ~ stmt => /*labels ->*/ stmt
   }
 
-  lazy val statement: Parser[Stmt] = dead |
+  lazy val statement: Parser[Stmt] = jumpStatement |
     assign |
     assertStmt |
     assume |
-    call |
+    //call |          // TODO: call seems to kill 'if'
     selectionStatement |
     jumpStatement |
     startThread |
@@ -224,11 +224,11 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val not: Parser[Expr] = opt("!") ~ atom ^^ {
     case Some(_) ~ x => Not(x)
-    case _ ~ x => x
+    case _ ~ x       => x
   }
 
   lazy val atom: Parser[Expr] = const ^^ {
-    case true => True
+    case true  => True
     case false => False
   } | "*" ^^^ {
     Nondet
@@ -236,7 +236,7 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val const: Parser[Boolean] = "[Tt1]".r ^^^ true | "[Ff0]".r ^^^ false
 
-  lazy val id: Parser[String] = """$?[A-Za-z]\w*""".r
+  lazy val id: Parser[String] = """[A-Za-z]\w*$?""".r
 
   lazy val VarRegex: Regex = """('?)([A-Za-z]\w*)(\$?)""".r
 
@@ -244,8 +244,8 @@ final class BooleanProgramParser extends RegexParsers {
     case VarRegex(primed, s, mixed) =>
       import StateIdentifier._
       import MixedIdentifier._
-      val stateId = if(primed == "'") Next else Current
-      val mixedId = if(mixed == "$") Mixed else NonMixed
+      val stateId = if (primed == "'") Next else Current
+      val mixedId = if (mixed == "$") Mixed else NonMixed
       Var(Sym(s), stateId, mixedId)
   }
 
