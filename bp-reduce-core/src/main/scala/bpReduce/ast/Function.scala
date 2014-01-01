@@ -1,4 +1,5 @@
-package bpReduce.ast
+package bpReduce
+package ast
 
 case class Function(name: String,
                     locals: VariableHolder,

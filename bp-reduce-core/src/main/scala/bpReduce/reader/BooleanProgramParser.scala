@@ -1,4 +1,5 @@
-package bpReduce.frontend
+package bpReduce
+package reader
 
 import util.parsing.combinator.RegexParsers
 import bpReduce.ast.Stmt._

@@ -1,4 +1,5 @@
-package bpReduce.ast
+package bpReduce
+package ast
 
 import bpReduce.ast.Expr.Var
 

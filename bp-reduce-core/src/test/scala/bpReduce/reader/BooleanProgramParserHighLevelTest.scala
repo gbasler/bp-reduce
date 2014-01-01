@@ -1,4 +1,4 @@
-package bpReduce.frontend
+package bpReduce.reader
 
 import bpReduce.{Resources, BaseSpecification}
 import bpReduce.ast._
