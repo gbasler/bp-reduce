@@ -201,6 +201,10 @@ class BooleanProgramParserTest extends BaseSpecification {
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.labelledStmt, program) must beLike {
         case parser.Success(Call("error_1", Seq(), Seq()), _) => ok
+//        case s:parser.Success[_] =>
+//          ok
+//        case e =>
+//        ok
       }
     }
 

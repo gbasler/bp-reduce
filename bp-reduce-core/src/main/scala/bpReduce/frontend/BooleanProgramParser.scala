@@ -106,8 +106,9 @@ final class BooleanProgramParser extends RegexParsers {
     assign |
     assertStmt |
     assume |
-    //call |          // TODO: call seems to kill 'if'
     selectionStatement |
+    dead |
+    call | // important: 'call' stmt must be checked after 'if'
     jumpStatement |
     startThread |
     endThread |
@@ -236,7 +237,7 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val const: Parser[Boolean] = "[Tt1]".r ^^^ true | "[Ff0]".r ^^^ false
 
-  lazy val id: Parser[String] = """[A-Za-z]\w*$?""".r
+  lazy val id: Parser[String] = """[A-Za-z][\w$]*""".r
 
   lazy val VarRegex: Regex = """('?)([A-Za-z]\w*)(\$?)""".r
 
