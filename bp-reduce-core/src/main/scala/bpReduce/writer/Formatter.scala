@@ -53,8 +53,9 @@ object Formatter {
     }.mkString("decl ", ", ", end)
   }
 
-  def format(stmt: Stmt) = stmt match {
+  def format(stmt: Stmt): String = stmt match {
     case Assign(assigns, constrain) =>
+      s"""${assigns.unzip._1.map(format).mkString(",")} := ${assigns.unzip._2.map(format).mkString(",")}"""
     case Assume(e)                  =>
       s"assume ${format(e)}"
     case Assert(e)                  =>
@@ -65,6 +66,7 @@ object Formatter {
     case Goto(targets)              =>
       s"""goto ${targets.mkString(", ")}"""
     case If(condition, pos, neg)    =>
+      s"""if ${format(condition)} then ${pos.map(format).mkString(end)} else ${neg.map(format).mkString(end)} fi"""
     case Skip                       =>
       "skip"
     case Return(values)             =>
@@ -74,21 +76,22 @@ object Formatter {
     case AtomicEnd                  =>
       "atomic_end"
     case StartThread(label)         =>
+      s"start_thread goto $label"
     case EndThread                  =>
       "end_thread"
   }
 
   def format(e: Expr) = e match {
-    case And(a, b)               => s"(${format(pos)}) && (${format(neg)})"
-    case Or(a, b)                => s"(${format(pos)}) || (${format(neg)})"
-    case Impl(a, b)              =>
-    case Xor(a, b)               =>
-    case Equiv(a, b)             =>
+    case And(a, b)               => s"(${format(a)}) & (${format(b)})"
+    case Or(a, b)                => s"(${format(a)}) | (${format(b)})"
+    case Impl(a, b)              => s"(${format(a)}) -> (${format(b)})"
+    case Xor(a, b)               => s"(${format(a)}) != (${format(b)})"
+    case Equiv(a, b)             => s"(${format(a)}) = (${format(b)})"
     case Schoose(pos, neg)       => s"schoose [${format(pos)}, ${format(neg)}]"
     case Not(a)                  => s"!(${format(a)})"
     case True                    => "T"
     case False                   => "F"
     case Nondet                  => "*"
-    case Var(sym, primed, mixed) => s"""${if(primed) "$" else ""}${sym.name}${if(mixed) "$" else ""}"""
+    case Var(sym, primed, mixed) => s"""${if (primed) "$" else ""}${sym.name}${if (mixed) "$" else ""}"""
   }
 }
