@@ -19,7 +19,7 @@ object Stmt {
 
   final case class Goto(targets: Seq[String]) extends Stmt
 
-  final case class If(condition: Expr, pos: Seq[Stmt], neg: Seq[Stmt]) extends Stmt
+  final case class If(condition: Expr, pos: Seq[LabelledStmt], neg: Seq[LabelledStmt]) extends Stmt
 
   case object Skip extends Stmt
 

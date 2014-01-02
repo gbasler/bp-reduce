@@ -3,12 +3,6 @@ package writer
 
 import ast._
 import bpReduce.ast.Stmt._
-import bpReduce.ast.Stmt.Call
-import bpReduce.ast.Stmt.Assume
-import bpReduce.ast.VariableHolder
-import bpReduce.ast.Stmt.Assign
-import bpReduce.ast.Stmt.Assert
-import bpReduce.ast.Program
 import bpReduce.ast.Expr._
 import bpReduce.ast.Expr.Or
 import bpReduce.ast.Expr.Impl
@@ -30,37 +24,54 @@ object Formatter {
 
   private val end = ";"
 
-  def format(program: Program) = {
+  def format(program: Program): String = {
     val globals = format(program.globals)
     val functions = for {
       f <- program.functions
     } yield {
-      val locals = format(f.locals)
+      val locals = "\t" + format(f.locals)
       val returns = if (f.returns == 0) "void" else s"bool<${f.returns}>"
       val args = f.args.mkString(", ")
-      val header = s"$returns ${f.name}($args)"
-      Seq(header, "begin") ++ f.stmts.map(format) :+ "end"
+      val header = s"$returns ${f.name}($args) begin"
+      val content = (locals +: f.stmts.map(formatWithLabels)).map(_ + end)
+      header +: content :+ "end"
     }
+    val programAsLines = globals +: functions.flatten
+    programAsLines.mkString("\n")
   }
 
   def format(vars: VariableHolder): String = {
-    {
+    "decl " + {
       for {
         v <- vars.vars
       } yield {
         v.name
       }
-    }.mkString("decl ", ", ", end)
+    }.mkString(", ")
+  }
+
+  def formatWithLabels(stmt: Stmt) = {
+    // TODO: add labels here
+    "\t" + format(stmt)
   }
 
   def format(stmt: Stmt): String = stmt match {
     case Assign(assigns, constrain) =>
-      s"""${assigns.unzip._1.map(format).mkString(",")} := ${assigns.unzip._2.map(format).mkString(",")}"""
+      val lhs = assigns.unzip._1.map(format).mkString(", ")
+      val rhs = assigns.unzip._2.map(format).mkString(", ")
+      val c = constrain.fold("")(e => " constrain " + format(e))
+      s"$lhs := $rhs$c"
     case Assume(e)                  =>
       s"assume ${format(e)}"
     case Assert(e)                  =>
       s"assert ${format(e)}"
     case Call(name, assigns, args)  =>
+      val lhs = assigns.map {
+        case Some(Sym(name)) => name
+        case None            => "_"
+      }.mkString(" ", ", ", " := ")
+      val params = args.map(format)
+      s"""$lhs$name($params)"""
     case Dead(vars)                 =>
       s"""dead ${vars.mkString(", ")}"""
     case Goto(targets)              =>
@@ -81,7 +92,7 @@ object Formatter {
       "end_thread"
   }
 
-  def format(e: Expr) = e match {
+  def format(e: Expr): String = e match {
     case And(a, b)               => s"(${format(a)}) & (${format(b)})"
     case Or(a, b)                => s"(${format(a)}) | (${format(b)})"
     case Impl(a, b)              => s"(${format(a)}) -> (${format(b)})"
@@ -92,6 +103,6 @@ object Formatter {
     case True                    => "T"
     case False                   => "F"
     case Nondet                  => "*"
-    case Var(sym, primed, mixed) => s"""${if (primed) "$" else ""}${sym.name}${if (mixed) "$" else ""}"""
+    case Var(sym, primed, mixed) => primed + sym.name + mixed
   }
 }

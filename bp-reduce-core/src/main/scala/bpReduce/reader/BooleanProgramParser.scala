@@ -97,10 +97,10 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val enforce: Parser[Expr] = "enforce" ~> expr <~ ";"
 
-  lazy val statementList: Parser[List[Stmt]] = rep(labelledStmt <~ ";")
+  lazy val statementList: Parser[List[LabelledStmt]] = rep(labelledStmt <~ ";")
 
-  lazy val labelledStmt: Parser[Stmt] = rep(label) ~ statement ^^ {
-    case labels ~ stmt => /*labels ->*/ stmt
+  lazy val labelledStmt: Parser[LabelledStmt] = rep(label) ~ statement ^^ {
+    case labels ~ stmt => LabelledStmt(stmt, labels)
   }
 
   lazy val statement: Parser[Stmt] = jumpStatement |
@@ -185,7 +185,7 @@ final class BooleanProgramParser extends RegexParsers {
           // add last else to innermost if
           val elifs = elsifs.foldRight(elseStmtsOpt.toList.flatten) {
             case (expr ~ _ ~ stmts, elseStmts) =>
-              List(If(expr, stmts, elseStmts))
+              List(LabelledStmt(If(expr, stmts, elseStmts), Seq()))
           }
 
           If(expr, posStmts, elifs)
