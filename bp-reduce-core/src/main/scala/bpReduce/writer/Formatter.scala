@@ -50,9 +50,9 @@ object Formatter {
     }.mkString(", ")
   }
 
-  def formatWithLabels(stmt: Stmt) = {
+  def formatWithLabels(stmt: LabelledStmt) = {
     // TODO: add labels here
-    "\t" + format(stmt)
+    stmt.labels.mkString(": ") + "\t" + format(stmt.stmt)
   }
 
   def format(stmt: Stmt): String = stmt match {
@@ -77,7 +77,7 @@ object Formatter {
     case Goto(targets)              =>
       s"""goto ${targets.mkString(", ")}"""
     case If(condition, pos, neg)    =>
-      s"""if ${format(condition)} then ${pos.map(format).mkString(end)} else ${neg.map(format).mkString(end)} fi"""
+      s"""if ${format(condition)} then ${pos.map(s => format(s.stmt)).mkString(end)} else ${neg.map(s => format(s.stmt)).mkString(end)} fi"""
     case Skip                       =>
       "skip"
     case Return(values)             =>

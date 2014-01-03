@@ -80,7 +80,7 @@ final class BooleanProgramParser extends RegexParsers {
       vars
   }
 
-  lazy val function: Parser[Function] = functionHeading ~ id ~ functionParams ~ "begin" ~ decls ~ opt(enforce) ~ statementList <~ "end" ^^ {
+  lazy val function: Parser[Function] = functionHeading ~ id ~ functionParams ~ "begin" ~ decls ~ opt(enforce) ~ labelledStmtList <~ "end" ^^ {
     case heading ~ name ~ params ~ _ ~ vars ~ _ ~ stmts => Function(name, vars, params, heading, stmts)
   }
 
@@ -97,11 +97,13 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val enforce: Parser[Expr] = "enforce" ~> expr <~ ";"
 
-  lazy val statementList: Parser[List[LabelledStmt]] = rep(labelledStmt <~ ";")
+  lazy val labelledStmtList: Parser[List[LabelledStmt]] = rep(labelledStmt <~ ";")
 
   lazy val labelledStmt: Parser[LabelledStmt] = rep(label) ~ statement ^^ {
     case labels ~ stmt => LabelledStmt(stmt, labels)
   }
+
+  lazy val stmtList: Parser[List[Stmt]] = rep(statement <~ ";")
 
   lazy val statement: Parser[Stmt] = jumpStatement |
     assign |
@@ -177,7 +179,7 @@ final class BooleanProgramParser extends RegexParsers {
   }
 
   lazy val selectionStatement: Parser[Stmt] =
-    "if" ~> expr ~ ("then" ~> statementList) ~ rep("elif" ~> expr ~ "then" ~ statementList) ~ opt("else" ~> statementList) <~ "fi" ^^ {
+    "if" ~> expr ~ ("then" ~> labelledStmtList) ~ rep("elif" ~> expr ~ "then" ~ labelledStmtList) ~ opt("else" ~> labelledStmtList) <~ "fi" ^^ {
       case expr ~ posStmts ~ elsifs ~ elseStmtsOpt =>
         if (elsifs.isEmpty) {
           If(expr, posStmts, elseStmtsOpt.map(_.toSeq).toSeq.flatten)
