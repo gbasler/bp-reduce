@@ -25,34 +25,31 @@ object Formatter {
   private val end = ";"
 
   def format(program: Program): String = {
-    val globals = format(program.globals)
+    val globals = format(program.globals).map(_ + end)
     val functions = for {
       f <- program.functions
     } yield {
-      val locals = "\t" + format(f.locals)
+      val locals = format(f.locals).map("\t" + _)
       val returns = if (f.returns == 0) "void" else s"bool<${f.returns}>"
       val args = f.args.mkString(", ")
       val header = s"$returns ${f.name}($args) begin"
-      val content = (locals +: f.stmts.map(formatWithLabels)).map(_ + end)
+      val content = (locals ++ f.stmts.map(formatWithLabels)).map(_ + end)
       header +: content :+ "end"
     }
-    val programAsLines = globals +: functions.flatten
+    val programAsLines = globals ++ functions.flatten
     programAsLines.mkString("\n")
   }
 
-  def format(vars: VariableHolder): String = {
-    "decl " + {
-      for {
-        v <- vars.vars
-      } yield {
-        v.name
-      }
-    }.mkString(", ")
+  def format(vars: VariableHolder): Seq[String] = {
+    for {
+      v <- vars.vars
+    } yield {
+      s"decl ${v.name}"
+    }
   }
 
   def formatWithLabels(stmt: LabelledStmt) = {
-    // TODO: add labels here
-    stmt.labels.mkString(": ") + "\t" + format(stmt.stmt)
+    stmt.labels.mkString(" ") + "\t" + format(stmt.stmt)
   }
 
   def format(stmt: Stmt): String = stmt match {
