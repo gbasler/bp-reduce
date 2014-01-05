@@ -89,17 +89,42 @@ object Formatter {
       "end_thread"
   }
 
-  def format(e: Expr): String = e match {
-    case And(a, b)               => s"(${format(a)}) & (${format(b)})"
-    case Or(a, b)                => s"(${format(a)}) | (${format(b)})"
-    case Impl(a, b)              => s"(${format(a)}) -> (${format(b)})"
-    case Xor(a, b)               => s"(${format(a)}) != (${format(b)})"
-    case Equiv(a, b)             => s"(${format(a)}) = (${format(b)})"
-    case Schoose(pos, neg)       => s"schoose [${format(pos)}, ${format(neg)}]"
-    case Not(a)                  => s"!(${format(a)})"
-    case True                    => "T"
-    case False                   => "F"
-    case Nondet                  => "*"
-    case Var(sym, primed, mixed) => primed + sym.name + mixed
+  def format(e: Expr): String = {
+
+    // what needs to be wrapped?
+    // | inside & / CNF
+    // ! before | or &
+
+    // no wrapping:
+    // ! before var
+    // | or &'s / DNF
+
+    def needsWrapping(operator: Expr, operand: Expr) = (operator, operand) match {
+      case (_: And, _: Or)          => true // CNF
+      case (_: Not, _: And | _: Or) => true
+      case _                        => false
+    }
+
+    def wrapFormatted(operand: Expr) = {
+      if (needsWrapping(e, operand)) {
+        s"(${format(operand)})"
+      } else {
+        s"${format(operand)}"
+      }
+    }
+
+    e match {
+      case And(a, b)               => s"${wrapFormatted(a)} & ${wrapFormatted(b)}"
+      case Or(a, b)                => s"${wrapFormatted(a)} | ${wrapFormatted(b)}"
+      case Impl(a, b)              => s"${wrapFormatted(a)} -> ${wrapFormatted(b)}"
+      case Xor(a, b)               => s"${wrapFormatted(a)} != ${wrapFormatted(b)}"
+      case Equiv(a, b)             => s"${wrapFormatted(a)} = ${wrapFormatted(b)}"
+      case Schoose(pos, neg)       => s"schoose [${format(pos)}, ${format(neg)}]"
+      case Not(a)                  => s"!${wrapFormatted(a)}"
+      case True                    => "T"
+      case False                   => "F"
+      case Nondet                  => "*"
+      case Var(sym, primed, mixed) => primed + sym.name + mixed
+    }
   }
 }
