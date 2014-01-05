@@ -102,6 +102,7 @@ object Formatter {
     def needsWrapping(operator: Expr, operand: Expr) = (operator, operand) match {
       case (_: And, _: Or)          => true // CNF
       case (_: Not, _: And | _: Or) => true
+      case (_: Not, _Not)           => true
       case _                        => false
     }
 

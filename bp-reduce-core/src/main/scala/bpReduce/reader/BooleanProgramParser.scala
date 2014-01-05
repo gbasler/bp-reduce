@@ -135,7 +135,8 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val assign: Parser[Stmt] = rep1sep(currentOrNextStateId, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
     case vars ~ _ ~ exprs ~ constrain =>
-      require(vars.size == exprs.size, "Number of variables must be same as number of expressions")
+      require(vars.size == exprs.size,
+        s"Number of variables must be same as number of expressions: $vars, $exprs")
       // in fact, vars always refer to next state...
       Assign(vars.zip(exprs), constrain)
   }
