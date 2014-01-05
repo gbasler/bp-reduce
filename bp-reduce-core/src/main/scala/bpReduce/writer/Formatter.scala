@@ -74,7 +74,10 @@ object Formatter {
     case Goto(targets)              =>
       s"""goto ${targets.mkString(", ")}"""
     case If(condition, pos, neg)    =>
-      s"""if ${format(condition)} then ${pos.map(s => format(s.stmt)).mkString(end)} else ${neg.map(s => format(s.stmt)).mkString(end)} fi"""
+      val p = pos.map(s => format(s.stmt)).mkString("", end, end)
+      val n = neg.map(s => format(s.stmt)).mkString("", end, end)
+      val alt = if(neg.isEmpty) "" else s" else $n"
+      s"""if ${format(condition)} then $p$alt fi"""
     case Skip                       =>
       "skip"
     case Return(values)             =>
