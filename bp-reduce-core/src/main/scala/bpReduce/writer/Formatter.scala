@@ -76,7 +76,7 @@ object Formatter {
     case If(condition, pos, neg)    =>
       val p = pos.map(s => format(s.stmt)).mkString("", end, end)
       val n = neg.map(s => format(s.stmt)).mkString("", end, end)
-      val alt = if(neg.isEmpty) "" else s" else $n"
+      val alt = if (neg.isEmpty) "" else s" else $n"
       s"""if ${format(condition)} then $p$alt fi"""
     case Skip                       =>
       "skip"
@@ -118,8 +118,8 @@ object Formatter {
     }
 
     e match {
-      case And(a, b)               => s"${wrapFormatted(a)} & ${wrapFormatted(b)}"
-      case Or(a, b)                => s"${wrapFormatted(a)} | ${wrapFormatted(b)}"
+      case And(ops)                => ops.map(wrapFormatted).mkString(" & ")
+      case Or(ops)                 => ops.map(wrapFormatted).mkString(" | ")
       case Impl(a, b)              => s"${wrapFormatted(a)} -> ${wrapFormatted(b)}"
       case Xor(a, b)               => s"${wrapFormatted(a)} != ${wrapFormatted(b)}"
       case Equiv(a, b)             => s"${wrapFormatted(a)} = ${wrapFormatted(b)}"

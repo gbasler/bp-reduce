@@ -21,10 +21,7 @@ final class BooleanProgramParser extends RegexParsers {
 
   // TODO parens ~
 
-  // TODO: labels: add to abstrct base class
-  // parser returns factory instead of stmt
-  // factory creates stmt, adds labels and fixes symbols
-
+  // TODO: used?
   object Scope {
 
     private val scopes = mutable.Stack[mutable.Set[Sym]]()
@@ -219,12 +216,12 @@ final class BooleanProgramParser extends RegexParsers {
 
   // right-associative
   lazy val or: Parser[Expr] = rep1sep(and, "|") ^^ {
-    _.reduceLeft(Or)
+    _.reduceLeft(Or.apply)
   }
 
   // via right folding
   lazy val and: Parser[Expr] = rep1sep(not, "&") ^^ {
-    _.reduceLeft(And)
+    _.reduceLeft(And.apply)
   }
 
   lazy val not: Parser[Expr] = opt("!") ~ atom ^^ {

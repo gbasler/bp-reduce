@@ -36,7 +36,7 @@ class BooleanProgramParserTest extends BaseSpecification {
       val expr = """a | (!b)""".stripMargin
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.expr, expr) must beLike {
-        case parser.Success(Or(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed))), _) => ok
+        case parser.Success(Or(Seq(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed)))), _) => ok
       }
     }
 
@@ -44,7 +44,7 @@ class BooleanProgramParserTest extends BaseSpecification {
       val expr = """((a | (!b)) & (!c) & (!d))""".stripMargin
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.expr, expr) must beLike {
-        case parser.Success(And(And(Or(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed))), Not(Var(Sym("c"), Current, NonMixed))), Not(Var(Sym("d"), Current, NonMixed))), _) => ok
+        case parser.Success(And(Seq(And(Seq(Or(Seq(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed)))), Not(Var(Sym("c"), Current, NonMixed)))), Not(Var(Sym("d"), Current, NonMixed)))), _) => ok
       }
     }
 
@@ -52,7 +52,7 @@ class BooleanProgramParserTest extends BaseSpecification {
       val expr = """a & b & c""".stripMargin
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.expr, expr) must beLike {
-        case parser.Success(And(And(Var(Sym("a"), Current, NonMixed), Var(Sym("b"), Current, NonMixed)), Var(Sym("c"), Current, NonMixed)), _) => ok
+        case parser.Success(And(Seq(And(Seq(Var(Sym("a"), Current, NonMixed), Var(Sym("b"), Current, NonMixed))), Var(Sym("c"), Current, NonMixed))), _) => ok
       }
     }
 
@@ -61,15 +61,13 @@ class BooleanProgramParserTest extends BaseSpecification {
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.expr, expr) must beLike {
         case parser.Success(
-        And(Or(And(And(Or(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed))),
-        Not(Var(Sym("c"), Current, NonMixed))), Not(Var(Sym("d"), Current, NonMixed))),
-        And(And(
-        And(Not(Var(Sym("c"), Current, NonMixed)), Not(Var(Sym("d"), Current, NonMixed))),
-        Var(Sym("a"), Current, NonMixed)), Var(Sym("b"), Current, NonMixed))),
-        Or(And(And(
-        And(Not(Var(Sym("c"), Current, NonMixed)), Not(Var(Sym("d"), Current, NonMixed))),
-        Var(Sym("a"), Current, NonMixed)), Var(Sym("b"), Current, NonMixed)), Nondet)
-        ), _) => ok
+        And(Seq(Or(Seq(And(Seq(And(Seq(Or(Seq(Var(Sym("a"), Current, NonMixed), Not(Var(Sym("b"), Current, NonMixed)))),
+        Not(Var(Sym("c"), Current, NonMixed)))), Not(Var(Sym("d"), Current, NonMixed)))),
+        And(Seq(And(Seq(And(Seq(Not(Var(Sym("c"), Current, NonMixed)), Not(Var(Sym("d"), Current, NonMixed)))),
+        Var(Sym("a"), Current, NonMixed))), Var(Sym("b"), Current, NonMixed))))),
+        Or(Seq(And(Seq(And(Seq(And(Seq(Not(Var(Sym("c"), Current, NonMixed)),
+        Not(Var(Sym("d"), Current, NonMixed)))),
+        Var(Sym("a"), Current, NonMixed))), Var(Sym("b"), Current, NonMixed))), Nondet)))), _) => ok
       }
     }
 
@@ -201,10 +199,6 @@ class BooleanProgramParserTest extends BaseSpecification {
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.statement, program) must beLike {
         case parser.Success(Call("error_1", Seq(), Seq()), _) => ok
-//        case s:parser.Success[_] =>
-//          ok
-//        case e =>
-//        ok
       }
     }
 
@@ -236,7 +230,7 @@ class BooleanProgramParserTest extends BaseSpecification {
       val program = """assume(g & l)""".stripMargin
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.statement, program) must beLike {
-        case parser.Success(Assume(And(Var(Sym("g"), Current, NonMixed), Var(Sym("l"), Current, NonMixed))), _) => ok
+        case parser.Success(Assume(And(Seq(Var(Sym("g"), Current, NonMixed), Var(Sym("l"), Current, NonMixed)))), _) => ok
       }
     }
 
@@ -252,7 +246,7 @@ class BooleanProgramParserTest extends BaseSpecification {
       val program = """assert(g & l)""".stripMargin
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.statement, program) must beLike {
-        case parser.Success(Assert(And(Var(Sym("g"), Current, NonMixed), Var(Sym("l"), Current, NonMixed))), _) => ok
+        case parser.Success(Assert(And(Seq(Var(Sym("g"), Current, NonMixed), Var(Sym("l"), Current, NonMixed)))), _) => ok
       }
     }
 
@@ -308,7 +302,7 @@ class BooleanProgramParserTest extends BaseSpecification {
       val program = """return g & l, T""".stripMargin
       val parser = new BooleanProgramParser()
       parser.parseAll(parser.statement, program) must beLike {
-        case parser.Success(Return(Seq(And(Var(Sym("g"), Current, NonMixed), Var(Sym("l"), Current, NonMixed)), True)), _) => ok
+        case parser.Success(Return(Seq(And(Seq(Var(Sym("g"), Current, NonMixed), Var(Sym("l"), Current, NonMixed))), True)), _) => ok
       }
     }
 
