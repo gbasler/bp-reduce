@@ -37,7 +37,32 @@ class ExpressionReducer {
      */
     def replaceOneVarWithConsts(e: Expr, replace: Boolean): (Expr, Boolean) = {
 
+      type TF = (Expr, Option[Expr]) => (Expr, Option[Expr])
 
+      class ReplaceMonad(run: TF) {
+
+//        def run(e: Expr, replacement: Option[Expr]) = {
+//          e -> replacement
+//        }
+
+        def map(f: Expr => Expr) = new ReplaceMonad({
+          (s: Expr, r: Option[Expr]) =>
+            val (e, r1) = run(s, r)
+            f(e) -> r1
+        })
+
+        def flatMap(f: Expr => ReplaceMonad) = new ReplaceMonad({
+          (s: Expr, r: Option[Expr]) =>
+            val (e, r1) = run(s, r)
+            f(e).run(, r1)
+        })
+      }
+
+
+      /*
+       Blub.
+        @param OhmeinGott
+        */
       def replaceSeq(exprs: Seq[Expr], replacement: Option[Expr]): (Seq[Expr], Option[Expr]) = {
         ???
       }
@@ -54,15 +79,11 @@ class ExpressionReducer {
           Or(os) -> replaced
         case Impl(a, b)              =>
           for {
-            a0 <- replace(a, replacement)
-            b0 <- replace(a, r0)
+            a0 <- replace(a)
+            b0 <- replace(a)
           } yield {
             Impl(a0, b0)
           }
-
-          val (a0, r0) = replace(a, replacement)
-          val (b0, r1) = replace(a, r0)
-          Impl(a0, b0) -> r1
         case Xor(a, b)               =>
         case Equiv(a, b)             =>
         case Schoose(pos, neg)       =>
