@@ -86,6 +86,8 @@ object Expr {
 
   final case class Not(a: Expr) extends Expr
 
+//  final case class BinOp(op:Op ,a: Expr) extends Expr
+
   case object True extends Expr
 
   case object False extends Expr

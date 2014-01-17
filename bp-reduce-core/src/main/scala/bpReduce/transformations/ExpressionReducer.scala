@@ -37,24 +37,21 @@ class ExpressionReducer {
      */
     def replaceOneVarWithConsts(e: Expr, replace: Boolean): (Expr, Boolean) = {
 
-      type TF = (Expr, Option[Expr]) => (Expr, Option[Expr])
+      type S = Option[Expr]
+      type TF = S => (Expr, S)
 
       class ReplaceMonad(run: TF) {
 
-//        def run(e: Expr, replacement: Option[Expr]) = {
-//          e -> replacement
-//        }
-
         def map(f: Expr => Expr) = new ReplaceMonad({
-          (s: Expr, r: Option[Expr]) =>
-            val (e, r1) = run(s, r)
-            f(e) -> r1
+          s: S =>
+            val (e, s1) = run(s)
+            f(e) -> s1
         })
 
         def flatMap(f: Expr => ReplaceMonad) = new ReplaceMonad({
-          (s: Expr, r: Option[Expr]) =>
-            val (e, r1) = run(s, r)
-            f(e).run(, r1)
+          s: S =>
+            val (e, s1) = run(s)
+            f(e).run(s1)
         })
       }
 
@@ -67,26 +64,117 @@ class ExpressionReducer {
         ???
       }
 
+      def replace1(e: Expr, replacement: Option[Expr]) = replacement match {
+        case Some(x) => x -> None
+        case None    => e -> None
+      }
+
+      def replace(e: Expr, replacement: Option[Expr]): (Expr, Option[Expr]) = {
+        def shortCircuit(e1: Expr, r1: Option[Expr]) = {
+          if (r1 == replacement)
+            e -> replacement // short circuiting
+          else
+            e1 -> r1
+        }
+
+        object BinaryOp {
+          def unapply(e: Expr): Option[((Expr, Expr), (Expr, Expr) => Expr)] = e match {
+            case Impl(a, b)        => Some((a, b) -> {
+              (a: Expr, b: Expr) => Impl(a, b)
+            })
+            case Xor(a, b)         => Some((a, b) -> {
+              (a: Expr, b: Expr) => Xor(a, b)
+            })
+            case Equiv(a, b)       => Some((a, b) -> {
+              (a: Expr, b: Expr) => Equiv(a, b)
+            })
+            case Schoose(pos, neg) => Some((pos, neg) -> {
+              (a: Expr, b: Expr) => Schoose(a, b)
+            })
+            case _                 => None
+          }
+        }
+
+        // TODO: cleanup with extractor? binaryop, unaryop, ...
+        e match {
+          case And(ops)                =>
+            val (r, e) = ops.foldLeft(replacement -> Seq.empty[Expr]) {
+              case ((r, acc), expr) =>
+                val (e1, r1) = replace(expr, r)
+                (r1, acc :+ e1)
+            }
+            shortCircuit(And(e), r)
+          case Or(ops)                 =>
+            val (r, e) = ops.foldLeft(replacement -> Seq.empty[Expr]) {
+              case ((r, acc), expr) =>
+                val (e1, r1) = replace(expr, r)
+                (r1, acc :+ e1)
+            }
+            shortCircuit(Or(e), r)
+          case Impl(a, b)              =>
+            val (e1, r1) = replace(a, replacement)
+            val (e2, r2) = replace(b, r1)
+            shortCircuit(Impl(e1, e2), r2)
+          case Xor(a, b)               =>
+            val (e1, r1) = replace(a, replacement)
+            val (e2, r2) = replace(b, r1)
+            shortCircuit(Xor(e1, e2), r2)
+          case Equiv(a, b)             =>
+            val (e1, r1) = replace(a, replacement)
+            val (e2, r2) = replace(b, r1)
+            shortCircuit(Equiv(e1, e2), r2)
+          case Schoose(pos, neg)       =>
+            val (e1, r1) = replace(pos, replacement)
+            val (e2, r2) = replace(pos, r1)
+            shortCircuit(Schoose(e1, e2), r2)
+          case Not(a)                  =>
+            val (e1, r1) = replace(e, replacement)
+            shortCircuit(Not(e1), r1)
+          case True | False | Nondet   => e -> replacement
+          case Var(sym, primed, mixed) => replacement.getOrElse(e) -> None
+        }
+      }
+
       /**
        * @param replacement constant (T/F) to use to replace first variables
        */
-      def replace(e: Expr, replacement: Option[Expr]): (Expr, Option[Expr]) = e match {
-        case And(ops)                =>
+      def replace(e: Expr, m: ReplaceMonad): (Expr, ReplaceMonad) = e match {
+        case And(ops)          =>
           val (os, replaced) = replaceSeq(ops, replacement)
           And(os) -> replaced
-        case Or(ops)                 =>
+        case Or(ops)           =>
           val (os, replaced) = replaceSeq(ops, replacement)
           Or(os) -> replaced
-        case Impl(a, b)              =>
-          for {
-            a0 <- replace(a)
-            b0 <- replace(a)
+        case Impl(a, b)        =>
+          val a: ReplaceMonad = for {
+            a0 <- m
+            b0 <- m
           } yield {
             Impl(a0, b0)
           }
-        case Xor(a, b)               =>
-        case Equiv(a, b)             =>
-        case Schoose(pos, neg)       =>
+        case Xor(a, b)         =>
+          val a: ReplaceMonad = (m).flatMap {
+            case a0 => (m).map {
+              case b0 => {
+                Xor(a0, b0)
+              }
+            }
+          }
+        case Equiv(a, b)       =>
+          val a: ReplaceMonad = for {
+            a0 <- m
+            b0 <- m
+          } yield {
+            Equiv(a0, b0)
+          }
+        case Schoose(pos, neg) =>
+          val a: ReplaceMonad = for {
+            a0 <- m
+            b0 <- m
+          } yield {
+            Schoose(a0, b0)
+          }
+
         case Not(a)                  =>
         case True                    =>
         case False                   =>
