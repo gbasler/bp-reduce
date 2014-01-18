@@ -35,7 +35,7 @@ class ExpressionReducer {
      * e.g., a | b: if we set a to true then b becomes don't care
      * so we won't have to check b
      */
-    def replaceOneVarWithConsts(e: Expr, replace: Boolean): (Expr, Boolean) = {
+    def replaceOneVarWithConsts(e: Expr, replace: Boolean): Seq[Expr] = {
 
       type S = Option[Expr]
       type TF = S => (Expr, S)
@@ -56,20 +56,27 @@ class ExpressionReducer {
       }
 
 
-      /*
-       Blub.
-        @param OhmeinGott
-        */
-      def replaceSeq(exprs: Seq[Expr], replacement: Option[Expr]): (Seq[Expr], Option[Expr]) = {
-        ???
-      }
-
-      def replace1(e: Expr, replacement: Option[Expr]) = replacement match {
-        case Some(x) => x -> None
-        case None    => e -> None
-      }
-
       def replace(e: Expr, replacement: Option[Expr]): (Expr, Option[Expr]) = {
+
+        val (reducedExpr, replaced) = e match {
+          case NaryOp(op, ops)         =>
+            val (r, e) = ops.foldLeft(replacement -> Seq.empty[Expr]) {
+              case ((r, acc), expr) =>
+                val (e1, r1) = replace(expr, r)
+                (r1, acc :+ e1)
+            }
+            NaryOp(op, e) -> r
+          case BinaryOp(op, a, b)      =>
+            val (e1, r1) = replace(a, replacement)
+            val (e2, r2) = replace(b, r1)
+            BinaryOp(op, e1, e2) -> r2
+          case Not(a)                  =>
+            val (e1, r1) = replace(e, replacement)
+            Not(e1) -> r1
+          case True | False | Nondet   => e -> replacement
+          case Var(sym, primed, mixed) => replacement.getOrElse(e) -> None
+        }
+
         def shortCircuit(e1: Expr, r1: Option[Expr]) = {
           if (r1 == replacement)
             e -> replacement // short circuiting
@@ -77,29 +84,22 @@ class ExpressionReducer {
             e1 -> r1
         }
 
-        // TODO: cleanup with extractor? binaryop, unaryop, ...
-        e match {
-          case NaryOp(op, ops)         =>
-            val (r, e) = ops.foldLeft(replacement -> Seq.empty[Expr]) {
-              case ((r, acc), expr) =>
-                val (e1, r1) = replace(expr, r)
-                (r1, acc :+ e1)
-            }
-            shortCircuit(NaryOp(op, e), r)
-          case BinaryOp(op, a, b)      =>
-            val (e1, r1) = replace(a, replacement)
-            val (e2, r2) = replace(b, r1)
-            shortCircuit(BinaryOp(op, e1, e2), r2)
-          case Not(a)                  =>
-            val (e1, r1) = replace(e, replacement)
-            shortCircuit(Not(e1), r1)
-          case True | False | Nondet   => e -> replacement
-          case Var(sym, primed, mixed) => replacement.getOrElse(e) -> None
+        shortCircuit(reducedExpr, replaced)
+      }
+
+      def replaceAllVarsOnce(e: Expr): Seq[Expr] = {
+        val (withTrue, replaced) = replace(e, Some(True))
+        val withFalse = replace(e, Some(False))._1
+        if (replaced.isDefined) {
+          // not replaced
+          Seq()
+        } else {
+          Seq(withTrue, withFalse) ++ replaceAllVarsOnce(withTrue) ++ replaceAllVarsOnce(withFalse)
         }
       }
-      ???
+      
+      replaceAllVarsOnce(e)
     }
-
   }
 
 }
