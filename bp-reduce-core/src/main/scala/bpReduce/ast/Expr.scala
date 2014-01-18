@@ -1,7 +1,6 @@
 package bpReduce
 package ast
 
-import scala.collection
 
 sealed abstract class StateIdentifier
 
@@ -90,6 +89,8 @@ object Expr {
 
   case object And extends NOp {
     def apply(a: Expr, b: Expr) = new NaryOp(And, Seq(a, b))
+
+    def apply(ops: Expr*) = new NaryOp(And, ops)
 
     def unapply(e: Expr): Option[Seq[Expr]] = e match {
       case NaryOp(And, ops) => Some(ops)
