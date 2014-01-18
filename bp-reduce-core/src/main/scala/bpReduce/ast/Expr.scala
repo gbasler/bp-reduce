@@ -47,46 +47,79 @@ sealed abstract class Expr
 
 object Expr {
 
-  final case class And(ops: Seq[Expr]) extends Expr
+  sealed abstract class BinOp
 
-  object And {
-    def apply(a: Expr, b: Expr) = new And(Seq(a, b))
+  case object Impl extends BinOp {
+    def apply(a: Expr, b: Expr) = new BinaryOp(Impl, a, b)
 
-    //    def unapply(e: Expr): Option[(Expr, Expr)] = e match {
-    //      case And(a, b) => Some(a -> b)
-    //      case _         => None
-    //    }
-  }
-
-  object AndSeq {
-    def unapply(e: Expr): Option[Seq[Expr]] = e match {
-      case And(ops) => Some(ops)
-      case _        => None
+    def unapply(e: Expr): Option[(Expr, Expr)] = e match {
+      case BinaryOp(Impl, a, b) => Some(a -> b)
+      case _                    => None
     }
   }
 
-  final case class Or(ops: Seq[Expr]) extends Expr
+  case object Xor extends BinOp {
+    def apply(a: Expr, b: Expr) = new BinaryOp(Xor, a, b)
 
-  object Or {
-    def apply(a: Expr, b: Expr) = new Or(Seq(a, b))
-
-//    def unapply(e: Expr): Option[(Expr, Expr)] = e match {
-//      case Or(a, b) => Some(a -> b)
-//      case _        => None
-//    }
+    def unapply(e: Expr): Option[(Expr, Expr)] = e match {
+      case BinaryOp(Xor, a, b) => Some(a -> b)
+      case _                   => None
+    }
   }
 
-  final case class Impl(a: Expr, b: Expr) extends Expr
+  case object Equiv extends BinOp {
+    def apply(a: Expr, b: Expr) = new BinaryOp(Equiv, a, b)
 
-  final case class Xor(a: Expr, b: Expr) extends Expr
+    def unapply(e: Expr): Option[(Expr, Expr)] = e match {
+      case BinaryOp(Equiv, a, b) => Some(a -> b)
+      case _                     => None
+    }
+  }
 
-  final case class Equiv(a: Expr, b: Expr) extends Expr
+  case object Schoose extends BinOp {
+    def apply(pos: Expr, neg: Expr) = new BinaryOp(Schoose, pos, neg)
 
-  final case class Schoose(pos: Expr, neg: Expr) extends Expr
+    def unapply(e: Expr): Option[(Expr, Expr)] = e match {
+      case BinaryOp(Schoose, a, b) => Some(a -> b)
+      case _                       => None
+    }
+  }
+
+
+  sealed abstract class NOp
+
+  case object And extends NOp {
+    def apply(a: Expr, b: Expr) = new NaryOp(And, Seq(a, b))
+
+    def unapply(e: Expr): Option[Seq[Expr]] = e match {
+      case NaryOp(And, ops) => Some(ops)
+      case _                => None
+    }
+  }
+
+  case object Or extends NOp {
+    def apply(a: Expr, b: Expr) = new NaryOp(Or, Seq(a, b))
+
+    def unapply(e: Expr): Option[Seq[Expr]] = e match {
+      case NaryOp(Or, ops) => Some(ops)
+      case _               => None
+    }
+  }
 
   final case class Not(a: Expr) extends Expr
 
-//  final case class BinOp(op:Op ,a: Expr) extends Expr
+  /**
+   * We use a two stage approach here: instead of having explicit Xor, Equiv, etc
+   * we have an operation and two operands.
+   * This makes it very easy to recreate an expression tree while traversing, since
+   * only one case must be considered instead of 4.
+   */
+  final case class BinaryOp(op: BinOp, a: Expr, b: Expr) extends Expr
+
+  /**
+   * And / Or. Explanation for design choice can be read in [[bpReduce.ast.Expr.BinaryOp]]]
+   */
+  final case class NaryOp(op: NOp, ops: Seq[Expr]) extends Expr
 
   case object True extends Expr
 

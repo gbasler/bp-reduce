@@ -203,15 +203,15 @@ final class BooleanProgramParser extends RegexParsers {
   lazy val expr: Parser[Expr] = xor
 
   lazy val xor: Parser[Expr] = rep1sep(equiv, "^" | "!=") ^^ {
-    _.reduceLeft(Xor)
+    _.reduceLeft(Xor.apply)
   }
 
   lazy val equiv: Parser[Expr] = rep1sep(impl, "=") ^^ {
-    _.reduceLeft(Equiv)
+    _.reduceLeft(Equiv.apply)
   }
 
   lazy val impl: Parser[Expr] = rep1sep(or, "->") ^^ {
-    _.reduceRight(Impl)
+    _.reduceRight(Impl.apply)
   }
 
   // right-associative

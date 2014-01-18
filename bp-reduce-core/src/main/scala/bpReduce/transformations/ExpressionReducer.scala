@@ -40,7 +40,7 @@ class ExpressionReducer {
       type S = Option[Expr]
       type TF = S => (Expr, S)
 
-      class ReplaceMonad(run: TF) {
+      class ReplaceMonad(val run: TF) {
 
         def map(f: Expr => Expr) = new ReplaceMonad({
           s: S =>
@@ -77,56 +77,19 @@ class ExpressionReducer {
             e1 -> r1
         }
 
-        object BinaryOp {
-          def unapply(e: Expr): Option[((Expr, Expr), (Expr, Expr) => Expr)] = e match {
-            case Impl(a, b)        => Some((a, b) -> {
-              (a: Expr, b: Expr) => Impl(a, b)
-            })
-            case Xor(a, b)         => Some((a, b) -> {
-              (a: Expr, b: Expr) => Xor(a, b)
-            })
-            case Equiv(a, b)       => Some((a, b) -> {
-              (a: Expr, b: Expr) => Equiv(a, b)
-            })
-            case Schoose(pos, neg) => Some((pos, neg) -> {
-              (a: Expr, b: Expr) => Schoose(a, b)
-            })
-            case _                 => None
-          }
-        }
-
         // TODO: cleanup with extractor? binaryop, unaryop, ...
         e match {
-          case And(ops)                =>
+          case NaryOp(op, ops)         =>
             val (r, e) = ops.foldLeft(replacement -> Seq.empty[Expr]) {
               case ((r, acc), expr) =>
                 val (e1, r1) = replace(expr, r)
                 (r1, acc :+ e1)
             }
-            shortCircuit(And(e), r)
-          case Or(ops)                 =>
-            val (r, e) = ops.foldLeft(replacement -> Seq.empty[Expr]) {
-              case ((r, acc), expr) =>
-                val (e1, r1) = replace(expr, r)
-                (r1, acc :+ e1)
-            }
-            shortCircuit(Or(e), r)
-          case Impl(a, b)              =>
+            shortCircuit(NaryOp(op, e), r)
+          case BinaryOp(op, a, b)      =>
             val (e1, r1) = replace(a, replacement)
             val (e2, r2) = replace(b, r1)
-            shortCircuit(Impl(e1, e2), r2)
-          case Xor(a, b)               =>
-            val (e1, r1) = replace(a, replacement)
-            val (e2, r2) = replace(b, r1)
-            shortCircuit(Xor(e1, e2), r2)
-          case Equiv(a, b)             =>
-            val (e1, r1) = replace(a, replacement)
-            val (e2, r2) = replace(b, r1)
-            shortCircuit(Equiv(e1, e2), r2)
-          case Schoose(pos, neg)       =>
-            val (e1, r1) = replace(pos, replacement)
-            val (e2, r2) = replace(pos, r1)
-            shortCircuit(Schoose(e1, e2), r2)
+            shortCircuit(BinaryOp(op, e1, e2), r2)
           case Not(a)                  =>
             val (e1, r1) = replace(e, replacement)
             shortCircuit(Not(e1), r1)
@@ -134,108 +97,8 @@ class ExpressionReducer {
           case Var(sym, primed, mixed) => replacement.getOrElse(e) -> None
         }
       }
-
-      /**
-       * @param replacement constant (T/F) to use to replace first variables
-       */
-      def replace(e: Expr, m: ReplaceMonad): (Expr, ReplaceMonad) = e match {
-        case And(ops)          =>
-          val (os, replaced) = replaceSeq(ops, replacement)
-          And(os) -> replaced
-        case Or(ops)           =>
-          val (os, replaced) = replaceSeq(ops, replacement)
-          Or(os) -> replaced
-        case Impl(a, b)        =>
-          val a: ReplaceMonad = for {
-            a0 <- m
-            b0 <- m
-          } yield {
-            Impl(a0, b0)
-          }
-        case Xor(a, b)         =>
-          val a: ReplaceMonad = (m).flatMap {
-            case a0 => (m).map {
-              case b0 => {
-                Xor(a0, b0)
-              }
-            }
-          }
-        case Equiv(a, b)       =>
-          val a: ReplaceMonad = for {
-            a0 <- m
-            b0 <- m
-          } yield {
-            Equiv(a0, b0)
-          }
-        case Schoose(pos, neg) =>
-          val a: ReplaceMonad = for {
-            a0 <- m
-            b0 <- m
-          } yield {
-            Schoose(a0, b0)
-          }
-
-        case Not(a)                  =>
-        case True                    =>
-        case False                   =>
-        case Nondet                  =>
-        case Var(sym, primed, mixed) =>
-      }
-
-      //      e match {
-      //        case And(ops) =>
-      //          val a: (Seq[Expr], Boolean) = ops.foldLeft((Seq.empty[Expr], replace)) {
-      //                      case ((acc, true), expr) =>
-      //              acc -> true
-      //          }
-
-      //          val o = ops.flatMap {
-      //            collectVars(_, replace)
-      //          }
-      //        case Or(ops)                 =>
-      //          ops.flatMap(collectVars)
-      //        case Impl(a, b)              =>
-      //          Seq(a, b).flatMap(collectVars)
-      //        case Xor(a, b)               =>
-      //          Seq(a, b).flatMap(collectVars)
-      //        case Equiv(a, b)             =>
-      //          Seq(a, b).flatMap(collectVars)
-      //        case Schoose(pos, neg)       =>
-      //          Seq(pos, neg).flatMap(collectVars)
-      //        case Not(a)                  =>
-      //          collectVars(a)
-      //        case True | False | Nondet   =>
-      //          Seq()
-      //        case Var(sym, primed, mixed) =>
-      //          Seq(sym)
-      //    }
-
+      ???
     }
-
-    //    // collect all leaves (variables)
-    //    def collectVars(e: Expr): Seq[Expr] = {
-    //      e match {
-    //        case And(ops)                =>
-    //          ops.flatMap(collectVars)
-    //        case Or(ops)                 =>
-    //          ops.flatMap(collectVars)
-    //        case Impl(a, b)              =>
-    //          Seq(a, b).flatMap(collectVars)
-    //        case Xor(a, b)               =>
-    //          Seq(a, b).flatMap(collectVars)
-    //        case Equiv(a, b)             =>
-    //          Seq(a, b).flatMap(collectVars)
-    //        case Schoose(pos, neg)       =>
-    //          Seq(pos, neg).flatMap(collectVars)
-    //        case Not(a)                  =>
-    //          collectVars(a)
-    //        case True | False | Nondet   =>
-    //          Seq()
-    //        case Var(sym, primed, mixed) =>
-    //          Seq(sym)
-    //      }
-    //    }
-    //    val leaves =
 
   }
 

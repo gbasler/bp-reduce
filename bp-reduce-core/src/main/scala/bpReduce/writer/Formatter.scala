@@ -103,10 +103,10 @@ object Formatter {
     // | or &'s / DNF
 
     def needsWrapping(operator: Expr, operand: Expr) = (operator, operand) match {
-      case (_: And, _: Or)          => true // CNF
-      case (_: Not, _: And | _: Or) => true
-      case (_: Not, _Not)           => true
-      case _                        => false
+      case (NaryOp(And, _), NaryOp(Or, _))            => true // CNF
+      case (_: Not, _: NaryOp | _: BinaryOp | _: Not) => true
+      case (_: Not, _Not)                             => true
+      case _                                          => false
     }
 
     def wrapFormatted(operand: Expr) = {
@@ -118,17 +118,17 @@ object Formatter {
     }
 
     e match {
-      case And(ops)                => ops.map(wrapFormatted).mkString(" & ")
-      case Or(ops)                 => ops.map(wrapFormatted).mkString(" | ")
-      case Impl(a, b)              => s"${wrapFormatted(a)} -> ${wrapFormatted(b)}"
-      case Xor(a, b)               => s"${wrapFormatted(a)} != ${wrapFormatted(b)}"
-      case Equiv(a, b)             => s"${wrapFormatted(a)} = ${wrapFormatted(b)}"
-      case Schoose(pos, neg)       => s"schoose [${format(pos)}, ${format(neg)}]"
-      case Not(a)                  => s"!${wrapFormatted(a)}"
-      case True                    => "T"
-      case False                   => "F"
-      case Nondet                  => "*"
-      case Var(sym, primed, mixed) => primed + sym.name + mixed
+      case NaryOp(And, ops)            => ops.map(wrapFormatted).mkString(" & ")
+      case NaryOp(Or, ops)             => ops.map(wrapFormatted).mkString(" | ")
+      case BinaryOp(Impl, a, b)        => s"${wrapFormatted(a)} -> ${wrapFormatted(b)}"
+      case BinaryOp(Xor, a, b)         => s"${wrapFormatted(a)} != ${wrapFormatted(b)}"
+      case BinaryOp(Equiv, a, b)       => s"${wrapFormatted(a)} = ${wrapFormatted(b)}"
+      case BinaryOp(Schoose, pos, neg) => s"schoose [${format(pos)}, ${format(neg)}]"
+      case Not(a)                      => s"!${wrapFormatted(a)}"
+      case True                        => "T"
+      case False                       => "F"
+      case Nondet                      => "*"
+      case Var(sym, primed, mixed)     => primed + sym.name + mixed
     }
   }
 }
