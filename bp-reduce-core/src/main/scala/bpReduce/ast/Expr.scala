@@ -2,7 +2,7 @@ package bpReduce
 package ast
 
 import scala.collection.mutable.ListBuffer
-
+import Expr._
 
 sealed abstract class StateIdentifier
 
@@ -51,14 +51,29 @@ sealed abstract class Expr {
   def collect[T](pf: PartialFunction[Expr, T]): List[T] = {
     val results = new ListBuffer[T]
 
-    new Traverser {
-      override def traverse(t: Expr) {
-        if (pf.isDefinedAt(t)) results += pf(t)
-        super.traverse(t)
+    new ExprTraverser {
+      override def traverse(e: Expr) {
+        if (pf.isDefinedAt(e)) results += pf(e)
+        super.traverse(e)
       }
     }.traverse(this)
 
     results.toList
+  }
+
+  /**
+   * @param pf Applied to each expr on which the function is defined and collect the results.
+   */
+  def transform(pf: PartialFunction[Expr, Expr]): Expr = {
+    new ExprTransformer {
+      override def transform(e: Expr): Expr = {
+        if (pf.isDefinedAt(e)) {
+          pf(e) // TODO: wrong for AND / OR...
+        } else {
+          super.transform(e)
+        }
+      }
+    }.transform(this)
   }
 }
 

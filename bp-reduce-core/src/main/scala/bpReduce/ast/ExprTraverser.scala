@@ -1,14 +1,18 @@
-package bpReduce.ast
+package bpReduce
+package ast
 
-import bpReduce.ast.Expr._
-import bpReduce.ast.Expr.NaryOp
-import bpReduce.ast.Expr.Not
-import bpReduce.ast.Expr.BinaryOp
+import Expr._
+import Expr.NaryOp
+import Expr.Not
+import Expr.BinaryOp
 
-class Traverser {
+class ExprTraverser {
 
-  /** Traverses a single expr. */
-  def traverse(e: Expr):Unit = e match {
+  /**
+   * Traverses a single expr.
+   * Classical visitor style in order to allow overriding in derived classes.
+   */
+  def traverse(e: Expr): Unit = e match {
     case Not(a)                  =>
       traverse(a)
     case BinaryOp(op, a, b)      =>
