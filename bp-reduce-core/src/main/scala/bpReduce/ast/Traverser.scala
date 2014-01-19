@@ -4,9 +4,9 @@ import bpReduce.ast.Expr._
 import bpReduce.ast.Expr.NaryOp
 import bpReduce.ast.Expr.Not
 import bpReduce.ast.Expr.BinaryOp
-import scala.collection.mutable.ListBuffer
 
 class Traverser {
+
   /** Traverses a single expr. */
   def traverse(e: Expr):Unit = e match {
     case Not(a)                  =>
@@ -30,13 +30,5 @@ class Traverser {
   /** Traverses a list of lists of exprs. */
   def traverseTreess(treess: Seq[List[Expr]]) {
     treess foreach traverseTrees
-  }
-}
-
-class CollectExprTraverser[T](pf: PartialFunction[Expr, T]) extends Traverser {
-  val results = new ListBuffer[T]
-  override def traverse(t: Expr) {
-    if (pf.isDefinedAt(t)) results += pf(t)
-    super.traverse(t)
   }
 }
