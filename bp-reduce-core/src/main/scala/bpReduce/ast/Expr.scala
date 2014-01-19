@@ -42,7 +42,16 @@ object MixedIdentifier {
 
 }
 
-sealed abstract class Expr
+sealed abstract class Expr {
+  /**
+   * @param pf Applied to each expr on which the function is defined and collect the results.
+   */
+  def collect[T](pf: PartialFunction[Expr, T]): List[T] = {
+    val ctt = new CollectExprTraverser[T](pf)
+    ctt.traverse(this)
+    ctt.results.toList
+  }
+}
 
 object Expr {
 

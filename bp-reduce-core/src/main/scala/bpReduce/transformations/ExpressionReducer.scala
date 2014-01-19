@@ -29,13 +29,17 @@ class ExpressionReducer {
     // simplify expression (in order to have as few runs as possible)
     val simplified = ExpressionSimplifier(e)
 
+    val vars: List[Var] = simplified.collect {
+      case v: Var =>  v
+    }.distinct
+
     /**
      * Replace only one variable at a time because
      * others might become irrelevant
      * e.g., a | b: if we set a to true then b becomes don't care
      * so we won't have to check b
      */
-    def replaceOneVarWithConsts(e: Expr, replace: Boolean): Seq[Expr] = {
+    def replaceOneVarWithConsts(e: Expr): Seq[Expr] = {
 
       type S = Option[Expr]
       type TF = S => (Expr, S)
@@ -56,7 +60,7 @@ class ExpressionReducer {
       }
 
 
-      def replace(e: Expr, replacement: Option[Expr]): (Expr, Option[Expr]) = {
+      def replace(e: Expr, replacement: Option[(Expr, Expr)]): (Expr, Option[(Expr, Expr)]) = {
 
         val (reducedExpr, replaced) = e match {
           case NaryOp(op, ops)         =>
@@ -77,6 +81,7 @@ class ExpressionReducer {
           case Var(sym, primed, mixed) => replacement.getOrElse(e) -> None
         }
 
+        // mapConserve!!!
         def shortCircuit(e1: Expr, r1: Option[Expr]) = {
           if (r1 == replacement)
             e -> replacement // short circuiting
@@ -97,7 +102,7 @@ class ExpressionReducer {
           Seq(withTrue, withFalse) ++ replaceAllVarsOnce(withTrue) ++ replaceAllVarsOnce(withFalse)
         }
       }
-      
+
       replaceAllVarsOnce(e)
     }
   }
