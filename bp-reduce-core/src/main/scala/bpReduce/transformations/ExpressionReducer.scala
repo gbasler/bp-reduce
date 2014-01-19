@@ -6,14 +6,6 @@ import bpReduce.ast.Expr._
 import bpReduce.ast.Expr.Impl
 import bpReduce.ast.Expr.Xor
 
-class Monad[S, A](run: S => (S, A)) {
-  def map[B](f: A => B): Monad[S, B] = new Monad({
-    s: S =>
-      val (s1, a) = run(s)
-      s1 -> f(a)
-  })
-}
-
 /**
  * Most essential reduction.
  *
@@ -40,25 +32,6 @@ class ExpressionReducer {
      * so we won't have to check b
      */
     def replaceOneVarWithConsts(e: Expr): Seq[Expr] = {
-
-      type S = Option[Expr]
-      type TF = S => (Expr, S)
-
-      class ReplaceMonad(val run: TF) {
-
-        def map(f: Expr => Expr) = new ReplaceMonad({
-          s: S =>
-            val (e, s1) = run(s)
-            f(e) -> s1
-        })
-
-        def flatMap(f: Expr => ReplaceMonad) = new ReplaceMonad({
-          s: S =>
-            val (e, s1) = run(s)
-            f(e).run(s1)
-        })
-      }
-
 
       def replace(e: Expr, replacement: Option[(Expr, Expr)]): (Expr, Option[(Expr, Expr)]) = {
 
