@@ -68,7 +68,7 @@ sealed abstract class Expr {
     new ExprTransformer {
       override def transform(e: Expr): Expr = {
         if (pf.isDefinedAt(e)) {
-          pf(e) // TODO: wrong for AND / OR...
+          pf(super.transform(e))
         } else {
           super.transform(e)
         }
@@ -133,6 +133,8 @@ object Expr {
 
   case object Or extends NOp {
     def apply(a: Expr, b: Expr) = new NaryOp(Or, Seq(a, b))
+
+    def apply(ops: Expr*) = new NaryOp(Or, ops)
 
     def unapply(e: Expr): Option[Seq[Expr]] = e match {
       case NaryOp(Or, ops) => Some(ops)
