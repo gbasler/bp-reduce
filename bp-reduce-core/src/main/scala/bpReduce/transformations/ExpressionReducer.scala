@@ -8,6 +8,7 @@ import bpReduce.ast.Expr.BinaryOp
 import bpReduce.ast.Expr.Var
 import bpReduce.ast.Expr.Not
 import scala.collection.immutable.Nil
+import scala.annotation.tailrec
 
 /**
  * Most essential reduction.
@@ -18,6 +19,10 @@ import scala.collection.immutable.Nil
  * a | b: a, b, T (a|b=T), F (a&b=F)
  * a == b: (a & !b) | (!a & b): a | !a
  *
+ * Algorithm
+ * - collect all leaves (vars)
+ * - create powerset of expression with elements (vars) of powerset set to T/F
+ * since we can only remove but not add elements
  */
 object ExpressionReducer {
 
@@ -76,33 +81,44 @@ object ExpressionReducer {
       shortCircuit(reducedExpr, replaced)
     }
 
-    def replaceAllVarsOnce(e: Expr,
-                           vars: List[Var]): Seq[Expr] = vars match {
-      case Nil     =>
-        Nil
-      case v :: tl =>
-        val (withTrue, replaced) = replace(e, Some(v -> True))
-        val withFalse = replace(e, Some(v -> False))._1
+    def collectVars(e: Expr) = e.collect {
+      case v: Var => v
+    }.toSet
 
-        if (replaced.isDefined) {
-          // not replaced
-          Seq()
+
+    def replaceAllVarsOncePowerSet(e: Expr): Set[Expr] = {
+      @tailrec
+      def decrementalPowerSet(wl: Set[Expr],
+                              acc: Set[Expr]): Set[Expr] = {
+        if (wl.nonEmpty) {
+          val next = for {
+            expr <- wl
+            vars = collectVars(expr)
+            v <- vars
+          } yield {
+            val (withTrue, replaced) = replace(expr, Some(v -> True))
+            val withFalse = replace(expr, Some(v -> False))._1
+
+            if (replaced.isDefined) {
+              // not replaced
+              Set.empty[Expr]
+            } else {
+              Set(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
+            }
+          }
+          decrementalPowerSet(next.flatten, acc ++ next.flatten)
         } else {
-          Seq(withTrue, withFalse) ++
-            replaceAllVarsOnce(withTrue, tl) ++
-            replaceAllVarsOnce(withFalse, tl)
+          acc
         }
+      }
+      decrementalPowerSet(Set(e), Set())
     }
 
     // simplify expression (in order to have as few runs as possible)
     val simplified = ExpressionSimplifier(e)
 
-    val vars = simplified.collect {
-      case v: Var => v
-    }.distinct
-
-    val replaced = replaceAllVarsOnce(simplified, vars)
-    replaced.map(ExpressionSimplifier(_)).toSet
+    val replaced = replaceAllVarsOncePowerSet(simplified)
+    replaced
   }
 
 }

@@ -16,20 +16,22 @@ class ExpressionSimplifierTest extends BaseSpecification {
   }
 
   "and" should {
-    "constants: and" in {
-      val a = Var(Sym("a"))
-      ExpressionSimplifier(And(a, True)) must be_==(a)
-      ExpressionSimplifier(And(True, a)) must be_==(a)
-      ExpressionSimplifier(And(a, False)) must be_==(False)
-      ExpressionSimplifier(And(False, a)) must be_==(False)
-    }
+    "constants" in {
+      "and" in {
+        val a = Var(Sym("a"))
+        ExpressionSimplifier(And(a, True)) must be_==(a)
+        ExpressionSimplifier(And(True, a)) must be_==(a)
+        ExpressionSimplifier(And(a, False)) must be_==(False)
+        ExpressionSimplifier(And(False, a)) must be_==(False)
+      }
 
-    "constants: or" in {
-      val a = Var(Sym("a"))
-      ExpressionSimplifier(Or(a, True)) must be_==(True)
-      ExpressionSimplifier(Or(True, a)) must be_==(True)
-      ExpressionSimplifier(Or(a, False)) must be_==(a)
-      ExpressionSimplifier(Or(False, a)) must be_==(a)
+      "or" in {
+        val a = Var(Sym("a"))
+        ExpressionSimplifier(Or(a, True)) must be_==(True)
+        ExpressionSimplifier(Or(True, a)) must be_==(True)
+        ExpressionSimplifier(Or(a, False)) must be_==(a)
+        ExpressionSimplifier(Or(False, a)) must be_==(a)
+      }
     }
 
     "duplicated ops" in {

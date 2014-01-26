@@ -22,5 +22,14 @@ class ExpressionReducerTest extends BaseSpecification {
 
       ExpressionReducer(And(a, b)) must be_==(Set(a, b, True, False))
     }
+
+    "two reductions" in {
+      val a = Var(Sym("a"))
+      val b = Var(Sym("b"))
+      val c = Var(Sym("c"))
+
+      ExpressionReducer(And(a, Or(b, c))) must be_==(Set(And(a, b), And(a, c), Or(b, c), a, b, c, True, False))
+    }
   }
+
 }
