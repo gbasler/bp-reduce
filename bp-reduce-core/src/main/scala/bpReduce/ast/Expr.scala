@@ -155,7 +155,12 @@ object Expr {
   /**
    * And / Or. Explanation for design choice can be read in [[bpReduce.ast.Expr.BinaryOp]]]
    */
-  final case class NaryOp(op: NOp, ops: Seq[Expr]) extends Expr
+  final case class NaryOp(op: NOp, ops: Seq[Expr]) extends Expr {
+    override def toString: String = op match {
+      case And => ops.mkString("(", " & ", ")")
+      case Or  => ops.mkString("(", " | ", ")")
+    }
+  }
 
   case object True extends Expr
 

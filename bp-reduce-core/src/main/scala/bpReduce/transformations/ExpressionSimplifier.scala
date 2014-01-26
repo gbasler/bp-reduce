@@ -48,7 +48,7 @@ object ExpressionSimplifier {
           case Or  => False
         }
 
-        val ops = fv.map(apply).distinct.filterNot(_ == True)
+        val ops = fv.map(apply).distinct.filterNot(_ == emptyValue)
         if (ops.exists(_ == drivingValue)) {
           drivingValue
         } else {
