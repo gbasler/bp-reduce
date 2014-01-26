@@ -86,27 +86,28 @@ object ExpressionReducer {
     }.toSet
 
 
-    def replaceAllVarsOncePowerSet(e: Expr): Set[Expr] = {
+    def replaceAllVarsOnce(e: Expr): Set[Expr] = {
       @tailrec
       def decrementalPowerSet(wl: Set[Expr],
                               acc: Set[Expr]): Set[Expr] = {
         if (wl.nonEmpty) {
-          val next = for {
-            expr <- wl
-            vars = collectVars(expr)
-            v <- vars
-          } yield {
-            val (withTrue, replaced) = replace(expr, Some(v -> True))
-            val withFalse = replace(expr, Some(v -> False))._1
+          val next = wl.flatMap {
+            expr =>
+              val vars = collectVars(expr)
+              vars.flatMap {
+                v =>
+                  val (withTrue, replaced) = replace(expr, Some(v -> True))
+                  val withFalse = replace(expr, Some(v -> False))._1
 
-            if (replaced.isDefined) {
-              // not replaced
-              Set.empty[Expr]
-            } else {
-              Set(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
-            }
+                  if (replaced.isDefined) {
+                    // not replaced
+                    Set.empty[Expr]
+                  } else {
+                    Set(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
+                  }
+              }
           }
-          decrementalPowerSet(next.flatten, acc ++ next.flatten)
+          decrementalPowerSet(next, acc ++ next)
         } else {
           acc
         }
@@ -117,7 +118,7 @@ object ExpressionReducer {
     // simplify expression (in order to have as few runs as possible)
     val simplified = ExpressionSimplifier(e)
 
-    val replaced = replaceAllVarsOncePowerSet(simplified)
+    val replaced = replaceAllVarsOnce(simplified)
     replaced
   }
 
