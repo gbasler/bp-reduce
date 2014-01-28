@@ -31,6 +31,7 @@ import scala.annotation.tailrec
  * => this works for one expression but we need a whole program transformation...
  * when are the other expressions updated?
  *
+ * If we deliver programs one for one, it's enough to calculate the next more reduced expression upwards in the lattice.
  */
 object ExpressionReducer {
 
