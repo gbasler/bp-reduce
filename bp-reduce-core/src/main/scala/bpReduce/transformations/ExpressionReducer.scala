@@ -7,7 +7,6 @@ import bpReduce.ast.Expr.NaryOp
 import bpReduce.ast.Expr.BinaryOp
 import bpReduce.ast.Expr.Var
 import bpReduce.ast.Expr.Not
-import scala.collection.immutable.Nil
 import scala.annotation.tailrec
 
 /**
@@ -23,6 +22,15 @@ import scala.annotation.tailrec
  * - collect all leaves (vars)
  * - create powerset of expression with elements (vars) of powerset set to T/F
  * since we can only remove but not add elements
+ *
+ * TODO:
+ * How are the reductions ordered? The expression reduction forms a lattice (from the powersets),
+ * so we could
+ * 1) move along the leaves until a reduction is successful or all leaves are tested
+ * 2) from that leave, we continue towards the root (T/F) until we reach it or a reduction is unsuccessful
+ * => this works for one expression but we need a whole program transformation...
+ * when are the other expressions updated?
+ *
  */
 object ExpressionReducer {
 
