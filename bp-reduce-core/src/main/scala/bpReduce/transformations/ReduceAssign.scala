@@ -1,35 +1,50 @@
 package bpReduce
 package transformations
 
-import bpReduce.ast.Program
+import bpReduce.ast.Stmt
+import bpReduce.ast.Stmt.{Skip, Assign}
 
-/**
-  */
-class ReduceAssign extends Transformer {
-  /**
-   * @param program Program to transform
-   *
-   * @return        Updated program, if transformation was possible
-   **/
-  def transform(program: Program): Option[Program] = {
-    // find all locations with assigns
+case class ReduceAssign(assign: Assign, next: List[Stmt]) {
 
-    for {
-      f <- program.functions
-    } {
+  // stmt because we could reduce to `Skip`
+  def current: Option[Stmt] = next.headOption
+
+  def reduce: Option[ReduceAssign] = {
+    // reduction successful, reduce more if possible
+    current collect {
+      case assign: Assign => ReduceAssign(assign)
     }
-
-    // point iterator to first assign
-    //
-    ???
   }
 
-  /**
-   * @return New transformer with updated internal state for next transformation (if possible).
-   */
-  def advance(program: Program): Option[Transformer] = {
-    // go to next location
-    // and create a stream of possible reductions
-    ???
+  def advance: Option[ReduceAssign] = {
+    // previous reduction not successful: 
+    // try next reduction 
+    next match {
+      case Nil          => None
+      case head :: tail => Some(copy(next = tail))
+    }
+  }
+}
+
+object ReduceAssign {
+  def apply(assign: Assign): ReduceAssign = {
+    // there are 2^n -1 possible reductions...
+    // however reducing all assigns would be equal to replace it with skip...
+    // removing the assign has the disadvantage that if it was a jump target, the whole
+    // program must be transformed
+
+    if (assign.assigns.size < 2) {
+      new ReduceAssign(assign, Skip :: Nil)
+    } else {
+
+      val reductions = for {
+        i <- assign.assigns.indices.toList
+      } yield {
+        val assigns = assign.assigns.take(i) ++ assign.assigns.drop(i + 1)
+        assign.copy(assigns = assigns)
+      }
+
+      new ReduceAssign(assign, reductions)
+    }
   }
 }
