@@ -1,45 +1,50 @@
 package bpReduce
 package transformations
 
-import bpReduce.ast.{Expr, Program}
-import bpReduce.ast.Stmt.Assign
-import bpReduce.ast.Expr.Var
+import bpReduce.ast.{Stmt, Program}
+import bpReduce.ast.Stmt.{Skip, Assign}
 
-case class ReduceAssign2(assign: Assign) {
+case class ReduceAssign2(assign: Assign, next: List[Stmt], advance: Seq[ReduceAssign2]) {
 
-  val n = assign.assigns.size
-  // there are 2^n -1 possible reductions...
-  // however reducing all assigns would be equal to replace it with skip...
-  // removing the assign has the disadvantage that if it was a jump target, the whole
-  // program must be transformed
+  // stmt because we could reduce to `Skip`
+  def current: Option[Stmt] = next.headOption
 
-  //  assign.assigns.combinations()
-
-  val reductions: Seq[Seq[(Var, Expr)]] = for {
-    i <- assign.assigns.indices
-  } yield {
-    assign.assigns.take(i) ++ assign.assigns.drop(i + 1)
+  def transform: Option[ReduceAssign2] = {
+    // reduction successful, reduce more if possible
+    current collect {
+      case assign: Assign => ReduceAssignFactory(assign)
+    }
   }
 
-  val assigns: Seq[Assign] = for {
-    assigns <- reductions
-  } yield {
-    assign.copy(assigns = assigns)
+  def advance(program: Program): Option[ReduceAssign2] = {
+    // previous reduction not successful: 
+    // try next reduction 
+    next match {
+      case Nil          => None
+      case head :: tail => Some(copy(next = tail))
+    }
   }
+}
 
-  val current = assigns.headOption
+object ReduceAssignFactory {
+  def apply(assign: Assign): ReduceAssign2 = {
+    // there are 2^n -1 possible reductions...
+    // however reducing all assigns would be equal to replace it with skip...
+    // removing the assign has the disadvantage that if it was a jump target, the whole
+    // program must be transformed
 
-  def transform: Option[Assign] = {
-    // return next assign...
-    current
-  }
+    if (assign.assigns.isEmpty) {
+      new ReduceAssign2(assign, Skip :: Nil, Seq())
+    } else {
 
-  /**
-   * @return New transformer with updated internal state for next transformation (if possible).
-   */
-  def advance(program: Program): Option[Transformer] = {
-    // reduce current assign...
-    ReduceAssign2(current)
-    ???
+      val reductions = for {
+        i <- assign.assigns.indices.toList
+      } yield {
+        val assigns = assign.assigns.take(i) ++ assign.assigns.drop(i + 1)
+        assign.copy(assigns = assigns)
+      }
+
+      new ReduceAssign2(assign, reductions, Seq())
+    }
   }
 }
