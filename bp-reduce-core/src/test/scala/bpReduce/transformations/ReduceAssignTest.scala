@@ -3,23 +3,26 @@ package transformations
 
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.{Stmt, LabelledStmt, Function, Program}
-import bpReduce.ast.Stmt.Skip
+import bpReduce.ast.Stmt.{Assign, Skip}
 
 class ReduceAssignTest extends BaseSpecification {
   "one reduction" in {
-    implicit def fromString(str: String): Stmt = {
+    implicit def stmtFromString(str: String): Stmt = {
       new BooleanProgramParser().parseStmt(str)
     }
+    implicit def assignFromString(str: String): Assign = {
+      new BooleanProgramParser().parseAssign(str)
+    }
 
-    val stmt: Stmt = "l0, l1 := l1, l0"
-    val stmt1: Stmt = "l0 := l1"
-    val stmt2: Stmt = "l1 := l0"
+    val stmt: Assign = "l0, l1 := l1, l0"
+    val stmt1: Assign = "l0 := l1"
+    val stmt2: Assign = "l1 := l0"
 
-    val reducer: ReduceAssign2 = new ReduceAssign2(stmt)
-    reducer.transform() must beSome(stmt1)
-    reducer.advance() must beSome(stmt2)
-
-
-    ok
+    val reducer: ReduceAssign2 = ReduceAssignFactory(stmt)
+    reducer.current must beSome(stmt2)
+    reducer.reduce.get.current must beSome(Skip)
+    reducer.reduce.get.reduce must beNone
+    reducer.advance.get.current must beSome(stmt1)
+    reducer.advance.get.reduce.get.current must beSome(Skip)
   }
 }

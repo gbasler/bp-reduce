@@ -59,6 +59,13 @@ final class BooleanProgramParser extends RegexParsers {
     }
   }
 
+  def parseAssign(programStr: String): Assign = {
+    parseAll(assign, programStr) match {
+      case Success(stmt, _) => stmt
+      case e: NoSuccess     => sys.error("parse error: " + e.toString)
+    }
+  }
+
   protected override val whiteSpace = """(\s|//.*|(?m)/\*(\*(?!/)|[^*])*\*/)+""".r
 
   lazy val program: Parser[Program] = decls ~ rep(function) ^^ {
@@ -137,7 +144,7 @@ final class BooleanProgramParser extends RegexParsers {
     case vars => Dead(vars.map(Sym(_)))
   }
 
-  lazy val assign: Parser[Stmt] = rep1sep(currentOrNextStateId, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
+  lazy val assign: Parser[Assign] = rep1sep(currentOrNextStateId, ",") ~ ":=" ~ assignExpr ~ opt(constrainExpr) ^^ {
     case vars ~ _ ~ exprs ~ constrain =>
       require(vars.size == exprs.size,
         s"Number of variables must be same as number of expressions: $vars, $exprs")
