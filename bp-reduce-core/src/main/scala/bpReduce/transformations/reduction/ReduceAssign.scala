@@ -3,9 +3,16 @@ package transformations
 package reduction
 
 import bpReduce.ast.Stmt
-import bpReduce.ast.Stmt.{Skip, Assign}
+import bpReduce.ast.Stmt._
+import bpReduce.ast.Stmt.Assign
+import scala.Some
 
 case class ReduceAssign(assign: Assign, next: List[Stmt]) extends StmtReducer {
+
+  override def isDefinedAt(s: Stmt) = s match {
+    case _: Assign => true
+    case _         => false
+  }
 
   // stmt because we could reduce to `Skip`
   def current: Option[Stmt] = next.headOption
