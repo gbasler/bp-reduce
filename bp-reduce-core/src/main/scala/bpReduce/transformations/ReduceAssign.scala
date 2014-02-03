@@ -4,7 +4,7 @@ package transformations
 import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt.{Skip, Assign}
 
-case class ReduceAssign(assign: Assign, next: List[Stmt]) {
+case class ReduceAssign(assign: Assign, next: List[Stmt]) extends StmtReducer {
 
   // stmt because we could reduce to `Skip`
   def current: Option[Stmt] = next.headOption
@@ -20,7 +20,7 @@ case class ReduceAssign(assign: Assign, next: List[Stmt]) {
     // previous reduction not successful: 
     // try next reduction 
     next match {
-      case Nil          => None
+      case Nil => None
       case head :: tail => Some(copy(next = tail))
     }
   }
@@ -38,7 +38,7 @@ object ReduceAssign {
     } else {
 
       val reductions = for {
-        i <- assign.assigns.indices.toList
+        i <- assign.assigns.indices.reverse.toList
       } yield {
         val assigns = assign.assigns.take(i) ++ assign.assigns.drop(i + 1)
         assign.copy(assigns = assigns)

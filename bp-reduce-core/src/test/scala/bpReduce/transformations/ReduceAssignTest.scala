@@ -2,7 +2,7 @@ package bpReduce
 package transformations
 
 import bpReduce.reader.BooleanProgramParser
-import bpReduce.ast.{Stmt, LabelledStmt, Function, Program}
+import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt.{Assign, Skip}
 
 class ReduceAssignTest extends BaseSpecification {
@@ -19,10 +19,10 @@ class ReduceAssignTest extends BaseSpecification {
     val stmt2: Assign = "l1 := l0"
 
     val reducer: ReduceAssign = ReduceAssign(stmt)
-    reducer.current must beSome(stmt2)
+    reducer.current must beSome(stmt1)
     reducer.reduce.get.current must beSome(Skip)
     reducer.reduce.get.reduce must beNone
-    reducer.advance.get.current must beSome(stmt1)
+    reducer.advance.get.current must beSome(stmt2)
     reducer.advance.get.reduce.get.current must beSome(Skip)
   }
 }
