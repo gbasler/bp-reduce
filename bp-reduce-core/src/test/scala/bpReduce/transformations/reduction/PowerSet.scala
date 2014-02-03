@@ -1,7 +1,10 @@
 package bpReduce
 package transformations
+package reduction
+
 
 import scala.annotation.tailrec
+import bpReduce.BaseSpecification
 
 /**
  * Proof-of-concept of power set algorithm that instead of adding elements to

@@ -1,5 +1,6 @@
 package bpReduce
 package transformations
+package reduction
 
 import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt.{Skip, Assign}

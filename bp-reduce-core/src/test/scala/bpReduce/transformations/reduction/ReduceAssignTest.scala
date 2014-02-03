@@ -1,9 +1,11 @@
 package bpReduce
 package transformations
+package reduction
 
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt.{Assign, Skip}
+import bpReduce.BaseSpecification
 
 class ReduceAssignTest extends BaseSpecification {
   "one reduction" in {

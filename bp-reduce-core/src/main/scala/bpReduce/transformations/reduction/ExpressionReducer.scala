@@ -1,5 +1,6 @@
 package bpReduce
 package transformations
+package reduction
 
 import bpReduce.ast.{ExprTransformer, Expr}
 import bpReduce.ast.Expr._
@@ -8,6 +9,7 @@ import bpReduce.ast.Expr.BinaryOp
 import bpReduce.ast.Expr.Var
 import bpReduce.ast.Expr.Not
 import scala.annotation.tailrec
+import bpReduce.transformations.ExpressionSimplifier
 
 /**
  * Most essential reduction.
