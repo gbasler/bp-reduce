@@ -20,7 +20,7 @@ case class ReduceAssign(assign: Assign, next: List[Stmt]) extends StmtReducer {
     // previous reduction not successful: 
     // try next reduction 
     next match {
-      case Nil => None
+      case Nil          => None
       case head :: tail => Some(copy(next = tail))
     }
   }
