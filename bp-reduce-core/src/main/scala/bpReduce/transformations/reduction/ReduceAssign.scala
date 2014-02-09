@@ -9,10 +9,10 @@ import scala.Some
 
 case class ReduceAssign(assign: Assign, next: List[Stmt]) extends StmtReducer {
 
-  override def isDefinedAt(s: Stmt) = s match {
-    case _: Assign => true
-    case _         => false
-  }
+//  override def isDefinedAt(s: Stmt) = s match {
+//    case _: Assign => true
+//    case _         => false
+//  }
 
   // stmt because we could reduce to `Skip`
   def current: Option[Stmt] = next.headOption

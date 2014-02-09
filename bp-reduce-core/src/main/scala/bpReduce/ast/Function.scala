@@ -7,7 +7,7 @@ final case class Function(name: String,
                           locals: VariableHolder,
                           args: Seq[String],
                           returns: Int,
-                          stmts: Seq[LabelledStmt]) {
+                          stmts: List[LabelledStmt]) {
 
   /**
    * @param pf Applied to each expr on which the function is defined and collect the results.
