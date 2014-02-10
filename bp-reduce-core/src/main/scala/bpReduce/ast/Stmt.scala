@@ -23,7 +23,7 @@ object Stmt {
 
   case object Skip extends Stmt
 
-  final case class Return(values: Seq[Expr]) extends Stmt
+  final case class Return(values: Seq[Expr] = Seq()) extends Stmt
 
   case object AtomicBegin extends Stmt
 

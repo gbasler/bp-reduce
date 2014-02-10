@@ -33,8 +33,6 @@ import bpReduce.ast.Stmt
  */
 trait StmtReducer {
 
-//  def isDefinedAt(s: Stmt): Boolean
-
   /**
    * @return current reduction. Note that it returns also in derived classes
    *         [[Stmt]] because we explicitly return `Skip` to denote removal.
