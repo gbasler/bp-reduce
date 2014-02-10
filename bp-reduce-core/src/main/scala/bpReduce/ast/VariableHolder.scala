@@ -1,4 +1,4 @@
 package bpReduce
 package ast
 
-final case class VariableHolder(vars: Seq[Sym])
+final case class VariableHolder(vars: Seq[Sym] = Seq())

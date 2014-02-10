@@ -4,10 +4,10 @@ package ast
 import scala.collection.mutable.ListBuffer
 
 final case class Function(name: String,
-                          locals: VariableHolder,
-                          args: Seq[String],
-                          returns: Int,
-                          stmts: List[LabelledStmt]) {
+                          locals: VariableHolder = VariableHolder(),
+                          args: Seq[String] = Seq(),
+                          returns: Int = 0,
+                          stmts: List[LabelledStmt] = Nil) {
 
   /**
    * @param pf Applied to each expr on which the function is defined and collect the results.
