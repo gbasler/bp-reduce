@@ -49,15 +49,15 @@ class ComposedProgramReducerTest extends Specification {
       val skip: Program =
         """|void main()
           |begin
-          |return;
+          |skip;
           |end
           |
         """.stripMargin
 
       val reducer: ComposedProgramReducer = ComposedProgramReducer(factory, program).get
-      val s = reducer.current
-      reducer.current must beSome(skip)
-
+      reducer.current.get must be_==(skip)
+      reducer.reduce must beNone
+      reducer.advance must beNone
     }
   }
 }

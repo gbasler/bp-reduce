@@ -47,9 +47,9 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
     }
   }
 
-  override def reduce = ???
+  override def reduce = None
 
-  override def advance = ???
+  override def advance = None
 }
 
 object ComposedProgramReducer {
