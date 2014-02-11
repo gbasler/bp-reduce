@@ -3,7 +3,7 @@ package ast
 
 import scala.collection.mutable.ListBuffer
 
-final case class Program(globals: VariableHolder, functions: Seq[Function]) {
+final case class Program(globals: VariableHolder, functions: List[Function]) {
 
   /**
    * @param pf Applied to each expr on which the function is defined and collect the results.

@@ -354,7 +354,7 @@ class BooleanProgramParserTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val expected = Program(VariableHolder(Seq(Sym("g"))), Seq(Function("main")))
+      val expected = Program(VariableHolder(Seq(Sym("g"))), List(Function("main")))
       new BooleanProgramParser().parse(program) must be_==(expected)
     }
 
@@ -367,7 +367,7 @@ class BooleanProgramParserTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val expected = Program(VariableHolder(Seq()), Seq(Function("main")))
+      val expected = Program(VariableHolder(Seq()), List(Function("main")))
       new BooleanProgramParser().parse(program) must be_==(expected)
     }
 
@@ -380,7 +380,7 @@ class BooleanProgramParserTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val expected = Program(VariableHolder(Seq()), Seq(Function("main", VariableHolder(Seq()), Seq(), 0, List(LabelledStmt(Skip, Seq())))))
+      val expected = Program(VariableHolder(Seq()), List(Function("main", VariableHolder(Seq()), Seq(), 0, List(LabelledStmt(Skip, Seq())))))
       new BooleanProgramParser().parse(program) must be_==(expected)
     }
 
@@ -395,7 +395,7 @@ class BooleanProgramParserTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val expected = Program(VariableHolder(Seq(Sym("g"))), Seq(Function("main", VariableHolder(Seq()), Seq(), 0, List(LabelledStmt(Assign(Seq((Var(Sym("g"), Current, NonMixed), Expr.True)), None), Seq())))))
+      val expected = Program(VariableHolder(Seq(Sym("g"))), List(Function("main", VariableHolder(Seq()), Seq(), 0, List(LabelledStmt(Assign(Seq((Var(Sym("g"), Current, NonMixed), Expr.True)), None), Seq())))))
       new BooleanProgramParser().parse(program) must be_==(expected)
     }
   }

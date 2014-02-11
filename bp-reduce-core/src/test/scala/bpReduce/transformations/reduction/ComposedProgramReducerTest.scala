@@ -22,7 +22,7 @@ class ComposedProgramReducerTest extends Specification {
         override def create(stmt: Stmt): StmtReducer = ???
       }
 
-      val program = Program(VariableHolder(), Seq(Function("main")))
+      val program = Program(VariableHolder(), List(Function("main")))
       ComposedProgramReducer(factory, program) must beNone
     }
 

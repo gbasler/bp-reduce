@@ -15,9 +15,19 @@ import scala.annotation.tailrec
  * @param unreduced `head` is the statement we are currently looking at
  */
 final case class PartitionedFunction(original: Function,
-                                     reduced: Seq[LabelledStmt],
+                                     reduced: List[LabelledStmt],
                                      unreduced: List[LabelledStmt]) {
-  def function = original.copy(stmts = reduced.toList ++ unreduced)
+
+  def function(current: Stmt) = {
+    unreduced match {
+      case Nil          =>
+        sys.error("Can't replace a statement in an empty function!")
+      case head :: tail =>
+        original.copy(stmts = (reduced :+ head.copy(stmt = current)) ++ unreduced)
+    }
+  }
+
+  def function = original.copy(stmts = reduced ++ unreduced)
 }
 
 object PartitionedFunction {
@@ -29,9 +39,11 @@ object PartitionedFunction {
 final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
                                         reducer: StmtReducer,
                                         program: Program,
-                                        reduced: Seq[Function],
-                                        unreduced: Seq[Function],
+                                        reduced: List[Function],
+                                        unreduced: List[Function],
                                         inProgress: PartitionedFunction) extends ProgramReducer {
+
+  import ComposedProgramReducer._
 
   override def current: Option[Program] = {
     reducer.current.map {
@@ -39,7 +51,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
         val stmts = inProgress.unreduced match {
           case Nil          => Nil // TODO: check this case
           case head :: tail =>
-            (inProgress.reduced :+ head.copy(stmt = stmt)).toList ::: tail
+            inProgress.reduced ++ (head.copy(stmt = stmt) :: Nil) ++ tail
         }
         val function = inProgress.original.copy(stmts = stmts)
         val functions = (reduced :+ function) ++ unreduced
@@ -47,7 +59,16 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
     }
   }
 
-  override def reduce = None
+  override def reduce = {
+    reducer.reduce match {
+      case Some(stmtReducer) =>
+        // current statement can be reduced further
+        Some(copy(reducer = stmtReducer))
+      case None              =>
+        // look for next statement to reduce
+        apply(reducerFactory, program, reduced, unreduced, inProgress)
+    }
+  }
 
   override def advance = None
 }
@@ -57,13 +78,28 @@ object ComposedProgramReducer {
   def apply(reducerFactory: StmtReducerFactory,
             program: Program): Option[ComposedProgramReducer] = {
 
+    program.functions match {
+      case Nil          =>
+        None
+      case head :: tail =>
+        val inProgress = PartitionedFunction(head)
+        apply(reducerFactory, program, Nil, tail, inProgress)
+    }
+  }
+
+  def apply(reducerFactory: StmtReducerFactory,
+            program: Program,
+            reduced: List[Function],
+            unreduced: List[Function],
+            inProgress: PartitionedFunction): Option[ComposedProgramReducer] = {
+
     @tailrec
     def findNextStmt(reduced: List[Function],
                      unreduced: List[Function],
                      inProgress: PartitionedFunction): Option[ComposedProgramReducer] = {
 
       inProgress.unreduced match {
-        case Nil      =>
+        case Nil                        =>
           // look at next function
           unreduced match {
             case Nil      =>
@@ -73,28 +109,28 @@ object ComposedProgramReducer {
               // look at next function
               findNextStmt(reduced :+ inProgress.function, tl.tail, PartitionedFunction(tl.head))
           }
-        case hd :: tl =>
+        case head :: Nil                =>
+          // we already looked at the last statement of the function, so check next function
+          unreduced match {
+            case Nil          =>
+              // no more functions to check
+              None
+            case head :: tail =>
+              findNextStmt(reduced :+ inProgress.function, tail, PartitionedFunction(head))
+          }
+        case head :: inprogress :: tail =>
           // stay in current function: search for next stmt to reduce...
-          val reducer = reducerFactory.create(hd.stmt)
+          val reducer = reducerFactory.create(head.stmt)
           if (reducer.current.isDefined) {
             // reduction possible on that statement
             Some(ComposedProgramReducer(reducerFactory, reducer, program, reduced, unreduced, inProgress))
           } else {
             // reducer can't reduce that statement, take next one
             findNextStmt(reduced, unreduced,
-              inProgress.copy(reduced = inProgress.reduced :+ hd, unreduced = tl))
+              inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail))
           }
       }
     }
-
-    if (program.functions.isEmpty) {
-      None
-    } else {
-      val unreduced: Seq[Function] = program.functions.tail
-
-      val inProgress = PartitionedFunction(program.functions.head)
-
-      findNextStmt(Nil, unreduced.toList, inProgress)
-    }
+    findNextStmt(reduced, unreduced, inProgress)
   }
 }
