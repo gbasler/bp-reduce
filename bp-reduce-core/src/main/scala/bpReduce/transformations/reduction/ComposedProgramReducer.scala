@@ -66,7 +66,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
         Some(copy(reducer = stmtReducer))
       case None              =>
         // look for next statement to reduce
-        apply(reducerFactory, program, reduced, unreduced, inProgress)
+        apply(reducerFactory, program, reduced, unreduced, Some(inProgress))
     }
   }
 
@@ -79,11 +79,10 @@ object ComposedProgramReducer {
             program: Program): Option[ComposedProgramReducer] = {
 
     program.functions match {
-      case Nil          =>
+      case Nil       =>
         None
-      case head :: tail =>
-        val inProgress = PartitionedFunction(head)
-        apply(reducerFactory, program, Nil, tail, inProgress)
+      case functions =>
+        apply(reducerFactory, program, Nil, functions, None)
     }
   }
 
@@ -91,7 +90,7 @@ object ComposedProgramReducer {
             program: Program,
             reduced: List[Function],
             unreduced: List[Function],
-            inProgress: PartitionedFunction): Option[ComposedProgramReducer] = {
+            inProgress: Option[PartitionedFunction]): Option[ComposedProgramReducer] = {
 
     @tailrec
     def findNextStmt(reduced: List[Function],
@@ -131,6 +130,21 @@ object ComposedProgramReducer {
           }
       }
     }
-    findNextStmt(reduced, unreduced, inProgress)
+
+    inProgress match {
+      case None             =>
+        // bootstrap: start at first function
+        // we still need to search through it's statements since
+        // e.g., the first one could be non-reducible
+        program.functions match {
+          case Nil          =>
+            None
+          case head :: tail =>
+            val inProgress = PartitionedFunction(head)
+            findNextStmt(Nil, tail, inProgress)
+        }
+      case Some(inProgress) =>
+        findNextStmt(reduced, unreduced, inProgress)
+    }
   }
 }
