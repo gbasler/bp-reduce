@@ -66,7 +66,14 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
         Some(copy(reducer = stmtReducer))
       case None              =>
         // look for next statement to reduce
-        apply(reducerFactory, program, reduced, unreduced, Some(inProgress))
+        inProgress.unreduced match {
+          case Nil          =>
+            // already looked at last statement
+            None
+          case head :: tail =>
+            val updatedInProgress = inProgress.copy(reduced = inProgress.unreduced :+ head, unreduced = tail)
+            apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
+        }
     }
   }
 
@@ -92,13 +99,20 @@ object ComposedProgramReducer {
             unreduced: List[Function],
             inProgress: Option[PartitionedFunction]): Option[ComposedProgramReducer] = {
 
+    /**
+     * @param reduced
+     * @param unreduced
+     * @param inProgress Contains the latest statement that _has already_ been reduced
+     *                   so it must be replace with a new one.
+     * @return
+     */
     @tailrec
     def findNextStmt(reduced: List[Function],
                      unreduced: List[Function],
                      inProgress: PartitionedFunction): Option[ComposedProgramReducer] = {
 
       inProgress.unreduced match {
-        case Nil                        =>
+        case Nil      =>
           // look at next function
           unreduced match {
             case Nil      =>
@@ -108,25 +122,16 @@ object ComposedProgramReducer {
               // look at next function
               findNextStmt(reduced :+ inProgress.function, tl.tail, PartitionedFunction(tl.head))
           }
-        case head :: Nil                =>
-          // we already looked at the last statement of the function, so check next function
-          unreduced match {
-            case Nil          =>
-              // no more functions to check
-              None
-            case head :: tail =>
-              findNextStmt(reduced :+ inProgress.function, tail, PartitionedFunction(head))
-          }
-        case head :: inprogress :: tail =>
+        case hd :: tl =>
           // stay in current function: search for next stmt to reduce...
-          val reducer = reducerFactory.create(head.stmt)
+          val reducer = reducerFactory.create(hd.stmt)
           if (reducer.current.isDefined) {
             // reduction possible on that statement
             Some(ComposedProgramReducer(reducerFactory, reducer, program, reduced, unreduced, inProgress))
           } else {
             // reducer can't reduce that statement, take next one
             findNextStmt(reduced, unreduced,
-              inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail))
+              inProgress.copy(reduced = inProgress.reduced :+ hd, unreduced = tl))
           }
       }
     }
