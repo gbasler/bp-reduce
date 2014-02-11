@@ -59,7 +59,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
     }
   }
 
-  override def reduce = {
+  override def reduce: Option[ComposedProgramReducer] = {
     reducer.reduce match {
       case Some(stmtReducer) =>
         // current statement can be reduced further
@@ -77,7 +77,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
     }
   }
 
-  override def advance = None
+  override def advance: Option[ComposedProgramReducer] = None
 }
 
 object ComposedProgramReducer {

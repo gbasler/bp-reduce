@@ -4,7 +4,7 @@ package reduction
 
 import org.specs2.mutable.Specification
 import bpReduce.ast._
-import bpReduce.ast.Stmt.{Skip, Return}
+import bpReduce.ast.Stmt.{EndThread, Skip, Return}
 import bpReduce.ast.VariableHolder
 import bpReduce.ast.Function
 import bpReduce.ast.Program
@@ -67,9 +67,25 @@ class ComposedProgramReducerTest extends Specification {
 
           override def current = Some(Skip)
 
-          override def reduce = None
+          override def reduce = Some(new StmtReducer {
 
-          override def advance = None
+            override def current = Some(Return())
+
+            override def reduce = None
+
+            override def advance = None
+          })
+
+
+          override def advance = Some(new StmtReducer {
+
+            override def current = Some(EndThread)
+
+            override def reduce = None
+
+            override def advance = None
+          })
+
         }
       }
 
@@ -89,15 +105,91 @@ class ComposedProgramReducerTest extends Specification {
           |
         """.stripMargin
 
-      val reducer: ComposedProgramReducer = ComposedProgramReducer(factory, program).get
+      val reducer = ComposedProgramReducer(factory, program).get
       reducer.current.get must be_==(skip)
-      reducer.reduce must beNone
+      reducer.reduce.get.current.get must be_==(program)
       reducer.advance must beNone
-      ok
     }
 
     "two line program" in {
-      // now the fun starts...
+      // even more fun ...
+      val factory = new StmtReducerFactory {
+        override def create(stmt: Stmt): StmtReducer = new StmtReducer {
+
+          override def current = Some(Skip)
+
+          override def reduce = Some(new StmtReducer {
+
+            override def current = Some(Return())
+
+            override def reduce = None
+
+            override def advance = None
+          })
+
+
+          override def advance = Some(new StmtReducer {
+
+            override def current = Some(EndThread)
+
+            override def reduce = None
+
+            override def advance = None
+          })
+
+        }
+      }
+
+      val program: Program =
+        """|void main()
+          |begin
+          |return;
+          |return;
+          |end
+          |
+        """.stripMargin
+
+      val skipFirst: Program =
+        """|void main()
+          |begin
+          |skip;
+          |return;
+          |end
+          |
+        """.stripMargin
+
+      val skipLast: Program =
+        """|void main()
+          |begin
+          |return;
+          |skip;
+          |end
+          |
+        """.stripMargin
+
+      val skipTwice: Program =
+        """|void main()
+          |begin
+          |skip;
+          |skip;
+          |end
+          |
+        """.stripMargin
+
+      val endThread: Program =
+        """|void main()
+          |begin
+          |end_thread;
+          |end
+          |
+        """.stripMargin
+
+      val reducer = ComposedProgramReducer(factory, program).get
+      reducer.current.get must be_==(skipFirst)
+      reducer.reduce must beNone
+      reducer.advance.get.current must be_==(skipLast)
+      reducer.advance.get.current must be_==(skipLast)
+
       ok
     }
   }
