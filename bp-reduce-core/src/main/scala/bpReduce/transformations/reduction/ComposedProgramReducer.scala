@@ -64,20 +64,24 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
       case Some(stmtReducer) =>
         // current statement can be reduced further
         Some(copy(reducer = stmtReducer))
-      case None              =>
-        // look for next statement to reduce
-        inProgress.unreduced match {
-          case Nil          =>
-            // already looked at last statement
-            None
-          case head :: tail =>
-            val updatedInProgress = inProgress.copy(reduced = inProgress.unreduced :+ head, unreduced = tail)
-            apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
-        }
+
+      case None // advance recuder!!!
     }
   }
 
-  override def advance: Option[ComposedProgramReducer] = None
+  override def advance: Option[ComposedProgramReducer] = {
+    case None              =>
+      // look for next statement to reduce
+      inProgress.unreduced match {
+        case Nil          =>
+          // already looked at last statement
+          None
+        case head :: tail =>
+          val updatedInProgress = inProgress.copy(reduced = inProgress.unreduced :+ head, unreduced = tail)
+          apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
+      }
+
+  }
 }
 
 object ComposedProgramReducer {
