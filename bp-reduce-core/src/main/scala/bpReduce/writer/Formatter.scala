@@ -81,7 +81,7 @@ object Formatter {
     case Skip                       =>
       "skip"
     case Return(values)             =>
-      s"""return ${values.mkString(", ")}"""
+      s"""return${if(values.isEmpty) "" else values.mkString(", ")}"""
     case AtomicBegin                =>
       "atomic_begin"
     case AtomicEnd                  =>
