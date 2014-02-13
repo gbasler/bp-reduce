@@ -367,7 +367,7 @@ class BooleanProgramParserTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val expected = Program(VariableHolder(Seq()), List(Function("main")))
+      val expected = Program(VariableHolder(Seq()), List(Function("main", VariableHolder(Seq(Sym("l"))))))
       new BooleanProgramParser().parse(program) must be_==(expected)
     }
 

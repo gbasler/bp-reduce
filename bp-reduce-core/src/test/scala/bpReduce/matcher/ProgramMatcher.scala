@@ -10,7 +10,7 @@ class ProgramMatcher(program: Program) extends Matcher[Program] {
     import Formatter.format
 
     result(program == n.value,
-      format(n.value) + " is equal to " + format(program),
-      format(n.value) + " is not equal to " + format(program), n)
+      s"${format(n.value)} is equal to\n${format(program)}",
+      s"${format(n.value)} is not equal to\n${format(program)}", n)
   }
 }
