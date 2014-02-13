@@ -4,13 +4,14 @@ package reduction
 
 import org.specs2.mutable.Specification
 import bpReduce.ast._
-import bpReduce.ast.Stmt.{EndThread, Skip, Return}
+import bpReduce.ast.Stmt.{AtomicEnd, EndThread, Skip, Return}
 import bpReduce.ast.VariableHolder
 import bpReduce.ast.Function
 import bpReduce.ast.Program
 import bpReduce.reader.BooleanProgramParser
+import bpReduce.writer.Formatter
 
-class ComposedProgramReducerTest extends Specification {
+class ComposedProgramReducerTest extends BaseSpecification {
   "reduce" should {
 
     implicit def fromText(program: String) = {
@@ -54,7 +55,7 @@ class ComposedProgramReducerTest extends Specification {
           |
         """.stripMargin
 
-      val reducer: ComposedProgramReducer = ComposedProgramReducer(factory, program).get
+      val reducer = ComposedProgramReducer(factory, program).get
       reducer.current.get must be_==(skip)
       reducer.reduce must beNone
       reducer.advance must beNone
@@ -69,7 +70,7 @@ class ComposedProgramReducerTest extends Specification {
 
           override def reduce = Some(new StmtReducer {
 
-            override def current = Some(Return())
+            override def current = Some(AtomicEnd)
 
             override def reduce = None
 
@@ -97,7 +98,7 @@ class ComposedProgramReducerTest extends Specification {
           |
         """.stripMargin
 
-      val skip: Program =
+      val reducedToSkip: Program =
         """|void main()
           |begin
           |skip;
@@ -105,10 +106,27 @@ class ComposedProgramReducerTest extends Specification {
           |
         """.stripMargin
 
+      val reducedFurtherToAtomicEnd: Program =
+        """|void main()
+          |begin
+          |atomic_end;
+          |end
+          |
+        """.stripMargin
+
+      val endThread: Program =
+        """|void main()
+          |begin
+          |end_thread;
+          |end
+          |
+        """.stripMargin
+
       val reducer = ComposedProgramReducer(factory, program).get
-      reducer.current.get must be_==(skip)
-      reducer.reduce.get.current.get must be_==(program)
-      reducer.advance must beNone
+      reducer.current.get must be_==(reducedToSkip)
+      reducer.reduce.get.current.get must be_==(reducedFurtherToAtomicEnd)
+      reducer.advance.get.current.get must be_==(endThread)
+      reducer.advance.get.reduce must beNone
     }
 
     "two line program" in {
@@ -118,25 +136,9 @@ class ComposedProgramReducerTest extends Specification {
 
           override def current = Some(Skip)
 
-          override def reduce = Some(new StmtReducer {
+          override def reduce = None
 
-            override def current = Some(Return())
-
-            override def reduce = None
-
-            override def advance = None
-          })
-
-
-          override def advance = Some(new StmtReducer {
-
-            override def current = Some(EndThread)
-
-            override def reduce = None
-
-            override def advance = None
-          })
-
+          override def advance = None
         }
       }
 
@@ -176,21 +178,11 @@ class ComposedProgramReducerTest extends Specification {
           |
         """.stripMargin
 
-      val endThread: Program =
-        """|void main()
-          |begin
-          |end_thread;
-          |end
-          |
-        """.stripMargin
-
       val reducer = ComposedProgramReducer(factory, program).get
-      reducer.current.get must be_==(skipFirst)
+      reducer.current.get === skipFirst
       reducer.reduce must beNone
+      reducer.advance.get.current.get must beSameProgram(skipLast)
       reducer.advance.get.current must be_==(skipLast)
-      reducer.advance.get.current must be_==(skipLast)
-
-      ok
     }
   }
 }

@@ -59,19 +59,30 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
     }
   }
 
+  /**
+   * Reduces current statement if possible.
+   */
   override def reduce: Option[ComposedProgramReducer] = {
-    reducer.reduce match {
-      case Some(stmtReducer) =>
-        // current statement can be reduced further
-        Some(copy(reducer = stmtReducer))
-
-      case None // advance recuder!!!
+    reducer.reduce map {
+      stmtReducer =>
+      // current statement can be reduced further
+        copy(reducer = stmtReducer)
     }
   }
 
+  /**
+   * Problem: what shall be advanced? The current reducer _or_ we move to the next location
+   * for reduction?
+   * Answer: We can just check if the reducer can be advanced, if not, we simply check
+   * for the next reduction possibility.
+   */
   override def advance: Option[ComposedProgramReducer] = {
-    case None              =>
-      // look for next statement to reduce
+    reducer.advance.map {
+      stmtReducer =>
+      // current statement can be reduced further
+        copy(reducer = stmtReducer)
+    }.orElse {
+      // if the reducer can't be advanced, we have to check for next location to reduce
       inProgress.unreduced match {
         case Nil          =>
           // already looked at last statement
@@ -80,7 +91,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
           val updatedInProgress = inProgress.copy(reduced = inProgress.unreduced :+ head, unreduced = tail)
           apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
       }
-
+    }
   }
 }
 
