@@ -1,4 +1,9 @@
 language: scala
+
+scala:
+  - 2.10.3
+
 jdk:
     - oraclejdk7
-notifications:
+
+script: sbt -sbt-version 0.13.1 -scala-version $TRAVIS_SCALA_VERSION 'test-only'
