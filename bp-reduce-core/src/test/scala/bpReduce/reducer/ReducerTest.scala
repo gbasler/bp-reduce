@@ -36,5 +36,52 @@ class ReducerTest extends BaseSpecification {
 
       Reducer(config)(program) must beSameProgram(skip)
     }
+
+    "two liner" in {
+      val allAcceptChecker = new Checker {
+        override def apply(program: Program): CheckerResult = CheckerResult.Accept
+      }
+
+      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker)
+
+      val program: Program =
+        """|void main()
+          |begin
+          |return;
+          |return;
+          |end
+          |
+        """.stripMargin
+
+      val skip: Program =
+        """|void main()
+          |begin
+          |skip;
+          |skip;
+          |end
+          |
+        """.stripMargin
+
+      Reducer(config)(program) must beSameProgram(skip)
+    }
+
+    "two liner: no reduction possible" in {
+      val allAcceptChecker = new Checker {
+        override def apply(program: Program): CheckerResult = CheckerResult.Reject
+      }
+
+      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker)
+
+      val program: Program =
+        """|void main()
+          |begin
+          |return;
+          |return;
+          |end
+          |
+        """.stripMargin
+
+      Reducer(config)(program) must beSameProgram(program)
+    }
   }
 }
