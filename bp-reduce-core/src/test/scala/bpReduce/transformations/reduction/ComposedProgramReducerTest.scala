@@ -180,9 +180,8 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
       val reducer = ComposedProgramReducer(factory, program).get
       reducer.current.get === skipFirst
-      reducer.reduce must beNone
       reducer.advance.get.current.get must beSameProgram(skipLast)
-      reducer.advance.get.current must be_==(skipLast)
+      reducer.reduce.get.current.get must beSameProgram(skipTwice)
     }
   }
 }

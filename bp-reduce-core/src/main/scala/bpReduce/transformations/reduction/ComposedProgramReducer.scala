@@ -51,6 +51,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
         val stmts = inProgress.unreduced match {
           case Nil          => Nil // TODO: check this case
           case head :: tail =>
+            // replace `head` with current reduction
             inProgress.reduced ++ (head.copy(stmt = stmt) :: Nil) ++ tail
         }
         val function = inProgress.original.copy(stmts = stmts)
@@ -60,13 +61,30 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
   }
 
   /**
-   * Reduces current statement if possible.
+   * Reduces current statement if possible. Keeps last reduction.
    */
   override def reduce: Option[ComposedProgramReducer] = {
-    reducer.reduce map {
+    reducer.reduce.map {
       stmtReducer =>
       // current statement can be reduced further
-        copy(reducer = stmtReducer)
+        val updatedInProgress = inProgress.unreduced match {
+          case Nil          =>
+            sys.error("Can't replace a statement in an empty function!")
+          case head :: tail =>
+            val last = reducer.current.getOrElse(sys.error("Reduce called but no previous reduction possible?"))
+            inProgress.copy(unreduced = head.copy(stmt = last) :: tail)
+        }
+        copy(reducer = stmtReducer, inProgress = updatedInProgress)
+    }.orElse {
+      // search for next statement to reduce
+      val updatedInProgress = inProgress.unreduced match {
+        case Nil          =>
+          sys.error("Can't replace a statement in an empty function!")
+        case head :: tail =>
+          val last = reducer.current.getOrElse(sys.error("Reduce called but no previous reduction possible?"))
+          inProgress.copy(reduced = inProgress.reduced :+ head.copy(stmt = last), unreduced = tail)
+      }
+      apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
     }
   }
 
@@ -88,7 +106,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
           // already looked at last statement
           None
         case head :: tail =>
-          val updatedInProgress = inProgress.copy(reduced = inProgress.unreduced :+ head, unreduced = tail)
+          val updatedInProgress = inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail)
           apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
       }
     }

@@ -19,6 +19,10 @@ trait ProgramReducer {
    *
    * Intuitively this means "try to reduce more".
    *
+   * Important: Calling this method means that [[current]]
+   *            returns a program with desired properties
+   *            that should be kept after this method.
+   *
    * @return A [[ProgramReducer]] that can produce the reduced program
    *         or `None` if no reduction is possible.
    */
@@ -30,6 +34,9 @@ trait ProgramReducer {
    * now proposed. It will not be simpler though.
    *
    * Intuitively this means "try to find another opportunity for reduction".
+   *
+   * Calling this method means that [[current]] does not produce
+   * a reduction with desired properties (so they are undone).
    *
    * @return A [[ProgramReducer]] that can produce the reduced program or
    *         `None` if no reduction is possible.
