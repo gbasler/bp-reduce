@@ -27,15 +27,16 @@ final case class Reducer(config: ReducerConfig) {
           // reduction not possible, return last feasible reduction
           lastFeasible
         case Some(variant) =>
+          // TODO: this would be the place to add a cache and program simplifier...
           checker(variant) match {
             case Accept =>
               // reduction was accepted
               // continue with variant
-              reduceMax(reducer.flatMap(_.reduce), lastFeasible)
+              reduceMax(reducer.flatMap(_.reduce), Some(variant))
             case Reject =>
               // reduction did not meet criteria
               // check next opportunity
-              reduceMax(reducer.flatMap(_.advance), None)
+              reduceMax(reducer.flatMap(_.advance), lastFeasible)
           }
       }
     }
@@ -54,7 +55,7 @@ final case class Reducer(config: ReducerConfig) {
           current
         case factory :: tail =>
           val reducer = factory(current.getOrElse(original))
-          val variant = reduceMax(Some(reducer), None)
+          val variant = reduceMax(reducer, None)
           reduce(original, tail, variant)
       }
     }

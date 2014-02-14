@@ -37,6 +37,7 @@ trait StmtReducer {
    * @return current reduction. Note that it returns also in derived classes
    *         [[Stmt]] because we explicitly return `Skip` to denote removal.
    */
+  // TODO: Option doesn't make much sense does it?
   def current: Option[Stmt]
 
   /**

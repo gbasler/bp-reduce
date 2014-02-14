@@ -2,14 +2,12 @@ package bpReduce
 package transformations
 package reduction
 
-import org.specs2.mutable.Specification
 import bpReduce.ast._
-import bpReduce.ast.Stmt.{AtomicEnd, EndThread, Skip, Return}
+import bpReduce.ast.Stmt.{AtomicEnd, EndThread, Skip}
 import bpReduce.ast.VariableHolder
 import bpReduce.ast.Function
 import bpReduce.ast.Program
 import bpReduce.reader.BooleanProgramParser
-import bpReduce.writer.Formatter
 
 class ComposedProgramReducerTest extends BaseSpecification {
   "reduce" should {
