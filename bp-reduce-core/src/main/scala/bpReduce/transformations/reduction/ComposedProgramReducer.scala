@@ -169,20 +169,16 @@ object ComposedProgramReducer {
       }
     }
 
-    inProgress match {
-      case None             =>
-        // bootstrap: start at first function
-        // we still need to search through it's statements since
-        // e.g., the first one could be non-reducible
-        program.functions match {
-          case Nil          =>
-            None
-          case head :: tail =>
-            val inProgress = PartitionedFunction(head)
-            findNextStmt(Nil, tail, inProgress)
-        }
-      case Some(inProgress) =>
-        findNextStmt(reduced, unreduced, inProgress)
-    }
+    inProgress.fold(
+      // bootstrap: start at first function
+      // we still need to search through it's statements since
+      // e.g., the first one could be non-reducible
+      program.functions match {
+        case Nil          =>
+          None
+        case head :: tail =>
+          val inProgress = PartitionedFunction(head)
+          findNextStmt(Nil, tail, inProgress)
+      })(inProgress => findNextStmt(reduced, unreduced, inProgress))
   }
 }
