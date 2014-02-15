@@ -2,12 +2,13 @@ package bpReduce
 package reducer
 
 import bpReduce.ast.{Sym, Program}
-import bpReduce.transformations.reduction.Reducers
+import bpReduce.transformations.reduction.{ReduceExpressions, Reducers}
 import bpReduce.reader.BooleanProgramParser
-import bpReduce.ast.Stmt.Assign
-import bpReduce.ast.Expr.Var
+import bpReduce.ast.Stmt.{Assume, Assign}
+import bpReduce.ast.Expr.{False, Var}
 import bpReduce.ast.StateIdentifier.Current
 import bpReduce.ast.MixedIdentifier.NonMixed
+import bpReduce.transformations.ExpressionSimplifier
 
 class ReducerHighLevelTest extends BaseSpecification {
   implicit def fromText(program: String) = {
@@ -82,13 +83,10 @@ class ReducerHighLevelTest extends BaseSpecification {
       val smartChecker = new Checker {
         override def apply(program: Program): CheckerResult = {
           val ok = program.exists {
-            case Assign(vars, _) =>
-              vars.exists {
-                case (Var(Sym("g"), Current, NonMixed), _) => true
-                case _                                     => false
-              }
-            case _               =>
-              false
+            case Assume(e) =>
+              // rule out false case since T / F would both be possible (makes test deterministic)
+              ExpressionSimplifier(e) != False
+            case _         => false
           }
           if (ok) {
             CheckerResult.Accept
@@ -100,7 +98,7 @@ class ReducerHighLevelTest extends BaseSpecification {
       }
 
       import Reducers._
-      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns), smartChecker)
+      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpressions), smartChecker)
 
       val program: Program =
         """|decl g;
@@ -111,7 +109,7 @@ class ReducerHighLevelTest extends BaseSpecification {
           |a := T;
           |a := !a;
           |atomic_begin;
-          |g, l := l, g;
+          |assume(l = g);
           |atomic_end;
           |return;
           |end
@@ -127,7 +125,7 @@ class ReducerHighLevelTest extends BaseSpecification {
           |skip;
           |skip;
           |skip;
-          |g := l;
+          |assume(T);
           |skip;
           |skip;
           |end

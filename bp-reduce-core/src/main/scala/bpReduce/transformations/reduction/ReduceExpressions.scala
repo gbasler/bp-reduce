@@ -17,17 +17,17 @@ object ReduceExpressions extends ProgramReducerFacory {
     val exprReducer = new StmtReducerFactory {
       override def apply(stmt: Stmt): StmtReducer = stmt match {
         case Assign(assigns, constrain)             =>
-          ???
+          StmtReducer.Empty // TODO
         case assume: Assume                         =>
           AssumeReducer(assume)
         case Assert(e)                              =>
-          ???
+          StmtReducer.Empty // TODO
         case Call(name, assigns, args)              =>
-          ???
+          StmtReducer.Empty // TODO
         case If(condition, pos, neg)                =>
-          ???
+          StmtReducer.Empty // TODO
         case Return(values)                         =>
-          ???
+          StmtReducer.Empty // TODO
         case _: Dead | _: Goto | Skip | AtomicBegin |
              AtomicEnd | _: StartThread | EndThread =>
           StmtReducer.Empty
