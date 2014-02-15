@@ -36,4 +36,14 @@ final case class Function(name: String,
     results.toList
   }
 
+  def contains(predicate: Stmt => Boolean): Boolean = {
+    for {
+      LabelledStmt(stmt, labels) <- stmts
+    } {
+      if (predicate(stmt)) return true
+    }
+
+    false
+  }
+
 }

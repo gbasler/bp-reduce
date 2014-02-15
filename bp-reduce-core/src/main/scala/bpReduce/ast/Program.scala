@@ -32,4 +32,14 @@ final case class Program(globals: VariableHolder, functions: List[Function]) {
     results.toList
   }
 
+  def exists(predicate: Stmt => Boolean): Boolean = {
+    for {
+      f <- functions
+    } {
+      if(f.contains(predicate)) return true
+    }
+
+    false
+  }
+
 }
