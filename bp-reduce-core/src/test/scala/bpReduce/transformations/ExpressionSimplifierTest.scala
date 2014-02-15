@@ -47,5 +47,9 @@ class ExpressionSimplifierTest extends BaseSpecification {
       val c = Var(Sym("c"))
       ExpressionSimplifier(And(And(a, b), c)) must be_==(And(a, b, c))
     }
+
+    "=" in {
+      ExpressionSimplifier(Equiv(True, False)) === False
+    }
   }
 }
