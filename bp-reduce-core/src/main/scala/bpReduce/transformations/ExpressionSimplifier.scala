@@ -76,6 +76,19 @@ object ExpressionSimplifier {
       case Not(NaryOp(Or, ops)) if ops.forall(isAtom)  =>
         // De Morgan
         apply(NaryOp(And, ops.map(Not)))
+      case Equiv(a, b)                                 =>
+        val a0 = apply(a)
+        val b0 = apply(b)
+        (a0, b0) match {
+          case (x, y) if x == y => True
+          case (True, True)     => True
+          case (True, False)    => False
+          case (False, True)    => False
+          case (False, False)   => True
+          case _                => Equiv(a0, b0)
+        }
+      case Xor(a, b) if a == b                         =>
+        False
       case p                                           => p
     }
   }
