@@ -3,6 +3,7 @@ package transformations
 package reduction
 
 import bpReduce.ast.Stmt
+import bpReduce.ast.Stmt.Skip
 
 /**
  * Reduces a single statement.
@@ -67,4 +68,16 @@ trait StmtReducer {
    * @return A [[StmtReducer]] that can produce the reduced statement.
    */
   def advance: Option[StmtReducer]
+}
+
+object StmtReducer {
+  val Empty = new StmtReducer {
+
+    override def current = None
+
+    override def reduce = None
+
+    override def advance = None
+  }
+
 }
