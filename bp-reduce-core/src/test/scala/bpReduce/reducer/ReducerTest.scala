@@ -66,11 +66,11 @@ class ReducerTest extends BaseSpecification {
     }
 
     "two liner: no reduction possible" in {
-      val allAcceptChecker = new Checker {
+      val allRejectChecker = new Checker {
         override def apply(program: Program): CheckerResult = CheckerResult.Reject
       }
 
-      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker)
+      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allRejectChecker)
 
       val program: Program =
         """|void main()

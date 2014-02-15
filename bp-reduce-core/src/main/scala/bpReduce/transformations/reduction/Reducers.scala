@@ -20,7 +20,6 @@ object Reducers {
               case Skip => None
               case _    => Some(Skip)
             }
-
           }
 
           override def reduce = None
@@ -29,6 +28,15 @@ object Reducers {
         }
       }
       ComposedProgramReducer(skipReducer, program)
+    }
+  }
+
+  val ReduceAssigns = new ProgramReducerFacory {
+    override def apply(program: Program): Option[ProgramReducer] = {
+      val assignReducer = new StmtReducerFactory {
+        override def create(stmt: Stmt): StmtReducer = ReduceAssign(stmt)
+      }
+      ComposedProgramReducer(assignReducer, program)
     }
   }
 }

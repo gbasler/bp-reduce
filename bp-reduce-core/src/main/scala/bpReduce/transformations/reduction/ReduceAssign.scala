@@ -5,20 +5,15 @@ package reduction
 import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt._
 import bpReduce.ast.Stmt.Assign
-import scala.Some
 
-case class ReduceAssign(assign: Assign, next: List[Stmt]) extends StmtReducer {
-
-//  override def isDefinedAt(s: Stmt) = s match {
-//    case _: Assign => true
-//    case _         => false
-//  }
+final case class ReduceAssign(next: List[Stmt]) extends StmtReducer {
 
   // stmt because we could reduce to `Skip`
   def current: Option[Stmt] = next.headOption
 
   def reduce: Option[ReduceAssign] = {
-    // reduction successful, reduce more if possible
+    // last possible reduction is `Skip`,
+    // so if next one is not a skip we can reduce more
     current collect {
       case assign: Assign => ReduceAssign(assign)
     }
@@ -35,24 +30,30 @@ case class ReduceAssign(assign: Assign, next: List[Stmt]) extends StmtReducer {
 }
 
 object ReduceAssign {
-  def apply(assign: Assign): ReduceAssign = {
-    // there are 2^n -1 possible reductions...
-    // however reducing all assigns would be equal to replace it with skip...
-    // removing the assign has the disadvantage that if it was a jump target, the whole
-    // program must be transformed
+  def apply(stmt: Stmt): ReduceAssign = {
 
-    if (assign.assigns.size < 2) {
-      new ReduceAssign(assign, Skip :: Nil)
-    } else {
+    stmt match {
+      case assign: Assign =>
+        if (assign.assigns.size < 2) {
+          // only one assignment, reduction trivial
+          new ReduceAssign(Skip :: Nil)
+        } else {
+          // there are 2^n -1 possible reductions...
+          // however reducing all assigns would be equal to replace it with skip...
+          // removing the assign has the disadvantage that if it was a jump target, the whole
+          // program must be transformed
 
-      val reductions = for {
-        i <- assign.assigns.indices.reverse.toList
-      } yield {
-        val assigns = assign.assigns.take(i) ++ assign.assigns.drop(i + 1)
-        assign.copy(assigns = assigns)
-      }
+          val reductions = for {
+            i <- assign.assigns.indices.reverse.toList
+          } yield {
+            val assigns = assign.assigns.take(i) ++ assign.assigns.drop(i + 1)
+            assign.copy(assigns = assigns)
+          }
 
-      new ReduceAssign(assign, reductions)
+          new ReduceAssign(reductions)
+        }
+      case _              =>
+        new ReduceAssign(Nil)
     }
   }
 }
