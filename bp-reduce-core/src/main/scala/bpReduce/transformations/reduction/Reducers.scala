@@ -40,5 +40,5 @@ object Reducers {
     }
   }
 
-  val All = Seq(ReplaceWithSkip, ReduceAssigns)
+  val All = List(ReplaceWithSkip, ReduceAssigns)
 }
