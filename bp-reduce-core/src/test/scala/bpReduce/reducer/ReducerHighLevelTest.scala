@@ -1,7 +1,7 @@
 package bpReduce
 package reducer
 
-import bpReduce.ast.{Expr, Sym, LabelledStmt, Program}
+import bpReduce.ast.{Sym, Program}
 import bpReduce.transformations.reduction.Reducers
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.Stmt.Assign
@@ -21,7 +21,6 @@ class ReducerHighLevelTest extends BaseSpecification {
       val smartChecker = new Checker {
         override def apply(program: Program): CheckerResult = {
           val ok = program.exists {
-            //            case Assign(List((Var(Sym("g"), Current, NonMixed), _)), None) =>
             case Assign(vars, _) =>
               vars.exists {
                 case (Var(Sym("g"), Current, NonMixed), _) => true

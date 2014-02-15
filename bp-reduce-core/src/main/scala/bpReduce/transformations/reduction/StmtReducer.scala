@@ -34,10 +34,15 @@ import bpReduce.ast.Stmt
 trait StmtReducer {
 
   /**
+   * Design choice: we could just say that a reducer that can not reduce a statement
+   * just once should not be generated at all. If we do that, we have a bootstrap problem
+   * since a reducer must create the next reducer, so the first reducer must be created
+   * outside...
+   *
    * @return current reduction. Note that it returns also in derived classes
    *         [[Stmt]] because we explicitly return `Skip` to denote removal.
+   *         If no reduction is possible, `None` is returned.
    */
-  // TODO: Option doesn't make much sense does it?
   def current: Option[Stmt]
 
   /**

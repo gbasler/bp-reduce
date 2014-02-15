@@ -2,7 +2,6 @@ package bpReduce
 package transformations
 package reduction
 
-
 import bpReduce.BaseSpecification
 import bpReduce.ast.Expr._
 import bpReduce.ast.Sym
