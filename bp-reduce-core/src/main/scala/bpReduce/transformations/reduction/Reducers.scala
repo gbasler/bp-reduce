@@ -11,7 +11,7 @@ object Reducers {
   val ReplaceWithSkip = new ProgramReducerFacory {
     override def apply(program: Program) = {
       val skipReducer = new StmtReducerFactory {
-        override def create(stmt: Stmt): StmtReducer = new StmtReducer {
+        override def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
           override def current = {
             // check if reduction really possible,
@@ -34,9 +34,11 @@ object Reducers {
   val ReduceAssigns = new ProgramReducerFacory {
     override def apply(program: Program): Option[ProgramReducer] = {
       val assignReducer = new StmtReducerFactory {
-        override def create(stmt: Stmt): StmtReducer = ReduceAssign(stmt)
+        override def apply(stmt: Stmt): StmtReducer = ReduceAssign(stmt)
       }
       ComposedProgramReducer(assignReducer, program)
     }
   }
+
+  val All = Seq(ReplaceWithSkip, ReduceAssigns)
 }

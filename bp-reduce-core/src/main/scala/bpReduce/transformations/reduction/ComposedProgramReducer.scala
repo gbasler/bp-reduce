@@ -157,7 +157,7 @@ object ComposedProgramReducer {
           }
         case hd :: tl =>
           // stay in current function: search for next stmt to reduce...
-          val reducer = reducerFactory.create(hd.stmt)
+          val reducer = reducerFactory(hd.stmt)
           if (reducer.current.isDefined) {
             // reduction possible on that statement
             Some(ComposedProgramReducer(reducerFactory, reducer, program, reduced, unreduced, inProgress))

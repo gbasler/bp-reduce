@@ -18,7 +18,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
     "empty program" in {
       val factory = new StmtReducerFactory {
-        override def create(stmt: Stmt): StmtReducer = ???
+        override def apply(stmt: Stmt): StmtReducer = ???
       }
 
       val program = Program(VariableHolder(), List(Function("main")))
@@ -27,7 +27,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
     "one line program" in {
       val factory = new StmtReducerFactory {
-        override def create(stmt: Stmt): StmtReducer = new StmtReducer {
+        override def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
           override def current = Some(Skip)
 
@@ -62,7 +62,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
     "complex one line program" in {
       // now the fun starts...
       val factory = new StmtReducerFactory {
-        override def create(stmt: Stmt): StmtReducer = new StmtReducer {
+        override def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
           override def current = Some(Skip)
 
@@ -130,7 +130,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
     "two line program" in {
       // even more fun ...
       val factory = new StmtReducerFactory {
-        override def create(stmt: Stmt): StmtReducer = new StmtReducer {
+        override def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
           override def current = Some(Skip)
 
