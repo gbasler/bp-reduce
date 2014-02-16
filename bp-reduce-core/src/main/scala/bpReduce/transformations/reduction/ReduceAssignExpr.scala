@@ -4,14 +4,18 @@ package reduction
 
 import bpReduce.ast.{Expr, Stmt}
 import bpReduce.ast.Stmt.Assign
+import bpReduce.ast.Expr.Var
 
 /**
  * Reduces `:=` expressions by incrementally reducing the expressions at the rhs and
  * the `constrain` expression.
  *
- * @param next
+ * The algorithm reduces only one part of the assignment per iteration, either the constrain
+ * or one of the rhss.
+ *
+ * @param next The next possible reduction for [[StmtReducer.advance]].
  */
-final case class ReduceAssignExpr(next: List[Expr => Stmt]) extends StmtReducer {
+final case class ReduceAssignExpr(next: List[Stmt]) extends StmtReducer {
 
   // stmt because we could reduce to `Skip`
   def current: Option[Stmt] = next.headOption
@@ -37,31 +41,44 @@ final case class ReduceAssignExpr(next: List[Expr => Stmt]) extends StmtReducer 
 object ReduceAssignExpr {
   def apply(stmt: Stmt): ReduceAssignExpr = {
 
-    def reduceConstrain(e: Expr) = {
-
-    }
-
     stmt match {
       case assign: Assign =>
+
+        // reduce either constrain or expressions (one at a time)
+        val reducedConstrains = assign.constrain.toList.flatMap {
+          constrain =>
+            val reducedConstrains = ExpressionReducer(constrain).toList
+            reducedConstrains.map(c => assign.copy(constrain = Some(c)))
+        }
+
         assign.assigns match {
           case Seq((variable, expr)) =>
             // only one assignment, reduction trivial
-            def reducer(e: Expr) = {
-              assign.copy(assigns = Seq(variable -> e))
-            }
-            new ReduceAssignExpr(reducer _ :: Nil)
+            val reducedExprs = ExpressionReducer(expr).toList
+            val reducedRhs = reducedExprs.map(e => assign.copy(assigns = Seq(variable -> e)))
+            new ReduceAssignExpr(reducedRhs ++ reducedConstrains)
 
           case assigns =>
-            // there are 2^n -1 possible reductions...
-            // however reducing all assigns would be equal to replace it with skip...
-            // removing the assign has the disadvantage that if it was a jump target, the whole
-            // program must be transformed
+            // there are n possible reductions since we
+            // reduce only one of the rhss at a time
             val reductions = for {
-              i <- assign.assigns.indices.reverse.toList
+              i <- assigns.indices.toList
             } yield {
-              e: Expr =>
-                val reducedAssigns = (assigns.take(i) :+ (assigns(i)._1 -> e)) ++ assigns.drop(i + 1)
-                assign.copy(assigns = reducedAssigns)
+
+              val reducedAssigns = for {
+                (ve@(variable, expr), index) <- assigns.zipWithIndex
+              } yield {
+                if (index == i) {
+                  val reduced = ExpressionReducer(expr).toSeq
+                  val a = reduced.map(e => variable -> e)
+                } else {
+                  ve
+                }
+              }
+
+
+              val reducedAssigns = (assigns.take(i) :+ (assigns(i)._1 -> e)) ++ assigns.drop(i + 1)
+              assign.copy(assigns = reducedAssigns)
             }
 
             new ReduceAssignExpr(reductions)
