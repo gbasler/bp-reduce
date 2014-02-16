@@ -68,7 +68,8 @@ final case class Reducer(config: ReducerConfig) {
           // reduction was possible, try all reductions again
           reduceUntilFixpoint(current)
         case None          =>
-          // no reduction possible, fixed point reached
+          // all reducers have been applied but
+          // no reduction was possible, so fixed point reached
           program
       }
     }

@@ -6,6 +6,12 @@ import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt._
 import bpReduce.ast.Stmt.Assign
 
+/**
+ * Reduces `:=` expressions by incrementally omitting assignments
+ * (until we arrive at the `skip` statement).
+ *
+ * @param next
+ */
 final case class ReduceAssign(next: List[Stmt]) extends StmtReducer {
 
   // stmt because we could reduce to `Skip`

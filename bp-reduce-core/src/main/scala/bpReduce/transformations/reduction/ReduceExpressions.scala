@@ -19,7 +19,7 @@ object ReduceExpressions extends ProgramReducerFacory {
         case Assign(assigns, constrain)             =>
           StmtReducer.Empty // TODO
         case assume: Assume                         =>
-          AssumeReducer(assume)
+          AssumeExprReducer(assume)
         case Assert(e)                              =>
           StmtReducer.Empty // TODO
         case Call(name, assigns, args)              =>
@@ -37,8 +37,9 @@ object ReduceExpressions extends ProgramReducerFacory {
   }
 }
 
-final class AssumeReducer(assume: Assume,
-                          reductions: Set[Expr]) extends StmtReducer {
+// TODO: generalize
+final class AssumeExprReducer(assume: Assume,
+                              reductions: Set[Expr]) extends StmtReducer {
 
   def current: Option[Stmt] = {
     reductions.headOption.map(assume.copy(_))
@@ -46,21 +47,21 @@ final class AssumeReducer(assume: Assume,
 
   def reduce: Option[StmtReducer] = {
     val tail: Set[Expr] = reductions.tail
-    if (tail.isEmpty) None else Some(new AssumeReducer(assume, tail))
+    if (tail.isEmpty) None else Some(new AssumeExprReducer(assume, tail))
   }
 
   def advance: Option[StmtReducer] = {
-    reductions.headOption.map(e => AssumeReducer(assume, e))
+    reductions.headOption.map(e => AssumeExprReducer(assume, e))
   }
 }
 
-object AssumeReducer {
-  def apply(assume: Assume): AssumeReducer = {
+object AssumeExprReducer {
+  def apply(assume: Assume): AssumeExprReducer = {
     apply(assume, assume.e)
   }
 
   private def apply(assume: Assume, e: Expr) = {
     val reductions = ExpressionReducer(e)
-    new AssumeReducer(assume, reductions)
+    new AssumeExprReducer(assume, reductions)
   }
 }
