@@ -45,7 +45,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
 
   import ComposedProgramReducer._
 
-  override def current: Option[Program] = {
+   def current: Option[Program] = {
     reducer.current.map {
       stmt: Stmt =>
         val stmts = inProgress.unreduced match {
@@ -63,7 +63,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
   /**
    * Reduces current statement if possible. Keeps last reduction.
    */
-  override def reduce: Option[ComposedProgramReducer] = {
+   def reduce: Option[ComposedProgramReducer] = {
     reducer.reduce.map {
       stmtReducer =>
       // current statement can be reduced further
@@ -94,7 +94,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
    * Answer: We can just check if the reducer can be advanced, if not, we simply check
    * for the next reduction possibility.
    */
-  override def advance: Option[ComposedProgramReducer] = {
+   def advance: Option[ComposedProgramReducer] = {
     reducer.advance.map {
       stmtReducer =>
       // current statement can be reduced further

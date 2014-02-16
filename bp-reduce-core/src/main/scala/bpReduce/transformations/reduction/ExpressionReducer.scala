@@ -39,13 +39,6 @@ object ExpressionReducer {
 
   def apply(e: Expr): Set[Expr] = {
 
-    // TODO: write correct transformer
-    class ReduceTransformer() extends ExprTransformer {
-      override def transform(e: Expr): Expr = {
-        super.transform(e)
-      }
-    }
-
     /**
      * Replace only one variable at a time because
      * others might become irrelevant

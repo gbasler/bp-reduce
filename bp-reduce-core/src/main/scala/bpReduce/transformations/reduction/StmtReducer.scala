@@ -3,7 +3,6 @@ package transformations
 package reduction
 
 import bpReduce.ast.Stmt
-import bpReduce.ast.Stmt.Skip
 
 /**
  * Reduces a single statement.
@@ -31,6 +30,8 @@ import bpReduce.ast.Stmt.Skip
  * if a statement is eliminated, all jump targets must be rewired.
  * If this is done later, it can be separated completely from the reduction process.
  *
+ * The reduction algorithm stops if we arrive at the rightmost element or at the top or
+ * if no valid program is found during along this path.
  */
 trait StmtReducer {
 
@@ -73,11 +74,11 @@ trait StmtReducer {
 object StmtReducer {
   val Empty = new StmtReducer {
 
-    override def current = None
+    def current = None
 
-    override def reduce = None
+    def reduce = None
 
-    override def advance = None
+    def advance = None
   }
 
 }

@@ -15,7 +15,7 @@ import bpReduce.ast.Stmt.Assert
 object ReduceExpressions extends ProgramReducerFacory {
   def apply(program: Program): Option[ProgramReducer] = {
     val exprReducer = new StmtReducerFactory {
-      override def apply(stmt: Stmt): StmtReducer = stmt match {
+      def apply(stmt: Stmt): StmtReducer = stmt match {
         case Assign(assigns, constrain)             =>
           StmtReducer.Empty // TODO
         case assume: Assume                         =>
@@ -40,16 +40,16 @@ object ReduceExpressions extends ProgramReducerFacory {
 final class AssumeReducer(assume: Assume,
                           reductions: Set[Expr]) extends StmtReducer {
 
-  override def current: Option[Stmt] = {
+  def current: Option[Stmt] = {
     reductions.headOption.map(assume.copy(_))
   }
 
-  override def reduce: Option[StmtReducer] = {
+  def reduce: Option[StmtReducer] = {
     val tail: Set[Expr] = reductions.tail
     if (tail.isEmpty) None else Some(new AssumeReducer(assume, tail))
   }
 
-  override def advance: Option[StmtReducer] = {
+  def advance: Option[StmtReducer] = {
     reductions.headOption.map(e => AssumeReducer(assume, e))
   }
 }
