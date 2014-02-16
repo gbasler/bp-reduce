@@ -2,8 +2,13 @@ package bpReduce
 package ast
 
 import scala.collection.mutable.ListBuffer
+import bpReduce.writer.Formatter
 
 final case class Program(globals: VariableHolder, functions: List[Function]) {
+
+  override def toString: String = {
+    Formatter.format(this)
+  }
 
   /**
    * @param pf Applied to each expr on which the function is defined and collect the results.

@@ -56,7 +56,8 @@ final case class Reducer(config: ReducerConfig) {
         case factory :: tail =>
           val reducer = factory(current.getOrElse(original))
           val variant = reduceMax(reducer, None)
-          reduce(original, tail, variant)
+          // if no reduction was possible, we must continue with last possible one
+          reduce(original, tail, variant.orElse(current))
       }
     }
 
