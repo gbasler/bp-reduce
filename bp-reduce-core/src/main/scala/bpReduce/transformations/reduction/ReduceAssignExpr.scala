@@ -51,38 +51,30 @@ object ReduceAssignExpr {
             reducedConstrains.map(c => assign.copy(constrain = Some(c)))
         }
 
-        assign.assigns match {
+        val reducesRhss = assign.assigns match {
           case Seq((variable, expr)) =>
             // only one assignment, reduction trivial
             val reducedExprs = ExpressionReducer(expr).toList
-            val reducedRhs = reducedExprs.map(e => assign.copy(assigns = Seq(variable -> e)))
-            new ReduceAssignExpr(reducedRhs ++ reducedConstrains)
+            reducedExprs.map(e => assign.copy(assigns = Seq(variable -> e)))
 
           case assigns =>
             // there are n possible reductions since we
             // reduce only one of the rhss at a time
-            val reductions = for {
-              i <- assigns.indices.toList
-            } yield {
+            assigns.indices.toList.flatMap {
+              i =>
+                val (variable, expr) = assigns(i)
+                val reduced = ExpressionReducer(expr).toSeq
 
-              val reducedAssigns = for {
-                (ve@(variable, expr), index) <- assigns.zipWithIndex
-              } yield {
-                if (index == i) {
-                  val reduced = ExpressionReducer(expr).toSeq
-                  val a = reduced.map(e => variable -> e)
-                } else {
-                  ve
+                for {
+                  e <- reduced
+                } yield {
+                  val reducedAssigns = (assigns.take(i) :+ (variable -> e)) ++ assigns.drop(i + 1)
+                  assign.copy(assigns = reducedAssigns)
                 }
-              }
-
-
-              val reducedAssigns = (assigns.take(i) :+ (assigns(i)._1 -> e)) ++ assigns.drop(i + 1)
-              assign.copy(assigns = reducedAssigns)
             }
-
-            new ReduceAssignExpr(reductions)
         }
+
+        new ReduceAssignExpr(reducesRhss ++ reducedConstrains)
     }
   }
 }
