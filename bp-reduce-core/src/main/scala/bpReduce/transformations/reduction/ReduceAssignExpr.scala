@@ -2,9 +2,8 @@ package bpReduce
 package transformations
 package reduction
 
-import bpReduce.ast.{Expr, Stmt}
+import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt.Assign
-import bpReduce.ast.Expr.Var
 
 /**
  * Reduces `:=` expressions by incrementally reducing the expressions at the rhs and
