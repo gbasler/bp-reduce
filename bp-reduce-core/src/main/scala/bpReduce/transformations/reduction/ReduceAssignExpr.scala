@@ -20,11 +20,7 @@ final case class ReduceAssignExpr(next: List[Stmt]) extends StmtReducer {
   def current: Option[Stmt] = next.headOption
 
   def reduce: Option[ReduceAssignExpr] = {
-    // last possible reduction is `Skip`,
-    // so if next one is not a skip we can reduce more
-    current collect {
-      case assign: Assign => ReduceAssignExpr(assign)
-    }
+    current.flatMap(ReduceAssignExpr(_))
   }
 
   def advance: Option[ReduceAssignExpr] = {
@@ -38,7 +34,7 @@ final case class ReduceAssignExpr(next: List[Stmt]) extends StmtReducer {
 }
 
 object ReduceAssignExpr {
-  def apply(stmt: Stmt): ReduceAssignExpr = {
+  def apply(stmt: Stmt): Option[ReduceAssignExpr] = {
 
     stmt match {
       case assign: Assign =>
@@ -73,7 +69,8 @@ object ReduceAssignExpr {
             }
         }
 
-        new ReduceAssignExpr(reducesRhss ++ reducedConstrains)
+        val reductions = reducesRhss ++ reducedConstrains
+        if(reductions.isEmpty) None else Some(new ReduceAssignExpr(reductions))
     }
   }
 }
