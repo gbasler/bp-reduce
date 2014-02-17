@@ -27,8 +27,8 @@ final case class ReduceAssignExpr(next: List[Stmt]) extends StmtReducer {
     // previous reduction not successful: 
     // try next reduction 
     next match {
-      case Nil          => None
-      case head :: tail => Some(copy(next = tail))
+      case Nil | _ :: Nil => None
+      case head :: tail   => Some(copy(next = tail))
     }
   }
 }
@@ -70,7 +70,7 @@ object ReduceAssignExpr {
         }
 
         val reductions = reducesRhss ++ reducedConstrains
-        if(reductions.isEmpty) None else Some(new ReduceAssignExpr(reductions))
+        if (reductions.isEmpty) None else Some(new ReduceAssignExpr(reductions))
     }
   }
 }

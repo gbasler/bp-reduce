@@ -25,8 +25,10 @@ class ReduceAssignExprTest extends BaseSpecification {
     val stmt3: Assign = "l0, l1 := F, l0"
     val stmt4: Assign = "l0, l1 := F, T"
 
-    val stmt5: Assign = "l0, l1 := F, l0"
-    val stmt6: Assign = "l0, l1 := T, T"
+    val stmt5: Assign = "l0, l1 := l1, T"
+    val stmt6: Assign = "l0, l1 := l1, F"
+    val stmt7: Assign = "l0, l1 := T, F"
+    val stmt8: Assign = "l0, l1 := F, F"
 
     val reducer = ReduceAssignExpr(stmt).get
 
@@ -39,6 +41,13 @@ class ReduceAssignExprTest extends BaseSpecification {
     reducer.advance.get.reduce.get.current.get === stmt4
 
     reducer.advance.get.advance.get.current.get === stmt5
-    reducer.advance.get.reduce.get.current.get === stmt4
+    reducer.advance.get.advance.get.reduce.get.current.get === stmt2
+    reducer.advance.get.advance.get.advance.get.current.get === stmt6
+    reducer.advance.get.advance.get.advance.get.reduce.get.current.get === stmt7
+    reducer.advance.get.advance.get.advance.get.reduce.get.current.get === stmt7
+    reducer.advance.get.advance.get.advance.get.reduce.get.reduce must beNone
+    reducer.advance.get.advance.get.advance.get.reduce.get.advance.get.current.get === stmt8
+    reducer.advance.get.advance.get.advance.get.reduce.get.advance.get.reduce must beNone
+    reducer.advance.get.advance.get.advance.get.reduce.get.advance.get.advance must beNone
   }
 }
