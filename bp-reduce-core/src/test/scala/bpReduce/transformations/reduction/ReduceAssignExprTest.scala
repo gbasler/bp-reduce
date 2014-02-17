@@ -9,14 +9,14 @@ import bpReduce.{reducer, BaseSpecification}
 
 class ReduceAssignExprTest extends BaseSpecification {
 
-  "one reduction" in {
+  "one reduction: exhaustive test" in {
     implicit def stmtFromString(str: String): Stmt = {
       new BooleanProgramParser().parseStmt(str)
     }
     implicit def assignFromString(str: String): Assign = {
       new BooleanProgramParser().parseAssign(str)
     }
-    //constrain
+
     val stmt: Assign = "l0, l1 := l1, l0"
 
     val stmt1: Assign = "l0, l1 := T, l0"
@@ -33,9 +33,8 @@ class ReduceAssignExprTest extends BaseSpecification {
     val reducer = ReduceAssignExpr(stmt).get
 
     reducer.current.get === stmt1
-    val reduced = reducer.reduce.get
-    reduced.current.get === stmt2
-    reduced.reduce must beNone
+    reducer.reduce.get.current.get === stmt2
+    reducer.reduce.get.reduce must beNone
 
     reducer.advance.get.current.get === stmt3
     reducer.advance.get.reduce.get.current.get === stmt4
@@ -49,5 +48,29 @@ class ReduceAssignExprTest extends BaseSpecification {
     reducer.advance.get.advance.get.advance.get.reduce.get.advance.get.current.get === stmt8
     reducer.advance.get.advance.get.advance.get.reduce.get.advance.get.reduce must beNone
     reducer.advance.get.advance.get.advance.get.reduce.get.advance.get.advance must beNone
+  }
+
+  "one reduction + constrain" in {
+    implicit def stmtFromString(str: String): Stmt = {
+      new BooleanProgramParser().parseStmt(str)
+    }
+    implicit def assignFromString(str: String): Assign = {
+      new BooleanProgramParser().parseAssign(str)
+    }
+
+    val stmt: Assign = "l0 := * constrain(l0 = l1)"
+
+    val stmt1: Assign = "l0 := * constrain(T)"
+    val stmt2: Assign = "l0 := * constrain(F)"
+
+    val stmt3: Assign = "l0 := T constrain(T)"
+    val stmt4: Assign = "l0 := F constrain(T)"
+
+    val reducer = ReduceAssignExpr(stmt).get
+
+    reducer.current.get === stmt1
+    reducer.reduce.get.current.get === stmt3
+    reducer.advance.get.current.get === stmt2
+
   }
 }

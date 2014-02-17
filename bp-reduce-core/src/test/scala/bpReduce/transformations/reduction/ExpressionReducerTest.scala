@@ -31,6 +31,10 @@ class ExpressionReducerTest extends BaseSpecification {
 
       ExpressionReducer(And(a, Or(b, c))) must be_==(Set(And(a, b), And(a, c), Or(b, c), a, b, c, True, False))
     }
+
+    "nondet" in {
+      ExpressionReducer(Nondet) must be_==(Set(True, False))
+    }
   }
 
 }
