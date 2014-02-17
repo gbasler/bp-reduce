@@ -49,23 +49,23 @@ object ExpressionReducer {
                 replacement: Option[(Expr, Expr)]): (Expr, Option[(Expr, Expr)]) = {
 
       val (reducedExpr, replaced) = e match {
-        case NaryOp(op, ops)       =>
+        case NaryOp(op, ops)           =>
           val (r, e) = ops.foldLeft(replacement -> Seq.empty[Expr]) {
             case ((r, acc), expr) =>
               val (e1, r1) = replace(expr, r)
               (r1, acc :+ e1)
           }
           NaryOp(op, e) -> r
-        case BinaryOp(op, a, b)    =>
+        case BinaryOp(op, a, b)        =>
           val (e1, r1) = replace(a, replacement)
           val (e2, r2) = replace(b, r1)
           BinaryOp(op, e1, e2) -> r2
-        case Not(a)                =>
+        case Not(a)                    =>
           val (e1, r1) = replace(e, replacement)
           Not(e1) -> r1
-        case True | False | Nondet =>
+        case True | False              =>
           e -> replacement
-        case v: Var                =>
+        case v@(Var(_, _, _) | Nondet) =>
           replacement match {
             case Some((from, to)) if from == v =>
               to -> None
@@ -119,10 +119,50 @@ object ExpressionReducer {
       decrementalPowerSet(Set(e), Set())
     }
 
+    def countNondet(e: Expr) = e.count {
+      case Nondet => true
+      case _      => false
+    }
+
+    /**
+     * Unlike variables, where you'd expect all occurrences of the same
+     * variable have the same value, a nondet is different from any other nondet.
+     * However, since they are represented with the same constant,
+     */
+    def replaceNondetOnce(e: Expr, counter: Int): Set[Expr] = {
+      @tailrec
+      def decrementalPowerSet(wl: Set[Expr],
+                              acc: Set[Expr]): Set[Expr] = {
+        if (wl.nonEmpty) {
+          val next = wl.flatMap {
+            expr =>
+              val vars = collectVars(expr)
+              vars.flatMap {
+                v =>
+                  val (withTrue, replaced) = replace(expr, Some(v -> True))
+                  val withFalse = replace(expr, Some(v -> False))._1
+
+                  if (replaced.isDefined) {
+                    // not replaced
+                    Set.empty[Expr]
+                  } else {
+                    Set(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
+                  }
+              }
+          }
+          decrementalPowerSet(next, acc ++ next)
+        } else {
+          acc
+        }
+      }
+      decrementalPowerSet(Set(e), Set())
+    }
+
+
     // simplify expression (in order to have as few runs as possible)
     val simplified = ExpressionSimplifier(e)
 
-    val replaced = replaceAllVarsOnce(simplified)
+    val replaced: Set[Expr] = replaceAllVarsOnce(simplified)
     replaced
   }
 

@@ -75,6 +75,19 @@ sealed abstract class Expr {
       }
     }.transform(this)
   }
+
+  def count(predicate: Expr => Boolean): Int = {
+    var counter = 0
+
+    new ExprTraverser {
+      override def traverse(e: Expr) {
+        if (predicate(e)) counter += 1
+        super.traverse(e)
+      }
+    }.traverse(this)
+
+    counter
+  }
 }
 
 object Expr {
