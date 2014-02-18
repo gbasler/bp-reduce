@@ -199,7 +199,7 @@ object ExpressionReducer {
     // expand nondet variables but only if there are any
     val reduced = for {
       replacedVars <- replaceAllVarsOnce(simplified)
-      expandedNondets <- if(hasNondets(replacedVars)) expandNondets(replacedVars) else Set(replacedVars)
+      expandedNondets <- if (hasNondets(replacedVars)) expandNondets(replacedVars) + replacedVars else Set(replacedVars)
     } yield expandedNondets
 
     if (reduced.isEmpty && hasNondets(simplified)) {

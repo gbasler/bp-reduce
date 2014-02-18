@@ -32,6 +32,9 @@ class ReduceAssignExprTest extends BaseSpecification {
 
     val reducer = ReduceAssignExpr(stmt).get
 
+    // TODO: the order of advance shouldn't matter...
+    // this test should be insensitive to it...
+
     reducer.current.get === stmt1
     reducer.reduce.get.current.get === stmt2
     reducer.reduce.get.reduce must beNone
@@ -60,17 +63,22 @@ class ReduceAssignExprTest extends BaseSpecification {
 
     val stmt: Assign = "l0 := * constrain(l0 = l1)"
 
-    val stmt1: Assign = "l0 := * constrain(T)"
-    val stmt2: Assign = "l0 := * constrain(F)"
+    val stmt1: Assign = "l0 := T constrain(l0 = l1)"
+    val stmt2: Assign = "l0 := F constrain(l0 = l1)"
 
-    val stmt3: Assign = "l0 := T constrain(T)"
-    val stmt4: Assign = "l0 := F constrain(T)"
+    val stmt3: Assign = "l0 := * constrain(T)"
+    val stmt4: Assign = "l0 := * constrain(F)"
+
+    val stmt5: Assign = "l0 := T constrain(T)"
+    val stmt6: Assign = "l0 := F constrain(T)"
 
     val reducer = ReduceAssignExpr(stmt).get
 
     reducer.current.get === stmt1
-    reducer.reduce.get.current.get === stmt3
+    reducer.reduce.get.current.get === stmt5
+    reducer.reduce.get.reduce must beNone
     reducer.advance.get.current.get === stmt2
+    reducer.advance.get.reduce.get.current.get === stmt6
 
   }
 }
