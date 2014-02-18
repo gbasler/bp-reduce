@@ -71,6 +71,8 @@ object ReduceAssignExpr {
 
         val reductions = reducesRhss ++ reducedConstrains
         if (reductions.isEmpty) None else Some(new ReduceAssignExpr(reductions))
+
+      case _ => None
     }
   }
 }
