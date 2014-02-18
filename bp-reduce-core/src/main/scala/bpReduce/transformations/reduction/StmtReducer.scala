@@ -55,6 +55,7 @@ trait StmtReducer {
    * if `l0 := l1` was proposed last, it will propose now `Skip`.
    *
    * @return A [[StmtReducer]] that can produce the reduced statement.
+   *         TODO: this should return Some only iff current is not None...
    */
   def reduce: Option[StmtReducer]
 

@@ -70,9 +70,65 @@ class ReduceAssignExprTest extends BaseSpecification {
     val stmt4: Assign = "l0 := * constrain(F)"
 
     val stmt5: Assign = "l0 := T constrain(T)"
-    val stmt6: Assign = "l0 := F constrain(T)"
+    val stmt6: Assign = "l0 := T constrain(F)"
+    val stmt7: Assign = "l0 := F constrain(T)"
+    val stmt8: Assign = "l0 := F constrain(F)"
 
-    val reducer = ReduceAssignExpr(stmt).get
+    import ReductionChain._
+    val reductions: Seq[Reduction] = Seq(
+      stmt reducesTo stmt1,
+      stmt reducesTo stmt2,
+      stmt reducesTo stmt3,
+      stmt reducesTo stmt4,
+      stmt1 reducesTo stmt5,
+      stmt1 reducesTo stmt6,
+      stmt2 reducesTo stmt7,
+      stmt2 reducesTo stmt8,
+      stmt3 reducesTo stmt5,
+      stmt3 reducesTo stmt7,
+      stmt4 reducesTo stmt6,
+      stmt4 reducesTo stmt8
+    )
+
+    val tree = buildTree(reductions)
+
+    // checks reduction from the point of view from the reducer
+    def checkReductionChain(root: Stmt, reducer: StmtReducer) {
+
+      def checkReferenceReduction(from: Stmt, to: Stmt) = {
+        val refTos = tree.getOrElse(from, sys.error(s"there should be a reduction possible from $root to $to"))
+        refTos must contain(to)
+      }
+
+      // see what reducer offers...
+      reducer.current match {
+        case Some(to) =>
+          checkReferenceReduction(root, to)
+        case None     =>
+          // no reduction from this statement should be possible...
+          tree.get(root) must beNone
+      }
+
+      reducer.reduce match {
+        case Some(to) =>
+          val from = reducer.current.getOrElse(sys.error(s"reduction without origin impossible"))
+          checkReferenceReduction(from, to.current.get) // TODO: get seems weird...
+        case None     =>
+      }
+
+      reducer.advance match {
+        case Some(x) =>
+          // reduction possible... check
+          checkReductionChain(reducer.current.get, x) // TODO: get seems weird...
+        case None    =>
+      }
+    }
+
+    // TODO: check reduction from point of view of the reductioh chain...
+
+    val reducer: ReduceAssignExpr = ReduceAssignExpr(stmt).get
+
+    checkReductionChain(stmt, reducer)
 
     reducer.current.get === stmt1
     reducer.reduce.get.current.get === stmt5
@@ -81,4 +137,21 @@ class ReduceAssignExprTest extends BaseSpecification {
     reducer.advance.get.reduce.get.current.get === stmt6
 
   }
+}
+
+object ReductionChain {
+
+  implicit class StmtWrapper(val stmt: Stmt) extends AnyVal {
+    def reducesTo(s: Stmt): Reduction = Reduction(stmt, s)
+  }
+
+  final case class Reduction(from: Stmt, to: Stmt)
+
+  def buildTree(reductions: Seq[Reduction]): Map[Stmt, Set[Stmt]] = {
+    reductions.groupBy(_.from).map {
+      case (stmt, reductions) =>
+        stmt -> reductions.map(_.to).toSet
+    }
+  }
+
 }
