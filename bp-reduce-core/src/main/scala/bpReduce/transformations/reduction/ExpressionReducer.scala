@@ -90,6 +90,16 @@ object ExpressionReducer {
     }.toSet
 
 
+    /**
+     * We use a power set approach here:
+     * Given an expression, collect all variables that are present in the formula.
+     * The first round of reduction, removes just one variable, then a second one is removed and so on until
+     * we have removed all variables (max reduction).
+     * However we need all possible orderings. Consider we can remove `a` or `b`. In order to arrive at the state
+     * where both are removed we can remove `a` first and then `b` or vice-versa, so we need to explore both orderings.
+     * That is were the decrementing power set algorithm comes into play: it allows a nice recursive implementation
+     * with a simple work list.
+     */
     def replaceAllVarsOnce(e: Expr): Set[Expr] = {
       @tailrec
       def decrementalPowerSet(wl: Set[Expr],
