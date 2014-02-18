@@ -51,5 +51,9 @@ class ExpressionSimplifierTest extends BaseSpecification {
     "=" in {
       ExpressionSimplifier(Equiv(True, False)) === False
     }
+
+    "nondet" in {
+      ExpressionSimplifier(Equiv(Nondet, Nondet)) === Nondet
+    }
   }
 }
