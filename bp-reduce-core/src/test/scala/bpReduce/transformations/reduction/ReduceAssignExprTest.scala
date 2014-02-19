@@ -62,91 +62,60 @@ class ReduceAssignExprTest extends BaseSpecification {
     }
 
     val origin: Assign = "l0 := * constrain(l0 = l1)"
-
-    // 1st round
-    val round1Stmt1: Assign = "l0 := T constrain(l0 = l1)"
-    val round1Stmt2: Assign = "l0 := F constrain(l0 = l1)"
-
-    val round1Stmt3: Assign = "l0 := * constrain(l0)"
-    val round1Stmt4: Assign = "l0 := * constrain(!l0)"
-    val round1Stmt5: Assign = "l0 := * constrain(l1)"
-    val round1Stmt6: Assign = "l0 := * constrain(!l1)"
-
-    // 2nd round
-    val round2Stmt1: Assign = "l0 := T constrain(l0)"
-    val round2Stmt2: Assign = "l0 := T constrain(!l0)"
-    val round2Stmt3: Assign = "l0 := T constrain(l1)"
-    val round2Stmt4: Assign = "l0 := T constrain(!l1)"
-
-    val round2Stmt5: Assign = "l0 := F constrain(l0)"
-    val round2Stmt6: Assign = "l0 := F constrain(!l0)"
-    val round2Stmt7: Assign = "l0 := F constrain(l1)"
-    val round2Stmt8: Assign = "l0 := F constrain(!l1)"
-
-    val round2Stmt9: Assign = "l0 := * constrain(T)"
-    val round2Stmt10: Assign = "l0 := * constrain(F)"
-
-    // 3rd round
-    val round3Stmt1: Assign = "l0 := T constrain(T)"
-    val round3Stmt2: Assign = "l0 := T constrain(F)"
-
-    val round3Stmt3: Assign = "l0 := F constrain(T)"
-    val round3Stmt4: Assign = "l0 := F constrain(F)"
-
     import ReductionChain._
     val reductions: Seq[Reduction] = Seq(
       // 1st round
-      origin reducesTo round1Stmt1,
-      origin reducesTo round1Stmt2,
-      origin reducesTo round1Stmt3,
-      origin reducesTo round1Stmt4,
-      origin reducesTo round1Stmt5,
-      origin reducesTo round1Stmt6,
+      "l0 := * constrain(l0 = l1)" -> "l0 := T constrain(l0 = l1)",
+      "l0 := * constrain(l0 = l1)" -> "l0 := F constrain(l0 = l1)",
+      "l0 := * constrain(l0 = l1)" -> "l0 := * constrain(l0)",
+      "l0 := * constrain(l0 = l1)" -> "l0 := * constrain(!l0)",
+      "l0 := * constrain(l0 = l1)" -> "l0 := * constrain(l1)",
+      "l0 := * constrain(l0 = l1)" -> "l0 := * constrain(!l1)",
 
       // 2nd round
-      round1Stmt1 reducesTo round2Stmt1,
-      round1Stmt1 reducesTo round2Stmt2,
-      round1Stmt1 reducesTo round2Stmt3,
-      round1Stmt1 reducesTo round2Stmt4,
-      round1Stmt2 reducesTo round2Stmt5,
-      round1Stmt2 reducesTo round2Stmt6,
-      round1Stmt2 reducesTo round2Stmt7,
-      round1Stmt2 reducesTo round2Stmt8,
-      round1Stmt3 reducesTo round2Stmt1,
-      round1Stmt3 reducesTo round2Stmt5,
-      round1Stmt3 reducesTo round2Stmt9,
-      round1Stmt3 reducesTo round2Stmt10,
-      round1Stmt4 reducesTo round2Stmt2,
-      round1Stmt4 reducesTo round2Stmt6,
-      round1Stmt4 reducesTo round2Stmt9,
-      round1Stmt4 reducesTo round2Stmt10,
-      round1Stmt5 reducesTo round2Stmt3,
-      round1Stmt5 reducesTo round2Stmt7,
-      round1Stmt5 reducesTo round2Stmt9,
-      round1Stmt5 reducesTo round2Stmt10,
-      round1Stmt6 reducesTo round2Stmt4,
-      round1Stmt6 reducesTo round2Stmt8,
-      round1Stmt6 reducesTo round2Stmt9,
-      round1Stmt6 reducesTo round2Stmt10,
+      "l0 := T constrain(l0 = l1)" -> "l0 := T constrain(l0)",
+      "l0 := T constrain(l0 = l1)" -> "l0 := T constrain(!l0)",
+      "l0 := T constrain(l0 = l1)" -> "l0 := T constrain(l1)",
+      "l0 := T constrain(l0 = l1)" -> "l0 := T constrain(!l1)",
+      "l0 := F constrain(l0 = l1)" -> "l0 := F constrain(l0)",
+      "l0 := F constrain(l0 = l1)" -> "l0 := F constrain(!l0)",
+      "l0 := F constrain(l0 = l1)" -> "l0 := F constrain(l1)",
+      "l0 := F constrain(l0 = l1)" -> "l0 := F constrain(!l1)",
+      "l0 := * constrain(l0)" -> "l0 := T constrain(l0)",
+      "l0 := * constrain(l0)" -> "l0 := F constrain(l0)",
+      "l0 := * constrain(l0)" -> "l0 := * constrain(T)",
+      "l0 := * constrain(l0)" -> "l0 := * constrain(F)",
+      "l0 := * constrain(!l0)" -> "l0 := T constrain(!l0)",
+      "l0 := * constrain(!l0)" -> "l0 := F constrain(!l0)",
+      "l0 := * constrain(!l0)" -> "l0 := * constrain(T)",
+      "l0 := * constrain(!l0)" -> "l0 := * constrain(F)",
+      "l0 := * constrain(l1)" -> "l0 := T constrain(l1)",
+      "l0 := * constrain(l1)" -> "l0 := F constrain(l1)",
+      "l0 := * constrain(l1)" -> "l0 := * constrain(T)",
+      "l0 := * constrain(l1)" -> "l0 := * constrain(F)",
+      "l0 := * constrain(!l1)" -> "l0 := T constrain(!l1)",
+      "l0 := * constrain(!l1)" -> "l0 := F constrain(!l1)",
+      "l0 := * constrain(!l1)" -> "l0 := * constrain(T)",
+      "l0 := * constrain(!l1)" -> "l0 := * constrain(F)",
 
       // 3rd round
-      round2Stmt1 reducesTo round3Stmt1,
-      round2Stmt1 reducesTo round3Stmt2,
-      round2Stmt2 reducesTo round3Stmt1,
-      round2Stmt2 reducesTo round3Stmt2,
-      round2Stmt3 reducesTo round3Stmt1,
-      round2Stmt3 reducesTo round3Stmt2,
-      round2Stmt4 reducesTo round3Stmt1,
-      round2Stmt4 reducesTo round3Stmt2,
+      "l0 := T constrain(l0)" -> "l0 := T constrain(T)",
+      "l0 := T constrain(l0)" -> "l0 := T constrain(F)",
+      "l0 := T constrain(!l0)" -> "l0 := T constrain(T)",
+      "l0 := T constrain(!l0)" -> "l0 := T constrain(F)",
+      "l0 := T constrain(l1)" -> "l0 := T constrain(T)",
+      "l0 := T constrain(l1)" -> "l0 := T constrain(F)",
+      "l0 := T constrain(!l1)" -> "l0 := T constrain(T)",
+      "l0 := T constrain(!l1)" -> "l0 := T constrain(F)",
 
-      round2Stmt5 reducesTo round3Stmt3,
-      round2Stmt5 reducesTo round3Stmt4,
-      round2Stmt6 reducesTo round3Stmt3,
-      round2Stmt6 reducesTo round3Stmt4,
-      round2Stmt7 reducesTo round3Stmt3,
-      round2Stmt7 reducesTo round3Stmt4,
-      round2Stmt8 reducesTo round3Stmt3,
-      round2Stmt8 reducesTo round3Stmt4
+      "l0 := F constrain(l0)" -> "l0 := F constrain(T)",
+      "l0 := F constrain(l0)" -> "l0 := F constrain(F)",
+      "l0 := F constrain(!l0)" -> "l0 := F constrain(T)",
+      "l0 := F constrain(!l0)" -> "l0 := F constrain(F)",
+      "l0 := F constrain(l1)" -> "l0 := F constrain(T)",
+      "l0 := F constrain(l1)" -> "l0 := F constrain(F)",
+      "l0 := F constrain(!l1)" -> "l0 := F constrain(T)",
+      "l0 := F constrain(!l1)" -> "l0 := F constrain(F)"
     )
 
     val tree = buildTree(reductions)
@@ -185,14 +154,20 @@ class ReduceAssignExprTest extends BaseSpecification {
 
     // TODO: check reduction from point of view of the reductioh chain...
 
-    val reducer: ReduceAssignExpr = ReduceAssignExpr(origin).get
-
+    val reducer = ReduceAssignExpr(origin).get
     checkReductionChain(origin, reducer)
     ok
   }
 }
 
 object ReductionChain {
+
+  implicit class UnparsedStmtWrapper(val stmt: String) extends AnyVal {
+    def ->(s: String): Reduction = {
+      val parser = new BooleanProgramParser()
+      Reduction(parser.parseStmt(stmt), parser.parseStmt(s))
+    }
+  }
 
   implicit class StmtWrapper(val stmt: Stmt) extends AnyVal {
     def reducesTo(s: Stmt): Reduction = Reduction(stmt, s)
