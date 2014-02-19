@@ -101,33 +101,22 @@ object ExpressionReducer {
         shortCircuit(reducedExpr, replaced)
       }
 
-      @tailrec
-      def decrementalPowerSet(wl: Set[Expr],
-                              acc: Set[Expr]): Set[Expr] = {
+      def decrementalPowerSet(expr: Expr): Set[Expr] = {
+        val vars = collectVars(expr)
+        vars.flatMap {
+          v =>
+            val (withTrue, replaced) = replace(expr, Some(v -> True))
+            val withFalse = replace(expr, Some(v -> False))._1
 
-        if (wl.nonEmpty) {
-          val next = wl.flatMap {
-            expr =>
-              val vars = collectVars(expr)
-              vars.flatMap {
-                v =>
-                  val (withTrue, replaced) = replace(expr, Some(v -> True))
-                  val withFalse = replace(expr, Some(v -> False))._1
-
-                  if (replaced.isDefined) {
-                    // not replaced
-                    Set.empty[Expr]
-                  } else {
-                    Set(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
-                  }
-              }
-          }
-          decrementalPowerSet(next, acc ++ next)
-        } else {
-          acc
+            if (replaced.isDefined) {
+              // not replaced
+              Set.empty[Expr]
+            } else {
+              Set(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
+            }
         }
       }
-      decrementalPowerSet(Set(e), Set())
+      decrementalPowerSet(e)
     }
 
     def expandNondets(e: Expr): Set[Expr] = {

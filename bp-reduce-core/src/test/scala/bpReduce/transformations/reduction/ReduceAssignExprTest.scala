@@ -61,71 +61,84 @@ class ReduceAssignExprTest extends BaseSpecification {
       new BooleanProgramParser().parseAssign(str)
     }
 
-    val stmt: Assign = "l0 := * constrain(l0 = l1)"
+    val origin: Assign = "l0 := * constrain(l0 = l1)"
 
     // 1st round
-    val stmt1: Assign = "l0 := T constrain(l0 = l1)"
-    val stmt2: Assign = "l0 := F constrain(l0 = l1)"
+    val round1Stmt1: Assign = "l0 := T constrain(l0 = l1)"
+    val round1Stmt2: Assign = "l0 := F constrain(l0 = l1)"
 
-    val stmt3: Assign = "l0 := * constrain(T)"
-    val stmt4: Assign = "l0 := * constrain(F)"
+    val round1Stmt3: Assign = "l0 := * constrain(l0)"
+    val round1Stmt4: Assign = "l0 := * constrain(!l0)"
+    val round1Stmt5: Assign = "l0 := * constrain(l1)"
+    val round1Stmt6: Assign = "l0 := * constrain(!l1)"
 
     // 2nd round
-    val stmt5: Assign = "l0 := T constrain(l0)"
-    val stmt6: Assign = "l0 := T constrain(!l0)"
-    val stmt7: Assign = "l0 := T constrain(l1)"
-    val stmt8: Assign = "l0 := T constrain(!l1)"
+    val round2Stmt1: Assign = "l0 := T constrain(l0)"
+    val round2Stmt2: Assign = "l0 := T constrain(!l0)"
+    val round2Stmt3: Assign = "l0 := T constrain(l1)"
+    val round2Stmt4: Assign = "l0 := T constrain(!l1)"
 
-    val stmt9: Assign = "l0 := F constrain(l0)"
-    val stmt10: Assign = "l0 := F constrain(!l0)"
-    val stmt11: Assign = "l0 := F constrain(l1)"
-    val stmt12: Assign = "l0 := F constrain(!l1)"
+    val round2Stmt5: Assign = "l0 := F constrain(l0)"
+    val round2Stmt6: Assign = "l0 := F constrain(!l0)"
+    val round2Stmt7: Assign = "l0 := F constrain(l1)"
+    val round2Stmt8: Assign = "l0 := F constrain(!l1)"
+
+    val round2Stmt9: Assign = "l0 := * constrain(T)"
+    val round2Stmt10: Assign = "l0 := * constrain(F)"
 
     // 3rd round
-    val stmt13: Assign = "l0 := T constrain(T)"
-    val stmt14: Assign = "l0 := T constrain(F)"
+    val round3Stmt1: Assign = "l0 := T constrain(T)"
+    val round3Stmt2: Assign = "l0 := T constrain(F)"
 
-    val stmt15: Assign = "l0 := F constrain(T)"
-    val stmt16: Assign = "l0 := F constrain(F)"
+    val round3Stmt3: Assign = "l0 := F constrain(T)"
+    val round3Stmt4: Assign = "l0 := F constrain(F)"
 
     import ReductionChain._
     val reductions: Seq[Reduction] = Seq(
       // 1st round
-      stmt reducesTo stmt1,
-      stmt reducesTo stmt2,
-      stmt reducesTo stmt3,
-      stmt reducesTo stmt4,
-      // 2nd round
-      stmt1 reducesTo stmt5,
-      stmt1 reducesTo stmt6,
-      stmt1 reducesTo stmt7,
-      stmt1 reducesTo stmt8,
-      stmt2 reducesTo stmt9,
-      stmt2 reducesTo stmt10,
-      stmt2 reducesTo stmt11,
-      stmt2 reducesTo stmt12,
-      stmt3 reducesTo stmt13,
-      stmt3 reducesTo stmt15,
-      stmt4 reducesTo stmt14,
-      stmt4 reducesTo stmt16,
-      // 3rd round
-      stmt5 reducesTo stmt13,
-      stmt5 reducesTo stmt15,
-      stmt6 reducesTo stmt13,
-      stmt6 reducesTo stmt15,
-      stmt7 reducesTo stmt13,
-      stmt7 reducesTo stmt15,
-      stmt8 reducesTo stmt13,
-      stmt8 reducesTo stmt15,
+      origin reducesTo round1Stmt1,
+      origin reducesTo round1Stmt2,
+      origin reducesTo round1Stmt3,
+      origin reducesTo round1Stmt4,
+      origin reducesTo round1Stmt5,
+      origin reducesTo round1Stmt6,
 
-      stmt9 reducesTo stmt13,
-      stmt9 reducesTo stmt15,
-      stmt10 reducesTo stmt13,
-      stmt10 reducesTo stmt15,
-      stmt11 reducesTo stmt13,
-      stmt11 reducesTo stmt15,
-      stmt12 reducesTo stmt13,
-      stmt12 reducesTo stmt15
+      // 2nd round
+      round1Stmt1 reducesTo round2Stmt1,
+      round1Stmt1 reducesTo round2Stmt2,
+      round1Stmt1 reducesTo round2Stmt3,
+      round1Stmt1 reducesTo round2Stmt4,
+      round1Stmt2 reducesTo round2Stmt5,
+      round1Stmt2 reducesTo round2Stmt6,
+      round1Stmt2 reducesTo round2Stmt7,
+      round1Stmt2 reducesTo round2Stmt8,
+      round1Stmt3 reducesTo round2Stmt9,
+      round1Stmt3 reducesTo round2Stmt10,
+      round1Stmt4 reducesTo round2Stmt9,
+      round1Stmt4 reducesTo round2Stmt10,
+      round1Stmt5 reducesTo round2Stmt9,
+      round1Stmt5 reducesTo round2Stmt10,
+      round1Stmt6 reducesTo round2Stmt9,
+      round1Stmt6 reducesTo round2Stmt10,
+
+      // 3rd round
+      round2Stmt1 reducesTo round3Stmt1,
+      round2Stmt1 reducesTo round3Stmt2,
+      round2Stmt2 reducesTo round3Stmt1,
+      round2Stmt2 reducesTo round3Stmt2,
+      round2Stmt3 reducesTo round3Stmt1,
+      round2Stmt3 reducesTo round3Stmt2,
+      round2Stmt4 reducesTo round3Stmt1,
+      round2Stmt4 reducesTo round3Stmt2,
+
+      round2Stmt5 reducesTo round3Stmt3,
+      round2Stmt5 reducesTo round3Stmt4,
+      round2Stmt6 reducesTo round3Stmt3,
+      round2Stmt6 reducesTo round3Stmt4,
+      round2Stmt7 reducesTo round3Stmt3,
+      round2Stmt7 reducesTo round3Stmt4,
+      round2Stmt8 reducesTo round3Stmt3,
+      round2Stmt8 reducesTo round3Stmt4
     )
 
     val tree = buildTree(reductions)
@@ -134,8 +147,13 @@ class ReduceAssignExprTest extends BaseSpecification {
     def checkReductionChain(root: Stmt, reducer: StmtReducer) {
 
       def checkReferenceReduction(from: Stmt, to: Stmt) = {
+        if(!tree.contains(from)) {
+          println("asdasd")
+        }
         val refTos = tree.getOrElse(from, sys.error(s"there should be a reduction possible from $root to $to"))
         if(!refTos.contains(to)) {
+          println("asdasd")
+          val r = reducer.reduce // redo
           println("asdasd")
         }
         refTos must contain(to)
@@ -167,15 +185,15 @@ class ReduceAssignExprTest extends BaseSpecification {
 
     // TODO: check reduction from point of view of the reductioh chain...
 
-    val reducer: ReduceAssignExpr = ReduceAssignExpr(stmt).get
+    val reducer: ReduceAssignExpr = ReduceAssignExpr(origin).get
 
-    checkReductionChain(stmt, reducer)
+    checkReductionChain(origin, reducer)
 
-    reducer.current.get === stmt1
-    reducer.reduce.get.current.get === stmt5
+    reducer.current.get === round1Stmt1
+    reducer.reduce.get.current.get === round2Stmt1
     reducer.reduce.get.reduce must beNone
-    reducer.advance.get.current.get === stmt2
-    reducer.advance.get.reduce.get.current.get === stmt6
+    reducer.advance.get.current.get === round1Stmt2
+    reducer.advance.get.reduce.get.current.get === round2Stmt2
 
   }
 }
