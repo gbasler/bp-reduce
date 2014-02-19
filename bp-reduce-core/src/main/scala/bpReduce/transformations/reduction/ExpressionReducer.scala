@@ -76,7 +76,7 @@ object ExpressionReducer {
             val (e1, r1) = replace(a, replacement)
             val (e2, r2) = replace(b, r1)
             BinaryOp(op, e1, e2) -> r2
-          case Not(a)                =>
+          case Not(e)                =>
             val (e1, r1) = replace(e, replacement)
             Not(e1) -> r1
           case True | False | Nondet =>
@@ -202,13 +202,14 @@ object ExpressionReducer {
       expandedNondets <- if (hasNondets(replacedVars)) expandNondets(replacedVars) + replacedVars else Set(replacedVars)
     } yield expandedNondets
 
-    if (reduced.isEmpty && hasNondets(simplified)) {
+    val result = if (reduced.isEmpty && hasNondets(simplified)) {
       // we did not find a reduction
       // however there might be the possibility of nondet variables but no regular variables
       expandNondets(simplified)
     } else {
       reduced
     }
+    result.map(ExpressionSimplifier(_))
   }
 
 }

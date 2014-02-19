@@ -63,31 +63,69 @@ class ReduceAssignExprTest extends BaseSpecification {
 
     val stmt: Assign = "l0 := * constrain(l0 = l1)"
 
+    // 1st round
     val stmt1: Assign = "l0 := T constrain(l0 = l1)"
     val stmt2: Assign = "l0 := F constrain(l0 = l1)"
 
     val stmt3: Assign = "l0 := * constrain(T)"
     val stmt4: Assign = "l0 := * constrain(F)"
 
-    val stmt5: Assign = "l0 := T constrain(T)"
-    val stmt6: Assign = "l0 := T constrain(F)"
-    val stmt7: Assign = "l0 := F constrain(T)"
-    val stmt8: Assign = "l0 := F constrain(F)"
+    // 2nd round
+    val stmt5: Assign = "l0 := T constrain(l0)"
+    val stmt6: Assign = "l0 := T constrain(!l0)"
+    val stmt7: Assign = "l0 := T constrain(l1)"
+    val stmt8: Assign = "l0 := T constrain(!l1)"
+
+    val stmt9: Assign = "l0 := F constrain(l0)"
+    val stmt10: Assign = "l0 := F constrain(!l0)"
+    val stmt11: Assign = "l0 := F constrain(l1)"
+    val stmt12: Assign = "l0 := F constrain(!l1)"
+
+    // 3rd round
+    val stmt13: Assign = "l0 := T constrain(T)"
+    val stmt14: Assign = "l0 := T constrain(F)"
+
+    val stmt15: Assign = "l0 := F constrain(T)"
+    val stmt16: Assign = "l0 := F constrain(F)"
 
     import ReductionChain._
     val reductions: Seq[Reduction] = Seq(
+      // 1st round
       stmt reducesTo stmt1,
       stmt reducesTo stmt2,
       stmt reducesTo stmt3,
       stmt reducesTo stmt4,
+      // 2nd round
       stmt1 reducesTo stmt5,
       stmt1 reducesTo stmt6,
-      stmt2 reducesTo stmt7,
-      stmt2 reducesTo stmt8,
-      stmt3 reducesTo stmt5,
-      stmt3 reducesTo stmt7,
-      stmt4 reducesTo stmt6,
-      stmt4 reducesTo stmt8
+      stmt1 reducesTo stmt7,
+      stmt1 reducesTo stmt8,
+      stmt2 reducesTo stmt9,
+      stmt2 reducesTo stmt10,
+      stmt2 reducesTo stmt11,
+      stmt2 reducesTo stmt12,
+      stmt3 reducesTo stmt13,
+      stmt3 reducesTo stmt15,
+      stmt4 reducesTo stmt14,
+      stmt4 reducesTo stmt16,
+      // 3rd round
+      stmt5 reducesTo stmt13,
+      stmt5 reducesTo stmt15,
+      stmt6 reducesTo stmt13,
+      stmt6 reducesTo stmt15,
+      stmt7 reducesTo stmt13,
+      stmt7 reducesTo stmt15,
+      stmt8 reducesTo stmt13,
+      stmt8 reducesTo stmt15,
+
+      stmt9 reducesTo stmt13,
+      stmt9 reducesTo stmt15,
+      stmt10 reducesTo stmt13,
+      stmt10 reducesTo stmt15,
+      stmt11 reducesTo stmt13,
+      stmt11 reducesTo stmt15,
+      stmt12 reducesTo stmt13,
+      stmt12 reducesTo stmt15
     )
 
     val tree = buildTree(reductions)
@@ -97,6 +135,9 @@ class ReduceAssignExprTest extends BaseSpecification {
 
       def checkReferenceReduction(from: Stmt, to: Stmt) = {
         val refTos = tree.getOrElse(from, sys.error(s"there should be a reduction possible from $root to $to"))
+        if(!refTos.contains(to)) {
+          println("asdasd")
+        }
         refTos must contain(to)
       }
 
@@ -119,7 +160,7 @@ class ReduceAssignExprTest extends BaseSpecification {
       reducer.advance match {
         case Some(x) =>
           // reduction possible... check
-          checkReductionChain(reducer.current.get, x) // TODO: get seems weird...
+          checkReductionChain(root, x) // TODO: get seems weird...
         case None    =>
       }
     }
