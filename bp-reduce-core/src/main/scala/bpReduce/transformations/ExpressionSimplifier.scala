@@ -67,6 +67,10 @@ object ExpressionSimplifier {
             }
           }
         }
+      case Not(True)                                   =>
+        False
+      case Not(False)                                  =>
+        True
       case Not(Not(a))                                 =>
         apply(a)
       case Not(NaryOp(And, ops)) if ops.forall(isAtom) =>
