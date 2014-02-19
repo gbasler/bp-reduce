@@ -82,10 +82,10 @@ object ExpressionSimplifier {
         (a0, b0) match {
           case (Nondet, _) | (_, Nondet) => Nondet
           case (x, y) if x == y          => True
-          case (True, True)              => True
-          case (True, False)             => False
-          case (False, True)             => False
-          case (False, False)            => True
+          case (o, True)                 => o
+          case (o, False)                => apply(Not(o))
+          case (True, o)                 => o
+          case (False, o)                => apply(Not(o))
           case _                         => Equiv(a0, b0)
         }
       case Xor(a, b)                                   =>
@@ -94,10 +94,10 @@ object ExpressionSimplifier {
         (a0, b0) match {
           case (Nondet, _) | (_, Nondet) => Nondet
           case (x, y) if x == y          => False
-          case (True, True)              => False
-          case (True, False)             => True
-          case (False, True)             => True
-          case (False, False)            => False
+          case (o, True)                 => apply(Not(o))
+          case (o, False)                => o
+          case (True, o)                 => apply(Not(o))
+          case (False, o)                => o
           case _                         => Xor(a0, b0)
         }
       case p                                           => p
