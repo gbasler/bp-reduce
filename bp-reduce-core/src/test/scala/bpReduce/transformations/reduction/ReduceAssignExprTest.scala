@@ -4,8 +4,9 @@ package reduction
 
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.Stmt
-import bpReduce.ast.Stmt.{Assign, Skip}
-import bpReduce.{reducer, BaseSpecification}
+import bpReduce.ast.Stmt.Assign
+import bpReduce.BaseSpecification
+import scala.annotation.tailrec
 
 class ReduceAssignExprTest extends BaseSpecification {
 
@@ -118,45 +119,53 @@ class ReduceAssignExprTest extends BaseSpecification {
       "l0 := F constrain(!l1)" -> "l0 := F constrain(F)"
     )
 
+    // we build a tree for convenience
     val tree = buildTree(reductions)
 
     // checks reduction from the point of view from the reducer
-    def checkReductionChain(root: Stmt, reducer: StmtReducer) {
+    @tailrec
+    def checkReductionChain(root: Stmt,
+                            reducer: StmtReducer,
+                            unused: Set[Reduction]): Set[Reduction] = {
 
-      def checkReferenceReduction(from: Stmt, to: Stmt) = {
+      def checkReferenceReduction(from: Stmt,
+                                  to: Stmt,
+                                  unused: Set[Reduction]) = {
         val refTos = tree.getOrElse(from, sys.error(s"there should be a reduction possible from $root to $to"))
         refTos must contain(to)
+        unused - Reduction(from, to)
       }
 
       // see what reducer offers...
-      reducer.current match {
+      val unusedWithoutCurrent = reducer.current match {
         case Some(to) =>
-          checkReferenceReduction(root, to)
+          checkReferenceReduction(root, to, unused)
         case None     =>
           // no reduction from this statement should be possible...
           tree.get(root) must beNone
+          unused
       }
 
-      reducer.reduce match {
+      val unusedWithoutReduced = reducer.reduce match {
         case Some(to) =>
           val from = reducer.current.getOrElse(sys.error(s"reduction without origin impossible"))
-          checkReferenceReduction(from, to.current.get) // TODO: get seems weird...
+          checkReferenceReduction(from, to.current.get, unusedWithoutCurrent) // TODO: get seems weird...
         case None     =>
+          unusedWithoutCurrent
       }
 
       reducer.advance match {
         case Some(x) =>
           // reduction possible... check
-          checkReductionChain(root, x) // TODO: get seems weird...
+          checkReductionChain(root, x, unusedWithoutReduced) // TODO: get seems weird...
         case None    =>
+          unusedWithoutReduced
       }
     }
 
-    // TODO: check reduction from point of view of the reductioh chain...
-
     val reducer = ReduceAssignExpr(origin).get
-    checkReductionChain(origin, reducer)
-    ok
+    val leftOver = checkReductionChain(origin, reducer, reductions.toSet)
+    leftOver must beEmpty
   }
 }
 
