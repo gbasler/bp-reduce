@@ -45,7 +45,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
 
   import ComposedProgramReducer._
 
-   def current: Option[Program] = {
+  def current: Option[Program] = {
     reducer.current.map {
       stmt: Stmt =>
         val stmts = inProgress.unreduced match {
@@ -63,7 +63,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
   /**
    * Reduces current statement if possible. Keeps last reduction.
    */
-   def reduce: Option[ComposedProgramReducer] = {
+  def reduce: Option[ComposedProgramReducer] = {
     reducer.reduce.map {
       stmtReducer =>
       // current statement can be reduced further
@@ -94,7 +94,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
    * Answer: We can just check if the reducer can be advanced, if not, we simply check
    * for the next reduction possibility.
    */
-   def advance: Option[ComposedProgramReducer] = {
+  def advance: Option[ComposedProgramReducer] = {
     reducer.advance.map {
       stmtReducer =>
       // current statement can be reduced further
@@ -158,13 +158,14 @@ object ComposedProgramReducer {
         case hd :: tl =>
           // stay in current function: search for next stmt to reduce...
           val reducer = reducerFactory(hd.stmt)
-          if (reducer.current.isDefined) {
-            // reduction possible on that statement
-            Some(ComposedProgramReducer(reducerFactory, reducer, program, reduced, unreduced, inProgress))
-          } else {
-            // reducer can't reduce that statement, take next one
-            findNextStmt(reduced, unreduced,
-              inProgress.copy(reduced = inProgress.reduced :+ hd, unreduced = tl))
+          reducer match {
+            case Some(reducer) =>
+              // reduction possible on that statement
+              Some(ComposedProgramReducer(reducerFactory, reducer, program, reduced, unreduced, inProgress))
+            case None          =>
+              // reducer can't reduce that statement, take next one
+              findNextStmt(reduced, unreduced,
+                inProgress.copy(reduced = inProgress.reduced :+ hd, unreduced = tl))
           }
       }
     }

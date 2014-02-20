@@ -18,7 +18,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
     "empty program" in {
       val factory = new StmtReducerFactory {
-        override def apply(stmt: Stmt): StmtReducer = ???
+        def apply(stmt: Stmt): StmtReducer = ???
       }
 
       val program = Program(VariableHolder(), List(Function("main")))
@@ -27,13 +27,15 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
     "one line program" in {
       val factory = new StmtReducerFactory {
-        override def apply(stmt: Stmt): StmtReducer = new StmtReducer {
+        def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
-          override def current = Some(Skip)
+          def from: Stmt = stmt
 
-          override def reduce = None
+          def current = Some(Skip)
 
-          override def advance = None
+          def reduce = None
+
+          def advance = None
         }
       }
 
@@ -62,27 +64,33 @@ class ComposedProgramReducerTest extends BaseSpecification {
     "complex one line program" in {
       // now the fun starts...
       val factory = new StmtReducerFactory {
-        override def apply(stmt: Stmt): StmtReducer = new StmtReducer {
+        def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
-          override def current = Some(Skip)
+          def from: Stmt = stmt
 
-          override def reduce = Some(new StmtReducer {
+          def current = Some(Skip)
 
-            override def current = Some(AtomicEnd)
+          def reduce = Some(new StmtReducer {
 
-            override def reduce = None
+            def from: Stmt = stmt
 
-            override def advance = None
+            def current = Some(AtomicEnd)
+
+            def reduce = None
+
+            def advance = None
           })
 
 
-          override def advance = Some(new StmtReducer {
+          def advance = Some(new StmtReducer {
 
-            override def current = Some(EndThread)
+            def from: Stmt = stmt
 
-            override def reduce = None
+            def current = Some(EndThread)
 
-            override def advance = None
+            def reduce = None
+
+            def advance = None
           })
 
         }
@@ -130,13 +138,15 @@ class ComposedProgramReducerTest extends BaseSpecification {
     "two line program" in {
       // even more fun ...
       val factory = new StmtReducerFactory {
-        override def apply(stmt: Stmt): StmtReducer = new StmtReducer {
+        def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
-          override def current = Some(Skip)
+          def from: Stmt = stmt
 
-          override def reduce = None
+          def current = Some(Skip)
 
-          override def advance = None
+          def reduce = None
+
+          def advance = None
         }
       }
 

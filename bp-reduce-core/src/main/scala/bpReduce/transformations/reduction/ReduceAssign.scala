@@ -12,7 +12,7 @@ import bpReduce.ast.Stmt.Assign
  *
  * @param next
  */
-final case class ReduceAssign(next: List[Stmt]) extends StmtReducer {
+final case class ReduceAssign(from: Stmt, next: List[Stmt]) extends StmtReducer {
 
   // stmt because we could reduce to `Skip`
   def current: Option[Stmt] = next.headOption
@@ -36,13 +36,13 @@ final case class ReduceAssign(next: List[Stmt]) extends StmtReducer {
 }
 
 object ReduceAssign {
-  def apply(stmt: Stmt): ReduceAssign = {
+  def apply(stmt: Stmt): Option[ReduceAssign] = {
 
     stmt match {
       case assign: Assign =>
         if (assign.assigns.size < 2) {
           // only one assignment, reduction trivial
-          new ReduceAssign(Skip :: Nil)
+          Some(new ReduceAssign(assign, Skip :: Nil))
         } else {
           // there are 2^n -1 possible reductions...
           // however reducing all assigns would be equal to replace it with skip...
@@ -56,10 +56,10 @@ object ReduceAssign {
             assign.copy(assigns = assigns)
           }
 
-          new ReduceAssign(reductions)
+          Some(new ReduceAssign(assign, reductions))
         }
       case _              =>
-        new ReduceAssign(Nil)
+        None
     }
   }
 }

@@ -123,48 +123,64 @@ class ReduceAssignExprTest extends BaseSpecification {
     val tree = buildTree(reductions)
 
     // checks reduction from the point of view from the reducer
+    /**
+     * Goes down all reducer paths from a given root.
+     * @param root
+     * @param reducer
+     * @param unused
+     * @return
+     */
     @tailrec
-    def checkReductionChain(root: Stmt,
-                            reducer: StmtReducer,
+    def checkReductionChain(wl: List[StmtReducer],
                             unused: Set[Reduction]): Set[Reduction] = {
 
       def checkReferenceReduction(from: Stmt,
                                   to: Stmt,
                                   unused: Set[Reduction]) = {
-        val refTos = tree.getOrElse(from, sys.error(s"there should be a reduction possible from $root to $to"))
+        val refTos = tree.getOrElse(from, sys.error(s"there should be no reduction possible from $from to $to"))
         refTos must contain(to)
         unused - Reduction(from, to)
       }
 
-      // see what reducer offers...
-      val unusedWithoutCurrent = reducer.current match {
-        case Some(to) =>
-          checkReferenceReduction(root, to, unused)
-        case None     =>
-          // no reduction from this statement should be possible...
-          tree.get(root) must beNone
+
+      wl match {
+        case Nil             =>
           unused
-      }
+        case reducer :: tail =>
 
-      val unusedWithoutReduced = reducer.reduce match {
-        case Some(to) =>
-          val from = reducer.current.getOrElse(sys.error(s"reduction without origin impossible"))
-          checkReferenceReduction(from, to.current.get, unusedWithoutCurrent) // TODO: get seems weird...
-        case None     =>
-          unusedWithoutCurrent
-      }
+          // see what reducer offers...
+          val unusedWithoutCurrent = reducer.current match {
+            case Some(to) =>
+              checkReferenceReduction(reducer.from, to, unused)
+            case None     =>
+              // no reduction from this statement should be possible...
+              // checked indirectly after: unused list must be empty
+//              tree.get(root) must beNone
+              unused
+          }
 
-      reducer.advance match {
-        case Some(x) =>
-          // reduction possible... check
-          checkReductionChain(root, x, unusedWithoutReduced) // TODO: get seems weird...
-        case None    =>
-          unusedWithoutReduced
+          val (updatedWl, unusedWithoutReduced) = reducer.reduce match {
+            case Some(to) =>
+              val from = reducer.current.getOrElse(sys.error(s"reduction without origin impossible"))
+              (tail :+ to) -> checkReferenceReduction(from, to.current.get, unusedWithoutCurrent) // TODO: get seems weird...
+            case None     =>
+              tail -> unusedWithoutCurrent
+          }
+
+          val nextWl= reducer.advance match {
+            case Some(advancedReducer) =>
+              // reduction possible... check
+              updatedWl :+ advancedReducer
+            case None    =>
+              updatedWl
+          }
+
+          checkReductionChain(nextWl, unusedWithoutReduced)
       }
     }
 
     val reducer = ReduceAssignExpr(origin).get
-    val leftOver = checkReductionChain(origin, reducer, reductions.toSet)
+    val leftOver = checkReductionChain(reducer :: Nil, reductions.toSet)
     leftOver must beEmpty
   }
 }

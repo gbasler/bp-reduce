@@ -14,6 +14,8 @@ object Reducers {
       val skipReducer = new StmtReducerFactory {
         def apply(stmt: Stmt): StmtReducer = new StmtReducer {
 
+          override def from: Stmt = stmt
+
           def current = {
             // check if reduction really possible,
             // otherwise we'll have an infinite loop
@@ -35,7 +37,7 @@ object Reducers {
   object ReduceAssigns extends ProgramReducerFacory {
     def apply(program: Program): Option[ProgramReducer] = {
       val assignReducer = new StmtReducerFactory {
-        def apply(stmt: Stmt): StmtReducer = ReduceAssign(stmt)
+        def apply(stmt: Stmt): ReduceAssign = ReduceAssign(stmt)
       }
       ComposedProgramReducer(assignReducer, program)
     }

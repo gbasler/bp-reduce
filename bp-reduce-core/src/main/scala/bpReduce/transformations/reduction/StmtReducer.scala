@@ -35,6 +35,11 @@ import bpReduce.ast.Stmt
  */
 trait StmtReducer {
 
+  // TODO: better?
+  def from: Stmt
+
+  def to: Stmt = current.get
+
   /**
    * Design choice: we could just say that a reducer that can not reduce a statement
    * just once should not be generated at all. If we do that, we have a bootstrap problem
@@ -73,7 +78,9 @@ trait StmtReducer {
 }
 
 object StmtReducer {
-  val Empty = new StmtReducer {
+  def empty(stmt: Stmt) = new StmtReducer {
+
+    override def from: Stmt = stmt
 
     def current = None
 

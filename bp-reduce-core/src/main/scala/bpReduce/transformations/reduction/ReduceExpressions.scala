@@ -17,20 +17,20 @@ object ReduceExpressions extends ProgramReducerFacory {
     val exprReducer = new StmtReducerFactory {
       def apply(stmt: Stmt): StmtReducer = stmt match {
         case Assign(assigns, constrain)             =>
-          StmtReducer.Empty // TODO
+          StmtReducer.empty(stmt) // TODO
         case assume: Assume                         =>
           AssumeExprReducer(assume)
         case Assert(e)                              =>
-          StmtReducer.Empty // TODO
+          StmtReducer.empty(stmt) // TODO
         case Call(name, assigns, args)              =>
-          StmtReducer.Empty // TODO
+          StmtReducer.empty(stmt) // TODO
         case If(condition, pos, neg)                =>
-          StmtReducer.Empty // TODO
+          StmtReducer.empty(stmt) // TODO
         case Return(values)                         =>
-          StmtReducer.Empty // TODO
+          StmtReducer.empty(stmt) // TODO
         case _: Dead | _: Goto | Skip | AtomicBegin |
              AtomicEnd | _: StartThread | EndThread =>
-          StmtReducer.Empty
+          StmtReducer.empty(stmt)
       }
     }
     ComposedProgramReducer(exprReducer, program)
@@ -40,6 +40,8 @@ object ReduceExpressions extends ProgramReducerFacory {
 // TODO: generalize
 final class AssumeExprReducer(assume: Assume,
                               reductions: Set[Expr]) extends StmtReducer {
+
+  def from: Stmt = assume
 
   def current: Option[Stmt] = {
     reductions.headOption.map(assume.copy(_))

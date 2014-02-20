@@ -14,7 +14,7 @@ import bpReduce.ast.Stmt.Assign
  *
  * @param next The next possible reduction for [[StmtReducer.advance]].
  */
-final case class ReduceAssignExpr(next: List[Stmt]) extends StmtReducer {
+final case class ReduceAssignExpr(from: Stmt, next: List[Stmt]) extends StmtReducer {
 
   // stmt because we could reduce to `Skip`
   def current: Option[Stmt] = next.headOption
@@ -70,7 +70,7 @@ object ReduceAssignExpr {
         }
 
         val reductions = reducesRhss ++ reducedConstrains
-        if (reductions.isEmpty) None else Some(new ReduceAssignExpr(reductions))
+        if (reductions.isEmpty) None else Some(new ReduceAssignExpr(stmt, reductions))
 
       case _ => None
     }
