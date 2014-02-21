@@ -12,22 +12,23 @@ object Reducers {
   object ReplaceWithSkip extends ProgramReducerFacory {
     def apply(program: Program) = {
       val skipReducer = new StmtReducerFactory {
-        def apply(stmt: Stmt): StmtReducer = new StmtReducer {
+        def apply(stmt: Stmt) = {
+          // check if reduction really possible,
+          // otherwise we'll have an infinite loop
+          stmt match {
+            case Skip => None
+            case _    => Some(new StmtReducer {
 
-          override def from: Stmt = stmt
+              override def from: Stmt = stmt
 
-          def current = {
-            // check if reduction really possible,
-            // otherwise we'll have an infinite loop
-            stmt match {
-              case Skip => None
-              case _    => Some(Skip)
-            }
+              def current = Some(Skip)
+
+              def reduce = None
+
+              def advance = None
+            })
           }
 
-          def reduce = None
-
-          def advance = None
         }
       }
       ComposedProgramReducer(skipReducer, program)
@@ -37,11 +38,11 @@ object Reducers {
   object ReduceAssigns extends ProgramReducerFacory {
     def apply(program: Program): Option[ProgramReducer] = {
       val assignReducer = new StmtReducerFactory {
-        def apply(stmt: Stmt): ReduceAssign = ReduceAssign(stmt)
+        def apply(stmt: Stmt): Option[ReduceAssign] = ReduceAssign(stmt)
       }
       ComposedProgramReducer(assignReducer, program)
     }
   }
 
-  val All = List(ReplaceWithSkip, ReduceAssigns, ReduceExpressions)
+  val All = List(ReplaceWithSkip, ReduceAssigns, ReduceExpr)
 }

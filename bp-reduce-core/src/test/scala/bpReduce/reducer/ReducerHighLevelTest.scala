@@ -2,7 +2,7 @@ package bpReduce
 package reducer
 
 import bpReduce.ast.{Sym, Program}
-import bpReduce.transformations.reduction.{ReduceExpressions, Reducers}
+import bpReduce.transformations.reduction.{ReduceExpr, Reducers}
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.Stmt.{Assume, Assign}
 import bpReduce.ast.Expr.{False, Var}
@@ -98,7 +98,7 @@ class ReducerHighLevelTest extends BaseSpecification {
       }
 
       import Reducers._
-      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpressions), smartChecker)
+      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker)
 
       val program: Program =
         """|decl g;

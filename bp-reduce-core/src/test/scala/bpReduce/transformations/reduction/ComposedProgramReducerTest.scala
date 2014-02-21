@@ -18,7 +18,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
     "empty program" in {
       val factory = new StmtReducerFactory {
-        def apply(stmt: Stmt): StmtReducer = ???
+        def apply(stmt: Stmt) = ???
       }
 
       val program = Program(VariableHolder(), List(Function("main")))
@@ -27,7 +27,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
     "one line program" in {
       val factory = new StmtReducerFactory {
-        def apply(stmt: Stmt): StmtReducer = new StmtReducer {
+        def apply(stmt: Stmt) = Some(new StmtReducer {
 
           def from: Stmt = stmt
 
@@ -36,7 +36,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
           def reduce = None
 
           def advance = None
-        }
+        })
       }
 
       val program: Program =
@@ -64,7 +64,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
     "complex one line program" in {
       // now the fun starts...
       val factory = new StmtReducerFactory {
-        def apply(stmt: Stmt): StmtReducer = new StmtReducer {
+        def apply(stmt: Stmt) = Some(new StmtReducer {
 
           def from: Stmt = stmt
 
@@ -93,7 +93,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
             def advance = None
           })
 
-        }
+        })
       }
 
       val program: Program =
@@ -138,7 +138,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
     "two line program" in {
       // even more fun ...
       val factory = new StmtReducerFactory {
-        def apply(stmt: Stmt): StmtReducer = new StmtReducer {
+        def apply(stmt: Stmt) = Some(new StmtReducer {
 
           def from: Stmt = stmt
 
@@ -147,7 +147,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
           def reduce = None
 
           def advance = None
-        }
+        })
       }
 
       val program: Program =

@@ -37,6 +37,7 @@ import bpReduce.transformations.ExpressionSimplifier
  */
 object ExpressionReducer {
 
+  // TODO: List is more elegant...
   def apply(e: Expr): Set[Expr] = {
 
     /**

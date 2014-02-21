@@ -12,10 +12,10 @@ import bpReduce.ast.Stmt.Assert
 /**
  * Reduces any expression in statements.
  */
-object ReduceExpressions extends ProgramReducerFacory {
+object ReduceExpr extends ProgramReducerFacory {
   def apply(program: Program): Option[ProgramReducer] = {
     val exprReducer = new StmtReducerFactory {
-      def apply(stmt: Stmt): StmtReducer = stmt match {
+      def apply(stmt: Stmt) = stmt match {
         case Assign(assigns, constrain)             =>
           StmtReducer.empty(stmt) // TODO
         case assume: Assume                         =>
@@ -41,29 +41,31 @@ object ReduceExpressions extends ProgramReducerFacory {
 final class AssumeExprReducer(assume: Assume,
                               reductions: Set[Expr]) extends StmtReducer {
 
+  require(reductions.nonEmpty)
+
   def from: Stmt = assume
 
-  def current: Option[Stmt] = {
+  def current: Option[Assume] = {
     reductions.headOption.map(assume.copy(_))
   }
 
   def reduce: Option[StmtReducer] = {
-    val tail: Set[Expr] = reductions.tail
-    if (tail.isEmpty) None else Some(new AssumeExprReducer(assume, tail))
+    reductions.headOption.flatMap(e => AssumeExprReducer(current.get, e))
   }
 
-  def advance: Option[StmtReducer] = {
-    reductions.headOption.map(e => AssumeExprReducer(assume, e))
+  def advance: Option[AssumeExprReducer] = {
+    val tail: Set[Expr] = reductions.tail
+    if (tail.isEmpty) None else Some(new AssumeExprReducer(assume, tail))
   }
 }
 
 object AssumeExprReducer {
-  def apply(assume: Assume): AssumeExprReducer = {
+  def apply(assume: Assume): Option[AssumeExprReducer] = {
     apply(assume, assume.e)
   }
 
   private def apply(assume: Assume, e: Expr) = {
-    val reductions = ExpressionReducer(e)
-    new AssumeExprReducer(assume, reductions)
+    val reductions: Set[Expr] = ExpressionReducer(e)
+    if(reductions.isEmpty) None else Some(new AssumeExprReducer(assume, reductions))
   }
 }

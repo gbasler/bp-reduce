@@ -20,7 +20,7 @@ class ReduceAssignTest extends BaseSpecification {
     val stmt1: Assign = "l0 := l1"
     val stmt2: Assign = "l1 := l0"
 
-    val reducer: ReduceAssign = ReduceAssign(stmt)
+    val reducer: ReduceAssign = ReduceAssign(stmt).get
     reducer.current must beSome(stmt1)
     reducer.reduce.get.current must beSome(Skip)
     reducer.reduce.get.reduce must beNone

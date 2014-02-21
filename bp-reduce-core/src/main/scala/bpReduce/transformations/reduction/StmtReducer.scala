@@ -78,7 +78,7 @@ trait StmtReducer {
 }
 
 object StmtReducer {
-  def empty(stmt: Stmt) = new StmtReducer {
+  def empty(stmt: Stmt): Option[StmtReducer] = Some(new StmtReducer {
 
     override def from: Stmt = stmt
 
@@ -87,6 +87,6 @@ object StmtReducer {
     def reduce = None
 
     def advance = None
-  }
+  })
 
 }
