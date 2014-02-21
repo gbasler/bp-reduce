@@ -2,7 +2,7 @@ package bpReduce
 package transformations
 package reduction
 
-import bpReduce.ast.{Expr, Stmt, Program}
+import bpReduce.ast.{Stmt, Program}
 import bpReduce.ast.Stmt._
 import bpReduce.ast.Stmt.Call
 import bpReduce.ast.Stmt.Assume
@@ -26,8 +26,8 @@ object ReduceExpr extends ProgramReducerFacory {
           None // TODO
         case iff: If                                =>
           ReduceIfExpr(iff)
-        case Return(values)                         =>
-          None // TODO
+        case ret: Return                            =>
+          ReduceReturnExpr(ret)
         case _: Dead | _: Goto | Skip | AtomicBegin |
              AtomicEnd | _: StartThread | EndThread =>
           None
