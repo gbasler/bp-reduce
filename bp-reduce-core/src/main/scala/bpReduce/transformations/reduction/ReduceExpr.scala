@@ -17,20 +17,20 @@ object ReduceExpr extends ProgramReducerFacory {
     val exprReducer = new StmtReducerFactory {
       def apply(stmt: Stmt) = stmt match {
         case Assign(assigns, constrain)             =>
-          StmtReducer.empty(stmt) // TODO
+          None // TODO
         case assume: Assume                         =>
           AssumeExprReducer(assume)
         case Assert(e)                              =>
-          StmtReducer.empty(stmt) // TODO
+          None // TODO
         case Call(name, assigns, args)              =>
-          StmtReducer.empty(stmt) // TODO
+          None // TODO
         case If(condition, pos, neg)                =>
-          StmtReducer.empty(stmt) // TODO
+          None // TODO
         case Return(values)                         =>
-          StmtReducer.empty(stmt) // TODO
+          None // TODO
         case _: Dead | _: Goto | Skip | AtomicBegin |
              AtomicEnd | _: StartThread | EndThread =>
-          StmtReducer.empty(stmt)
+          None
       }
     }
     ComposedProgramReducer(exprReducer, program)

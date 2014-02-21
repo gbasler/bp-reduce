@@ -37,8 +37,6 @@ trait StmtReducer {
 
   def from: Stmt
 
-  def to: Stmt
-
   /**
    * Design choice: we could just say that a reducer that can not reduce a statement
    * just once should not be generated at all. If we do that, we have a bootstrap problem
@@ -49,7 +47,7 @@ trait StmtReducer {
    *         [[Stmt]] because we explicitly return `Skip` to denote removal.
    *         If no reduction is possible, `None` is returned.
    */
-  //  def current: Option[Stmt]
+  def to: Stmt
 
   /**
    * Goes one step up towards `Skip`. The next statement will be simpler than
@@ -76,16 +74,3 @@ trait StmtReducer {
   def advance: Option[StmtReducer]
 }
 
-object StmtReducer {
-  def empty(stmt: Stmt): Option[StmtReducer] = Some(new StmtReducer {
-
-    def from: Stmt = stmt
-
-    def to: Stmt = ???
-
-    def reduce = None
-
-    def advance = None
-  })
-
-}
