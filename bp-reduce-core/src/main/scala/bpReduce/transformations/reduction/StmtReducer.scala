@@ -38,7 +38,7 @@ trait StmtReducer {
   // TODO: better?
   def from: Stmt
 
-  def to: Stmt = current.get
+  def to: Stmt
 
   /**
    * Design choice: we could just say that a reducer that can not reduce a statement
@@ -50,7 +50,7 @@ trait StmtReducer {
    *         [[Stmt]] because we explicitly return `Skip` to denote removal.
    *         If no reduction is possible, `None` is returned.
    */
-  def current: Option[Stmt]
+  //  def current: Option[Stmt]
 
   /**
    * Goes one step up towards `Skip`. The next statement will be simpler than
@@ -80,9 +80,9 @@ trait StmtReducer {
 object StmtReducer {
   def empty(stmt: Stmt): Option[StmtReducer] = Some(new StmtReducer {
 
-    override def from: Stmt = stmt
+    def from: Stmt = stmt
 
-    def current = None
+    def to: Stmt = ???
 
     def reduce = None
 

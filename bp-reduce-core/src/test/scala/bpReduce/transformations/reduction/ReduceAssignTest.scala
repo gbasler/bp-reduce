@@ -21,10 +21,10 @@ class ReduceAssignTest extends BaseSpecification {
     val stmt2: Assign = "l1 := l0"
 
     val reducer: ReduceAssign = ReduceAssign(stmt).get
-    reducer.current must beSome(stmt1)
-    reducer.reduce.get.current must beSome(Skip)
+    reducer.to === stmt1
+    reducer.reduce.get.to === Skip
     reducer.reduce.get.reduce must beNone
-    reducer.advance.get.current must beSome(stmt2)
-    reducer.advance.get.reduce.get.current must beSome(Skip)
+    reducer.advance.get.to === stmt2
+    reducer.advance.get.reduce.get.to === Skip
   }
 }

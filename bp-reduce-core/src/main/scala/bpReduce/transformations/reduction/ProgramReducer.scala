@@ -12,7 +12,7 @@ trait ProgramReducer {
   /**
    * @return current reduction.
    */
-  def current: Option[Program]
+  def current: Program
 
   /**
    * Goes one step up towards an empty program.

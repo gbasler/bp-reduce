@@ -18,10 +18,9 @@ object Reducers {
           stmt match {
             case Skip => None
             case _    => Some(new StmtReducer {
+              def from: Stmt = stmt
 
-              override def from: Stmt = stmt
-
-              def current = Some(Skip)
+              def to = Skip
 
               def reduce = None
 

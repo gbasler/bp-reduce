@@ -39,23 +39,19 @@ object ReduceExpr extends ProgramReducerFacory {
 
 // TODO: generalize
 final class AssumeExprReducer(assume: Assume,
-                              reductions: Set[Expr]) extends StmtReducer {
+                              reductions: List[Expr]) extends StmtReducer {
 
   require(reductions.nonEmpty)
 
   def from: Stmt = assume
 
-  def current: Option[Assume] = {
-    reductions.headOption.map(assume.copy(_))
-  }
+  val to: Assume = assume.copy(reductions.head)
 
-  def reduce: Option[StmtReducer] = {
-    reductions.headOption.flatMap(e => AssumeExprReducer(current.get, e))
-  }
+  def reduce: Option[StmtReducer] = AssumeExprReducer(to, reductions.head)
 
-  def advance: Option[AssumeExprReducer] = {
-    val tail: Set[Expr] = reductions.tail
-    if (tail.isEmpty) None else Some(new AssumeExprReducer(assume, tail))
+  def advance: Option[AssumeExprReducer] = reductions match {
+    case _ :: Nil     => None
+    case head :: tail => Some(new AssumeExprReducer(assume, tail))
   }
 }
 
@@ -65,7 +61,9 @@ object AssumeExprReducer {
   }
 
   private def apply(assume: Assume, e: Expr) = {
-    val reductions: Set[Expr] = ExpressionReducer(e)
-    if(reductions.isEmpty) None else Some(new AssumeExprReducer(assume, reductions))
+    ExpressionReducer(e).toList match {
+      case Nil        => None
+      case reductions => Some(new AssumeExprReducer(assume, reductions))
+    }
   }
 }

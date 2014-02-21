@@ -21,7 +21,7 @@ final case class Reducer(config: ReducerConfig) {
     @tailrec
     def reduceMax(reducer: Option[ProgramReducer],
                   lastFeasible: Option[Program]): Option[Program] = {
-      val possibleVariant = reducer.flatMap(_.current)
+      val possibleVariant = reducer.map(_.current)
       possibleVariant match {
         case None          =>
           // reduction not possible, return last feasible reduction

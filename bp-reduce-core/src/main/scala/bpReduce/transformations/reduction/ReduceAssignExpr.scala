@@ -16,11 +16,10 @@ import bpReduce.ast.Stmt.Assign
  */
 final case class ReduceAssignExpr(from: Stmt, next: List[Stmt]) extends StmtReducer {
 
-  // stmt because we could reduce to `Skip`
-  def current: Option[Stmt] = next.headOption
+  def to: Stmt = next.head
 
   def reduce: Option[ReduceAssignExpr] = {
-    current.flatMap(ReduceAssignExpr(_))
+    ReduceAssignExpr(to)
   }
 
   def advance: Option[ReduceAssignExpr] = {

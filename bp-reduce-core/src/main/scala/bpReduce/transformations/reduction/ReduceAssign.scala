@@ -13,23 +13,18 @@ import bpReduce.ast.Stmt.Assign
  * @param next
  */
 final case class ReduceAssign(from: Assign, next: List[Stmt]) extends StmtReducer {
+  require(next.nonEmpty)
 
   // stmt because we could reduce to `Skip`
-  def current: Option[Stmt] = next.headOption
+  def to: Stmt = next.head
 
-  def reduce: Option[ReduceAssign] = {
-    // last possible reduction is `Skip`,
-    // so if next one is not a skip we can reduce more
-
-    // TODO
-    next.headOption.flatMap(ReduceAssign(_))
-  }
+  def reduce: Option[ReduceAssign] = ReduceAssign(to)
 
   def advance: Option[ReduceAssign] = {
     // previous reduction not successful: 
     // try next reduction 
     next match {
-      case Nil          => None
+      case last :: Nil  => None
       case head :: tail => Some(copy(next = tail))
     }
   }

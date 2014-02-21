@@ -27,9 +27,10 @@ object ReductionChecker extends BaseSpecification {
                                   wl: List[StmtReducer],
                                   unused: Set[Reduction]): Set[Reduction] = {
 
-    def checkReferenceReduction(from: Stmt,
-                                to: Stmt,
+    def checkReferenceReduction(reducer: StmtReducer,
                                 unused: Set[Reduction]) = {
+      val from = reducer.from
+      val to = reducer.to
       val refTos = tree.getOrElse(from, sys.error(s"there should be no reduction possible from $from to $to"))
       refTos aka s"""$from -> ${refTos.mkString(",")}""" must contain(to)
       unused - Reduction(from, to)
@@ -41,21 +42,12 @@ object ReductionChecker extends BaseSpecification {
       case reducer :: tail =>
 
         // see what reducer offers...
-        val unusedWithoutCurrent = reducer.current match {
-          case Some(to) =>
-            checkReferenceReduction(reducer.from, to, unused)
-          case None     =>
-            // no reduction from this statement should be possible...
-            // checked indirectly after: unused list must be empty
-            //              tree.get(root) must beNone
-            unused
-        }
+        val unusedWithoutCurrent = checkReferenceReduction(reducer, unused)
 
         val (updatedWl, unusedWithoutReduced) = reducer.reduce match {
           case Some(reduced) =>
-            val from = reducer.current.getOrElse(sys.error(s"reduction without origin impossible"))
-            (tail :+ reduced) -> checkReferenceReduction(from, reduced.current.get, unusedWithoutCurrent) // TODO: get seems weird...
-          case None     =>
+            (tail :+ reduced) -> checkReferenceReduction(reduced, unusedWithoutCurrent)
+          case None          =>
             tail -> unusedWithoutCurrent
         }
 

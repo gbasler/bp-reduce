@@ -29,9 +29,9 @@ class ComposedProgramReducerTest extends BaseSpecification {
       val factory = new StmtReducerFactory {
         def apply(stmt: Stmt) = Some(new StmtReducer {
 
-          def from: Stmt = stmt
+          def from = stmt
 
-          def current = Some(Skip)
+          def to = Skip
 
           def reduce = None
 
@@ -56,7 +56,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
         """.stripMargin
 
       val reducer = ComposedProgramReducer(factory, program).get
-      reducer.current.get must be_==(skip)
+      reducer.current === skip
       reducer.reduce must beNone
       reducer.advance must beNone
     }
@@ -66,15 +66,15 @@ class ComposedProgramReducerTest extends BaseSpecification {
       val factory = new StmtReducerFactory {
         def apply(stmt: Stmt) = Some(new StmtReducer {
 
-          def from: Stmt = stmt
+          def from = stmt
 
-          def current = Some(Skip)
+          def to = Skip
 
           def reduce = Some(new StmtReducer {
 
-            def from: Stmt = stmt
+            def from = stmt
 
-            def current = Some(AtomicEnd)
+            def to = AtomicEnd
 
             def reduce = None
 
@@ -84,9 +84,9 @@ class ComposedProgramReducerTest extends BaseSpecification {
 
           def advance = Some(new StmtReducer {
 
-            def from: Stmt = stmt
+            def from = stmt
 
-            def current = Some(EndThread)
+            def to = EndThread
 
             def reduce = None
 
@@ -129,9 +129,9 @@ class ComposedProgramReducerTest extends BaseSpecification {
         """.stripMargin
 
       val reducer = ComposedProgramReducer(factory, program).get
-      reducer.current.get must be_==(reducedToSkip)
-      reducer.reduce.get.current.get must be_==(reducedFurtherToAtomicEnd)
-      reducer.advance.get.current.get must be_==(endThread)
+      reducer.current === reducedToSkip
+      reducer.reduce.get.current === reducedFurtherToAtomicEnd
+      reducer.advance.get.current === endThread
       reducer.advance.get.reduce must beNone
     }
 
@@ -140,9 +140,9 @@ class ComposedProgramReducerTest extends BaseSpecification {
       val factory = new StmtReducerFactory {
         def apply(stmt: Stmt) = Some(new StmtReducer {
 
-          def from: Stmt = stmt
+          def from = stmt
 
-          def current = Some(Skip)
+          def to = Skip
 
           def reduce = None
 
@@ -187,9 +187,9 @@ class ComposedProgramReducerTest extends BaseSpecification {
         """.stripMargin
 
       val reducer = ComposedProgramReducer(factory, program).get
-      reducer.current.get === skipFirst
-      reducer.advance.get.current.get must beSameProgram(skipLast)
-      reducer.reduce.get.current.get must beSameProgram(skipTwice)
+      reducer.current === skipFirst
+      reducer.advance.get.current must beSameProgram(skipLast)
+      reducer.reduce.get.current must beSameProgram(skipTwice)
     }
   }
 }

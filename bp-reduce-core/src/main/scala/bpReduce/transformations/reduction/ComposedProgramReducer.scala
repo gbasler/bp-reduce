@@ -45,19 +45,16 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
 
   import ComposedProgramReducer._
 
-  def current: Option[Program] = {
-    reducer.current.map {
-      stmt: Stmt =>
-        val stmts = inProgress.unreduced match {
-          case Nil          => Nil // TODO: check this case
-          case head :: tail =>
-            // replace `head` with current reduction
-            inProgress.reduced ++ (head.copy(stmt = stmt) :: Nil) ++ tail
-        }
-        val function = inProgress.original.copy(stmts = stmts)
-        val functions = (reduced :+ function) ++ unreduced
-        program.copy(functions = functions)
+  def current: Program = {
+    val stmts = inProgress.unreduced match {
+      case Nil          => Nil // TODO: check this case
+      case head :: tail =>
+        // replace `head` with current reduction
+        inProgress.reduced ++ (head.copy(stmt = reducer.from) :: Nil) ++ tail
     }
+    val function = inProgress.original.copy(stmts = stmts)
+    val functions = (reduced :+ function) ++ unreduced
+    program.copy(functions = functions)
   }
 
   /**
@@ -71,7 +68,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
           case Nil          =>
             sys.error("Can't replace a statement in an empty function!")
           case head :: tail =>
-            val last = reducer.current.getOrElse(sys.error("Reduce called but no previous reduction possible?"))
+            val last = reducer.to
             inProgress.copy(unreduced = head.copy(stmt = last) :: tail)
         }
         copy(reducer = stmtReducer, inProgress = updatedInProgress)
@@ -81,7 +78,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
         case Nil          =>
           sys.error("Can't replace a statement in an empty function!")
         case head :: tail =>
-          val last = reducer.current.getOrElse(sys.error("Reduce called but no previous reduction possible?"))
+          val last = reducer.to
           inProgress.copy(reduced = inProgress.reduced :+ head.copy(stmt = last), unreduced = tail)
       }
       apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
