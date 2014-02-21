@@ -50,7 +50,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
       case Nil          => Nil // TODO: check this case
       case head :: tail =>
         // replace `head` with current reduction
-        inProgress.reduced ++ (head.copy(stmt = reducer.from) :: Nil) ++ tail
+        inProgress.reduced ++ (head.copy(stmt = reducer.to) :: Nil) ++ tail
     }
     val function = inProgress.original.copy(stmts = stmts)
     val functions = (reduced :+ function) ++ unreduced

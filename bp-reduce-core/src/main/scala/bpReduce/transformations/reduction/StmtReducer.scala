@@ -35,7 +35,6 @@ import bpReduce.ast.Stmt
  */
 trait StmtReducer {
 
-  // TODO: better?
   def from: Stmt
 
   def to: Stmt

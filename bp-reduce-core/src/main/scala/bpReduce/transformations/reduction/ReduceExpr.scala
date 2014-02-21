@@ -38,20 +38,18 @@ object ReduceExpr extends ProgramReducerFacory {
 }
 
 // TODO: generalize
-final class AssumeExprReducer(assume: Assume,
+final class AssumeExprReducer(override val from: Assume,
                               reductions: List[Expr]) extends StmtReducer {
 
   require(reductions.nonEmpty)
 
-  def from: Stmt = assume
-
-  val to: Assume = assume.copy(reductions.head)
+  val to: Assume = from.copy(reductions.head)
 
   def reduce: Option[StmtReducer] = AssumeExprReducer(to, reductions.head)
 
   def advance: Option[AssumeExprReducer] = reductions match {
     case _ :: Nil     => None
-    case head :: tail => Some(new AssumeExprReducer(assume, tail))
+    case head :: tail => Some(new AssumeExprReducer(from, tail))
   }
 }
 
