@@ -28,7 +28,7 @@ class ReduceAssumeTest extends BaseSpecification {
       "assume(!g)" -> "assume(F)"
     )
 
-    val reducer = AssumeExprReducer(origin).get
+    val reducer = ReduceAssumeExpr(origin).get
     ReductionChecker(reducer, origin, reductions)
   }
 }

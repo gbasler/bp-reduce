@@ -36,42 +36,47 @@ object ReduceAssignExpr {
   def apply(stmt: Stmt): Option[ReduceAssignExpr] = {
 
     stmt match {
-      case assign: Assign =>
+      case assign: Assign => apply(assign)
+      case _              => None
+    }
+  }
 
-        // reduce either constrain or expressions (one at a time)
-        val reducedConstrains = assign.constrain.toList.flatMap {
-          constrain =>
-            val reducedConstrains = ExpressionReducer(constrain).toList
-            reducedConstrains.map(c => assign.copy(constrain = Some(c)))
-        }
+  def apply(assign: Assign): Option[ReduceAssignExpr] = {
 
-        val reducesRhss = assign.assigns match {
-          case Seq((variable, expr)) =>
-            // only one assignment, reduction trivial
-            val reducedExprs = ExpressionReducer(expr).toList
-            reducedExprs.map(e => assign.copy(assigns = Seq(variable -> e)))
+    // reduce either constrain or expressions (one at a time)
+    val reducedConstrains = assign.constrain.toList.flatMap {
+      constrain =>
+        val reducedConstrains = ExpressionReducer(constrain).toList
+        reducedConstrains.map(c => assign.copy(constrain = Some(c)))
+    }
 
-          case assigns =>
-            // there are n possible reductions since we
-            // reduce only one of the rhss at a time
-            assigns.indices.toList.flatMap {
-              i =>
-                val (variable, expr) = assigns(i)
-                val reduced = ExpressionReducer(expr).toSeq
+    val reducesRhss = assign.assigns match {
+      case Seq((variable, expr)) =>
+        // only one assignment, reduction trivial
+        val reducedExprs = ExpressionReducer(expr).toList
+        reducedExprs.map(e => assign.copy(assigns = Seq(variable -> e)))
 
-                for {
-                  e <- reduced
-                } yield {
-                  val reducedAssigns = (assigns.take(i) :+ (variable -> e)) ++ assigns.drop(i + 1)
-                  assign.copy(assigns = reducedAssigns)
-                }
+      case assigns =>
+        // there are n possible reductions since we
+        // reduce only one of the rhss at a time
+        assigns.indices.toList.flatMap {
+          i =>
+            val (variable, expr) = assigns(i)
+            val reduced = ExpressionReducer(expr).toSeq
+
+            for {
+              e <- reduced
+            } yield {
+              val reducedAssigns = (assigns.take(i) :+ (variable -> e)) ++ assigns.drop(i + 1)
+              assign.copy(assigns = reducedAssigns)
             }
         }
+    }
 
-        val reductions = reducesRhss ++ reducedConstrains
-        if (reductions.isEmpty) None else Some(new ReduceAssignExpr(stmt, reductions))
-
-      case _ => None
+    val reductions = reducesRhss ++ reducedConstrains
+    reductions match {
+      case Nil        => None
+      case reductions => Some(new ReduceAssignExpr(assign, reductions))
     }
   }
 }
