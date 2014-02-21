@@ -16,6 +16,8 @@ import bpReduce.ast.Stmt.Assign
  */
 final case class ReduceAssignExpr(from: Stmt, next: List[Stmt]) extends StmtReducer {
 
+  require(next.nonEmpty)
+
   def to: Stmt = next.head
 
   def reduce: Option[ReduceAssignExpr] = {
@@ -26,8 +28,8 @@ final case class ReduceAssignExpr(from: Stmt, next: List[Stmt]) extends StmtRedu
     // previous reduction not successful: 
     // try next reduction 
     next match {
-      case Nil | _ :: Nil => None
-      case head :: tail   => Some(copy(next = tail))
+      case _ :: Nil     => None
+      case head :: tail => Some(copy(next = tail))
     }
   }
 }
