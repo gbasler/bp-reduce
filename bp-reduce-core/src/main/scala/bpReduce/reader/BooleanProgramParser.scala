@@ -80,6 +80,13 @@ final class BooleanProgramParser extends RegexParsers {
     }
   }
 
+  def parseIf(programStr: String): If = {
+    parseAll(selectionStatement, programStr) match {
+      case Success(stmt, _) => stmt
+      case e: NoSuccess     => sys.error("parse error: " + e.toString)
+    }
+  }
+
   protected override val whiteSpace = """(\s|//.*|(?m)/\*(\*(?!/)|[^*])*\*/)+""".r
 
   lazy val program: Parser[Program] = decls ~ rep(function) ^^ {
@@ -204,7 +211,7 @@ final class BooleanProgramParser extends RegexParsers {
       Call(id, varsList, args)
   }
 
-  lazy val selectionStatement: Parser[Stmt] =
+  lazy val selectionStatement: Parser[If] =
     "if" ~> expr ~ ("then" ~> labelledStmtList) ~ rep("elif" ~> expr ~ "then" ~ labelledStmtList) ~ opt("else" ~> labelledStmtList) <~ "fi" ^^ {
       case expr ~ posStmts ~ elsifs ~ elseStmtsOpt =>
         if (elsifs.isEmpty) {

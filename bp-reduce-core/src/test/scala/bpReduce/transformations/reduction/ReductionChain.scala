@@ -4,7 +4,7 @@ package reduction
 
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.Stmt
-import bpReduce.ast.Stmt.{Return, Assume, Assign}
+import bpReduce.ast.Stmt.{If, Return, Assume, Assign}
 
 object ReductionChain {
   implicit def stmtFromString(str: String): Stmt = {
@@ -21,6 +21,10 @@ object ReductionChain {
 
   implicit def returnFromString(str: String): Return = {
     new BooleanProgramParser().parseReturn(str)
+  }
+
+  implicit def ifFromString(str: String): If = {
+    new BooleanProgramParser().parseIf(str)
   }
 
   implicit class UnparsedStmtWrapper(val stmt: String) extends AnyVal {
