@@ -2,13 +2,24 @@ package bpReduce
 package reduction
 
 import bpReduce.ast.Stmt
-import bpReduce.ast.Stmt._
 import bpReduce.ast.Stmt.Assign
 
 /**
  * Reduces `:=` expressions by incrementally omitting assignments
  * (we don't reduce until the `skip` statement, since this is the task of
  * the [[bpReduce.reduction.Reducers.ReplaceWithSkip]] reducer).
+ *
+ * TODO: what could be done is
+ * `l, g := *, * constrain ('g == 'l)`
+ * ->
+ * `assume(g == l)`
+ * Not sure how useful that would be...
+ *
+ * Or just splitting up parallel assignments into sequential assignments...
+ * `l, g := *, *`
+ * ->
+ * `l := *`
+ * `g := *`
  *
  * @param next
  */
@@ -48,7 +59,7 @@ object ReduceAssign {
         }
 
         Some(new ReduceAssign(assign, reductions))
-      case _                                          =>
+      case _                                         =>
         None
     }
   }

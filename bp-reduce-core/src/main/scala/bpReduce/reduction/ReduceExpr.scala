@@ -21,8 +21,8 @@ object ReduceExpr extends ProgramReducerFacory {
           ReduceAssumeExpr(assume)
         case Assert(e)                              =>
           None // reducing assert doesn't make much sense...
-        case Call(name, assigns, args)              =>
-          None // TODO
+        case call: Call                             =>
+          ReduceCallExpr(call)
         case iff: If                                =>
           ReduceIfExpr(iff)
         case ret: Return                            =>

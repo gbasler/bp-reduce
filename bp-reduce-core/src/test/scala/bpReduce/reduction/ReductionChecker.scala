@@ -3,6 +3,7 @@ package reduction
 
 import bpReduce.ast.Stmt
 import scala.annotation.tailrec
+import bpReduce.writer.Formatter
 
 object ReductionChecker extends BaseSpecification {
 
@@ -27,9 +28,10 @@ object ReductionChecker extends BaseSpecification {
 
     def checkReferenceReduction(reducer: StmtReducer,
                                 unused: Set[Reduction]) = {
-      val from = reducer.from
-      val to = reducer.to
-      val refTos = tree.getOrElse(from, sys.error(s"there should be no reduction possible from $from to $to"))
+      import reducer.{from, to}
+      import Formatter.format
+      val refTos = tree.getOrElse(from,
+        sys.error(s"This reduction should not be possible: ${format(from)} -> ${format(to)}."))
       refTos aka s"""$from -> ${refTos.mkString(",")}""" must contain(to)
       unused - Reduction(from, to)
     }

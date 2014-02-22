@@ -3,7 +3,11 @@ package reduction
 
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.Stmt
-import bpReduce.ast.Stmt.{If, Return, Assume, Assign}
+import bpReduce.ast.Stmt._
+import bpReduce.ast.Stmt.Assume
+import bpReduce.ast.Stmt.Assign
+import bpReduce.ast.Stmt.If
+import bpReduce.ast.Stmt.Return
 
 object ReductionChain {
   implicit def stmtFromString(str: String): Stmt = {
@@ -24,6 +28,10 @@ object ReductionChain {
 
   implicit def ifFromString(str: String): If = {
     new BooleanProgramParser().parseIf(str)
+  }
+
+  implicit def callFromString(str: String): Call = {
+    new BooleanProgramParser().parseCall(str)
   }
 
   implicit class UnparsedStmtWrapper(val stmt: String) extends AnyVal {

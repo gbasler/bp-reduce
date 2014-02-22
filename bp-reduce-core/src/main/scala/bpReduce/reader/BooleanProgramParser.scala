@@ -86,6 +86,13 @@ final class BooleanProgramParser extends RegexParsers {
     }
   }
 
+  def parseCall(programStr: String): Call = {
+    parseAll(call, programStr) match {
+      case Success(stmt, _) => stmt
+      case e: NoSuccess     => sys.error("parse error: " + e.toString)
+    }
+  }
+
   protected override val whiteSpace = """(\s|//.*|(?m)/\*(\*(?!/)|[^*])*\*/)+""".r
 
   lazy val program: Parser[Program] = decls ~ rep(function) ^^ {
@@ -194,7 +201,7 @@ final class BooleanProgramParser extends RegexParsers {
     Assume
   }
 
-  lazy val call: Parser[Stmt] = opt(rep1sep(id | "_", ",") <~ ":=") ~ id ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
+  lazy val call: Parser[Call] = opt(rep1sep(id | "_", ",") <~ ":=") ~ id ~ "(" ~ repsep(expr, ",") ~ ")" ^^ {
     case vars ~ id ~ _ ~ args ~ _ =>
       val varsList = for {
         vs <- vars.toList
