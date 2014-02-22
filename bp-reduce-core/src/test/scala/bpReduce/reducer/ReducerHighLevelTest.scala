@@ -2,7 +2,7 @@ package bpReduce
 package reducer
 
 import bpReduce.ast.{Sym, Program}
-import bpReduce.transformations.reduction.{ReduceExpr, Reducers}
+import bpReduce.reduction.{ReduceExpr, Reducers}
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.ast.Stmt.{Assume, Assign}
 import bpReduce.ast.Expr.{False, Var}

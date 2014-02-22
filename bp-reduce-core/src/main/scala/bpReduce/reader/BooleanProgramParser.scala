@@ -5,19 +5,18 @@ import util.parsing.combinator.RegexParsers
 import bpReduce.ast.Stmt._
 import bpReduce.ast._
 import scala.collection.mutable
-import bpReduce.ast.Stmt.Dead
-import bpReduce.ast.Function
-import bpReduce.ast.Sym
-import bpReduce.ast.Stmt.Assert
-import bpReduce.ast.Stmt.Assume
-import bpReduce.ast.Stmt.StartThread
-import bpReduce.ast.Stmt.Goto
-import bpReduce.ast.Stmt.Return
 import scala.util.matching.Regex
+import bpReduce.ast.MixedIdentifier.{NonMixed, Mixed}
+import bpReduce.ast.StateIdentifier.{Next, Current}
+import bpReduce.ast.Function
+import bpReduce.ast.VariableHolder
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Expr._
+import bpReduce.ast.Sym
+import bpReduce.ast.Program
 
 final class BooleanProgramParser extends RegexParsers {
 
-  import Expr._
 
   // TODO parens ~
 
@@ -282,8 +281,6 @@ final class BooleanProgramParser extends RegexParsers {
 
   lazy val currentOrNextStateId: Parser[Var] = """'?[A-Za-z]\w*\$?""".r ^^ {
     case VarRegex(primed, s, mixed) =>
-      import StateIdentifier._
-      import MixedIdentifier._
       val stateId = if (primed == "'") Next else Current
       val mixedId = if (mixed == "$") Mixed else NonMixed
       Var(Sym(s), stateId, mixedId)

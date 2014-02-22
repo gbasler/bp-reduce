@@ -1,10 +1,8 @@
 package bpReduce
-package transformations
 package reduction
 
 import bpReduce.ast.Stmt
 import bpReduce.ast.Stmt._
-import scala.Some
 import bpReduce.ast.Program
 
 object Reducers {

@@ -2,12 +2,12 @@ package bpReduce
 package transformations
 
 import scala.annotation.tailrec
-import bpReduce.ast.Expr
-import bpReduce.ast.Expr._
-import bpReduce.ast.Expr.NaryOp
-import bpReduce.ast.Expr.And
-import bpReduce.ast.Expr.Not
-import bpReduce.ast.Expr.Var
+import ast.Expr
+import ast.Expr._
+import ast.Expr.NaryOp
+import ast.Expr.And
+import ast.Expr.Not
+import ast.Expr.Var
 
 /**
  * Simplifies Boolean Expression according to the following rules:

@@ -1,5 +1,4 @@
 package bpReduce
-package transformations
 package reduction
 
 import bpReduce.BaseSpecification

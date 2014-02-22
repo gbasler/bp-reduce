@@ -3,7 +3,7 @@ package reducer
 
 import bpReduce.ast.Program
 import scala.annotation.tailrec
-import bpReduce.transformations.reduction.{ProgramReducer, ProgramReducerFacory}
+import bpReduce.reduction.{ProgramReducer, ProgramReducerFacory}
 import bpReduce.reducer.CheckerResult.{Reject, Accept}
 
 final case class Reducer(config: ReducerConfig) {

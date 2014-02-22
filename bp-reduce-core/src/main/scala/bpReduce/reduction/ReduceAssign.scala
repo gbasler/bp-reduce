@@ -1,5 +1,4 @@
 package bpReduce
-package transformations
 package reduction
 
 import bpReduce.ast.Stmt
@@ -9,7 +8,7 @@ import bpReduce.ast.Stmt.Assign
 /**
  * Reduces `:=` expressions by incrementally omitting assignments
  * (we don't reduce until the `skip` statement, since this is the task of
- * the [[bpReduce.transformations.reduction.Reducers.ReplaceWithSkip]] reducer).
+ * the [[bpReduce.reduction.Reducers.ReplaceWithSkip]] reducer).
  *
  * @param next
  */

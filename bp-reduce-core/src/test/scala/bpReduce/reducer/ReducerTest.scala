@@ -2,7 +2,7 @@ package bpReduce
 package reducer
 
 import bpReduce.ast.Program
-import bpReduce.transformations.reduction.Reducers
+import bpReduce.reduction.Reducers
 import bpReduce.reader.BooleanProgramParser
 
 class ReducerTest extends BaseSpecification {
