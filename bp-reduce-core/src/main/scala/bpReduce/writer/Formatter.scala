@@ -63,11 +63,15 @@ object Formatter {
     case Assert(e)                  =>
       s"assert ${format(e)}"
     case Call(name, assigns, args)  =>
-      val lhs = assigns.map {
-        case Some(Sym(name)) => name
-        case None            => "_"
-      }.mkString(" ", ", ", " := ")
-      val params = args.map(format)
+      val lhs = if (assigns.isEmpty) {
+        ""
+      } else {
+        assigns.map {
+          case Some(Sym(name)) => name
+          case None            => "_"
+        }.mkString(" ", ", ", " := ")
+      }
+      val params = args.map(format).mkString(", ")
       s"""$lhs$name($params)"""
     case Dead(vars)                 =>
       s"""dead ${vars.mkString(", ")}"""
@@ -81,7 +85,7 @@ object Formatter {
     case Skip                       =>
       "skip"
     case Return(values)             =>
-      s"""return${if(values.isEmpty) "" else values.mkString(", ")}"""
+      s"""return${if (values.isEmpty) "" else values.mkString(", ")}"""
     case AtomicBegin                =>
       "atomic_begin"
     case AtomicEnd                  =>
