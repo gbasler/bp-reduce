@@ -12,7 +12,8 @@ import bpReduce.ast.Stmt.Return
  *
  * @param next The next possible reduction for [[StmtReducer.advance]].
  */
-final case class ReduceReturnExpr(from: Stmt, next: List[Stmt]) extends StmtReducer {
+final case class ReduceReturnExpr(from: Return,
+                                  next: List[Stmt]) extends StmtReducer {
 
   require(next.nonEmpty)
 

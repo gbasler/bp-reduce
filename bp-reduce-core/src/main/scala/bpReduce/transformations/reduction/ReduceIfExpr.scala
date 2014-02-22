@@ -6,8 +6,8 @@ import bpReduce.ast.Stmt.If
 import bpReduce.ast.Expr
 
 // TODO: generalize?
-final class ReduceIfExpr(override val from: If,
-                         reductions: List[Expr]) extends StmtReducer {
+final case class ReduceIfExpr(from: If,
+                              reductions: List[Expr]) extends StmtReducer {
 
   require(reductions.nonEmpty)
 

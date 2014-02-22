@@ -14,7 +14,8 @@ import bpReduce.ast.Stmt.Assign
  *
  * @param next The next possible reduction for [[StmtReducer.advance]].
  */
-final case class ReduceAssignExpr(from: Stmt, next: List[Stmt]) extends StmtReducer {
+final case class ReduceAssignExpr(from: Assign,
+                                  next: List[Stmt]) extends StmtReducer {
 
   require(next.nonEmpty)
 
