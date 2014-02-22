@@ -3,7 +3,7 @@ package transformations
 package reduction
 
 import bpReduce.ast.Stmt
-import bpReduce.ast.Stmt.{Return, Assign}
+import bpReduce.ast.Stmt.Return
 
 /**
  * Reduces `return e1, e2, ... en` expressions by incrementally reducing the expressions.
@@ -36,8 +36,8 @@ object ReduceReturnExpr {
   def apply(stmt: Stmt): Option[ReduceReturnExpr] = {
 
     stmt match {
-      case assign: Assign => apply(assign)
-      case _              => None
+      case ret: Return => apply(ret)
+      case _           => None
     }
   }
 

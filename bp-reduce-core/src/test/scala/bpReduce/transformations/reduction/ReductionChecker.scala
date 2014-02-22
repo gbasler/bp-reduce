@@ -13,8 +13,7 @@ object ReductionChecker extends BaseSpecification {
             origin: Stmt,
             reductions: Seq[Reduction]) = {
     // we build a tree for convenience
-    val tree: Map[Stmt, Set[Stmt]] = buildTree(reductions)
-
+    val tree = buildTree(reductions)
     val leftOver = checkReductionChain(tree, reducer :: Nil, reductions.toSet)
     leftOver must beEmpty
   }

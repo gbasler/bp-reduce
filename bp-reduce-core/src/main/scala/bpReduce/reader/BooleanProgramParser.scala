@@ -73,6 +73,13 @@ final class BooleanProgramParser extends RegexParsers {
     }
   }
 
+  def parseReturn(programStr: String): Return = {
+    parseAll(returnStatement, programStr) match {
+      case Success(stmt, _) => stmt
+      case e: NoSuccess     => sys.error("parse error: " + e.toString)
+    }
+  }
+
   protected override val whiteSpace = """(\s|//.*|(?m)/\*(\*(?!/)|[^*])*\*/)+""".r
 
   lazy val program: Parser[Program] = decls ~ rep(function) ^^ {
@@ -213,11 +220,14 @@ final class BooleanProgramParser extends RegexParsers {
         }
     }
 
-  lazy val jumpStatement: Parser[Stmt] = "return" ~> repsep(expr, ",") ^^ {
+  lazy val returnStatement: Parser[Return] = "return" ~> repsep(expr, ",") ^^ {
     Return
-  } | "skip" ^^^ {
-    Skip
-  } | "goto" ~> rep1sep(id, ",") ^^ {
+  }
+
+  lazy val jumpStatement: Parser[Stmt] = returnStatement |
+    "skip" ^^^ {
+      Skip
+    } | "goto" ~> rep1sep(id, ",") ^^ {
     Goto
   }
 
