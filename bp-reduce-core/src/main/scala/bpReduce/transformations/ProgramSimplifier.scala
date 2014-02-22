@@ -2,6 +2,7 @@ package bpReduce
 package transformations
 
 import bpReduce.ast.{LabelledStmt, Stmt, Program, Function}
+import bpReduce.ast.Stmt.Skip
 
 /**
  * Checking a program is a very expensive operation.
@@ -52,6 +53,36 @@ object ProgramSimplifier {
     }
   }
 
-  //    private def removeSkips
+  // cases
+  //
+
+  private def removeSkips(stmt: List[LabelledStmt]) = {
+    stmt.foldRight(Option.empty[LabelledStmt]) {
+      case (stmt, None) =>
+        if (stmt.stmt == Skip) {
+          // the
+          (None, Some(stmt))
+        } else {
+          val labels: Seq[String] = stmt.labels ++ skipLabels
+          Some(stmt.copy(labels = labels)) -> Seq()
+        }
+      case (stmt, Some(lastNonSkip)) =>
+        if (stmt.stmt == Skip) {
+          (None, (lastNonSkip, skipLabels ++ stmt.labels))
+        } else {
+          val labels: Seq[String] = stmt.labels ++ skipLabels
+          Some(stmt.copy(labels = labels)) -> Seq()
+        }
+    }
+    //    stmt.foldRight(Option.empty[LabelledStmt] -> Seq.empty[String]) {
+    //      case (stmt, (lastNonSkip, skipLabels)) =>
+    //        if (stmt.stmt == Skip) {
+    //          (None, (lastNonSkip, skipLabels ++ stmt.labels))
+    //        } else {
+    //          val labels: Seq[String] = stmt.labels ++ skipLabels
+    //          Some(stmt.copy(labels = labels)) -> Seq()
+    //        }
+    //    }
+  }
 
 }
