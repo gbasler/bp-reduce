@@ -79,9 +79,14 @@ class ReducerHighLevelTest extends BaseSpecification {
 
     "reduce expression with smart checker" should {
 
-      // checker that accepts any program that sets `g`
-      val smartChecker = new Checker {
+      /**
+       * checker that accepts any program that sets `g`
+       */
+      class SmartChecker extends Checker {
+        var checks = 0
+
         def apply(program: Program): CheckerResult = {
+          checks += 1
           val ok = program.exists {
             case Assume(e) =>
               // rule out false case since T / F would both be possible (makes test deterministic)
@@ -93,7 +98,6 @@ class ReducerHighLevelTest extends BaseSpecification {
           } else {
             CheckerResult.Reject
           }
-
         }
       }
 
@@ -130,6 +134,7 @@ class ReducerHighLevelTest extends BaseSpecification {
             |
           """.stripMargin
 
+        val smartChecker = new SmartChecker
         import Reducers._
         val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = false)
         Reducer(config)(program) must beSameProgram(reduced)
@@ -147,9 +152,32 @@ class ReducerHighLevelTest extends BaseSpecification {
             |
           """.stripMargin
 
+        val smartChecker = new SmartChecker
         import Reducers._
         val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = true)
         Reducer(config)(program) must beSameProgram(reduced)
+        smartChecker.checks === 9
+      }
+
+      "with simplifcation + cache" in {
+        val reduced: Program =
+          """|decl g;
+            |void main()
+            |begin
+            |decl l;
+            |decl a;
+            |assume(T);
+            |end
+            |
+          """.stripMargin
+
+        val smartChecker = new SmartChecker
+        val cachingChecker = new CachingChecker(smartChecker)
+
+        import Reducers._
+        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), cachingChecker, simplify = true)
+        Reducer(config)(program) must beSameProgram(reduced)
+        smartChecker.checks === 9 // TODO: chache can't improve anything here...
       }
     }
   }
