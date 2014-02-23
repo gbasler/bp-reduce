@@ -9,4 +9,5 @@ import bpReduce.reduction.ProgramReducerFacory
  * @param checker
  */
 final case class ReducerConfig(reducers: List[ProgramReducerFacory],
-                               checker: Checker)
+                               checker: Checker,
+                               simplify: Boolean)

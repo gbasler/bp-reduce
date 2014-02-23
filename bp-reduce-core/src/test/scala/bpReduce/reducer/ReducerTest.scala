@@ -16,7 +16,7 @@ class ReducerTest extends BaseSpecification {
         override def apply(program: Program): CheckerResult = CheckerResult.Accept
       }
 
-      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker)
+      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker, simplify = false)
 
       val program: Program =
         """|void main()
@@ -42,7 +42,7 @@ class ReducerTest extends BaseSpecification {
         override def apply(program: Program): CheckerResult = CheckerResult.Accept
       }
 
-      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker)
+      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker, simplify = false)
 
       val program: Program =
         """|void main()
@@ -70,7 +70,7 @@ class ReducerTest extends BaseSpecification {
         override def apply(program: Program): CheckerResult = CheckerResult.Reject
       }
 
-      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allRejectChecker)
+      val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allRejectChecker, simplify = false)
 
       val program: Program =
         """|void main()

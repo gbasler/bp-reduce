@@ -40,7 +40,7 @@ class ReducerHighLevelTest extends BaseSpecification {
       }
 
       import Reducers._
-      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns), smartChecker)
+      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns), smartChecker, simplify = false)
 
       val program: Program =
         """|decl g;
@@ -77,7 +77,7 @@ class ReducerHighLevelTest extends BaseSpecification {
       Reducer(config)(program) must beSameProgram(reduced)
     }
 
-    "reduce expression with smart checker" in {
+    "reduce expression with smart checker" should {
 
       // checker that accepts any program that sets `g`
       val smartChecker = new Checker {
@@ -97,9 +97,6 @@ class ReducerHighLevelTest extends BaseSpecification {
         }
       }
 
-      import Reducers._
-      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker)
-
       val program: Program =
         """|decl g;
           |void main()
@@ -116,23 +113,44 @@ class ReducerHighLevelTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val reduced: Program =
-        """|decl g;
-          |void main()
-          |begin
-          |decl l;
-          |decl a;
-          |skip;
-          |skip;
-          |skip;
-          |assume(T);
-          |skip;
-          |skip;
-          |end
-          |
-        """.stripMargin
+      "without simplifcation" in {
+        val reduced: Program =
+          """|decl g;
+            |void main()
+            |begin
+            |decl l;
+            |decl a;
+            |skip;
+            |skip;
+            |skip;
+            |assume(T);
+            |skip;
+            |skip;
+            |end
+            |
+          """.stripMargin
 
-      Reducer(config)(program) must beSameProgram(reduced)
+        import Reducers._
+        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = false)
+        Reducer(config)(program) must beSameProgram(reduced)
+      }
+
+      "with simplifcation" in {
+        val reduced: Program =
+          """|decl g;
+            |void main()
+            |begin
+            |decl l;
+            |decl a;
+            |assume(T);
+            |end
+            |
+          """.stripMargin
+
+        import Reducers._
+        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = true)
+        Reducer(config)(program) must beSameProgram(reduced)
+      }
     }
   }
 }

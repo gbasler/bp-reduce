@@ -27,7 +27,11 @@ final case class Reducer(config: ReducerConfig) {
           // reduction not possible, return last feasible reduction
           lastFeasible
         case Some(variant) =>
-          val simplified = ProgramSimplifier(variant)
+          val simplified = if (config.simplify) {
+            ProgramSimplifier(variant)
+          } else {
+            variant
+          }
           checker(simplified) match {
             case CheckerResult.Accept =>
               // reduction was accepted
@@ -74,6 +78,12 @@ final case class Reducer(config: ReducerConfig) {
       }
     }
 
-    reduceUntilFixpoint(program)
+    val reduced = reduceUntilFixpoint(program)
+    if (config.simplify) {
+      ProgramSimplifier(reduced)
+    } else {
+      reduced
+    }
+
   }
 }
