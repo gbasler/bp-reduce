@@ -25,7 +25,7 @@ object CacheState {
  * checked other variant after program simplification.
  *
  */
-class ProgramCache {
+final class ProgramCache {
   val cache = mutable.Map.empty[Program, CacheState]
 
   def add(program: Program, state: CacheState) = {

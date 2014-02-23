@@ -5,8 +5,6 @@ import bpReduce.ast.Program
 import scala.annotation.tailrec
 import bpReduce.reduction.{ProgramReducer, ProgramReducerFacory}
 import bpReduce.transformations.ProgramSimplifier
-import bpReduce.reducer.CacheState
-import bpReduce.reducer.CheckerResult.{Reject, Accept}
 
 final case class Reducer(config: ReducerConfig) {
   /**
@@ -30,24 +28,7 @@ final case class Reducer(config: ReducerConfig) {
           lastFeasible
         case Some(variant) =>
           val simplified = ProgramSimplifier(variant)
-          val result = config.cache.check(simplified) match {
-            case CacheState.Accepted =>
-              // variant already checked and was ok
-              CheckerResult.Accept
-            case CacheState.Rejected =>
-              // variant already checked and it failed
-              CheckerResult.Reject
-            case CacheState.Unknown  =>
-              val result = checker(variant)
-              val translated = result match {
-                case Accept => CacheState.Accepted
-                case Reject => CacheState.Rejected
-              }
-              config.cache.add(program, translated)
-              result
-          }
-
-          result match {
+          checker(simplified) match {
             case CheckerResult.Accept =>
               // reduction was accepted
               // continue with variant
