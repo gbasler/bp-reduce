@@ -33,56 +33,34 @@ object ProgramSimplifier {
   final case class FunctionUnderSimplification(blocks: Seq[Block])
 
   def apply(program: Program): Program = {
-    ???
-  }
-
-  private def buildBlocks(function: Function): List[Block] = {
-    val blocks = for {
-      stmt <- function.stmts
+    val functions = for {
+      function <- program.functions
     } yield {
-      Block(List(stmt.stmt), stmt.labels)
+      removeNonTargetSkips(function)
     }
-    blocks
+    program.copy(functions = functions)
   }
 
-  private def labelledStmtsForBlocks(blocks: List[Block]) = {
-    for {
-      block <- blocks
-    } yield {
-      LabelledStmt(block.stmt.head, block.labels)
+  /**
+   * Very very conservative algorithm:
+   * Removes all skips but the ones that are targets of gotos etc.
+   * Most likely a more aggressive algorithm would work too but
+   * the conservative algorithm is easier to implement and produces acceptable
+   * results.
+   *
+   * TODO: check how much improvement a more aggressive algorithm would bring
+   *
+   * @param function
+   */
+  private def removeNonTargetSkips(function: Function) = {
+    // if a skip has a label that is used, it will not be removed
+    val usedLabels: Set[String] = TargetCollector(function)
+    val stmts = function.stmts.filterNot {
+      stmt =>
+        stmt.stmt == Skip && stmt.labels.forall(label => !usedLabels.contains(label))
     }
+    function.copy(stmts = stmts)
   }
 
-  // cases
-  //
-
-  private def removeSkips(stmt: List[LabelledStmt]) = {
-    stmt.foldRight(Option.empty[LabelledStmt]) {
-      case (stmt, None) =>
-        if (stmt.stmt == Skip) {
-          // the
-          (None, Some(stmt))
-        } else {
-          val labels: Seq[String] = stmt.labels ++ skipLabels
-          Some(stmt.copy(labels = labels)) -> Seq()
-        }
-      case (stmt, Some(lastNonSkip)) =>
-        if (stmt.stmt == Skip) {
-          (None, (lastNonSkip, skipLabels ++ stmt.labels))
-        } else {
-          val labels: Seq[String] = stmt.labels ++ skipLabels
-          Some(stmt.copy(labels = labels)) -> Seq()
-        }
-    }
-    //    stmt.foldRight(Option.empty[LabelledStmt] -> Seq.empty[String]) {
-    //      case (stmt, (lastNonSkip, skipLabels)) =>
-    //        if (stmt.stmt == Skip) {
-    //          (None, (lastNonSkip, skipLabels ++ stmt.labels))
-    //        } else {
-    //          val labels: Seq[String] = stmt.labels ++ skipLabels
-    //          Some(stmt.copy(labels = labels)) -> Seq()
-    //        }
-    //    }
-  }
 
 }

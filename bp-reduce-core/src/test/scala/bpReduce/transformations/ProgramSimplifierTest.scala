@@ -7,7 +7,7 @@ import bpReduce.reader.BooleanProgramParser
 
 class ProgramSimplifierTest extends BaseSpecification {
 
-  "program simplifier" should {
+  "program simplifier: conservative" should {
     implicit def fromText(program: String) = {
       new BooleanProgramParser().parse(program)
     }
@@ -29,7 +29,8 @@ class ProgramSimplifierTest extends BaseSpecification {
           |
         """.stripMargin
 
-      ProgramSimplifier(program) must beSameProgram(simplified)
+      val actual: Program = ProgramSimplifier(program)
+      actual must beSameProgram(simplified)
     }
 
     "only skips and some unused labels" in {
@@ -98,6 +99,37 @@ class ProgramSimplifierTest extends BaseSpecification {
       ProgramSimplifier(program1) must beSameProgram(simplified)
       ProgramSimplifier(program2) must beSameProgram(simplified)
       ProgramSimplifier(program3) must beSameProgram(simplified)
+    }
+
+    "more non removable skips as jump target" in {
+      val program: Program =
+        """|void main()
+          |begin
+          |goto L1, L2;
+          |L2: skip;
+          |skip;
+          |L1: skip;
+          |skip;
+          |end
+          |
+        """.stripMargin
+
+      // a more aggressive optimization could also remove the second skip
+      // and then remove the goto as well
+      // but that could hide some bugs
+      // (e.g., several threads having different pcs
+      // since there's only one or zero stmt left)
+      val simplified: Program =
+        """|void main()
+          |begin
+          |goto L1, L2;
+          |L2: skip;
+          |L1: skip;
+          |end
+          |
+        """.stripMargin
+
+      ProgramSimplifier(program) must beSameProgram(simplified)
     }
   }
 }
