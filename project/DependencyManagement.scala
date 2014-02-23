@@ -21,6 +21,9 @@ object DependencyManagement {
   /** General utilities for Java language */
   def CommonsLang = "commons-lang" % "commons-lang" % "2.4"
 
+  /** General utilities for Java language */
+  def CommonsExec = "org.apache.commons" % "commons-exec" % "1.2"
+
   /** Scala library providing Actors and Promises (for concurrency), and functional programming tools */
   def ScalazCore = "org.scalaz" %% "scalaz-core" % "7.0.0"
 

@@ -6,8 +6,8 @@ object build extends Build {
   import DependencyManagement._
 
   // Settings shared by all sub-projects.
-  val standardSettings: Seq[Project.Setting[_]] =
-    Seq[Project.Setting[_]](
+  val standardSettings: Seq[Def.Setting[_]] =
+    Seq[Def.Setting[_]](
       ivyXML := DependencyManagement.ivyExclusionsAndOverrides,
       scalaVersion := "2.10.3",
       resolvers ++= Seq("snapshots" at "http://scala-tools.org/repo-snapshots",
@@ -31,7 +31,7 @@ object build extends Build {
     base = file("bp-reduce-core"),
     settings = Defaults.defaultSettings ++ standardSettings ++ Seq(
       libraryDependencies ++= Seq(ScalazCore, ScalazConcurrent, Specs, JUnit, Scalacheck, MockitoAll, CommonsIo,
-        TreeHugger, JodaConvert, JodaTime, CommonsLang, Fastutil, Kiama, SpringCore % "test")
+        TreeHugger, JodaConvert, JodaTime, CommonsLang, Fastutil, Kiama, CommonsExec, SpringCore % "test")
     )
   )
 
