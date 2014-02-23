@@ -49,7 +49,7 @@ object Formatter {
   }
 
   def formatWithLabels(stmt: LabelledStmt) = {
-    stmt.labels.mkString(" ") + "\t" + format(stmt.stmt)
+    stmt.labels.map(_ + ":").mkString(" ") + "\t" + format(stmt.stmt)
   }
 
   def format(stmt: Stmt): String = stmt match {

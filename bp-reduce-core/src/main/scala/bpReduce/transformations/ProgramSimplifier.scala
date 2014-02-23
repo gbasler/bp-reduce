@@ -1,7 +1,7 @@
 package bpReduce
 package transformations
 
-import bpReduce.ast.{LabelledStmt, Stmt, Program, Function}
+import bpReduce.ast.{Stmt, Program, Function}
 import bpReduce.ast.Stmt.Skip
 
 /**
