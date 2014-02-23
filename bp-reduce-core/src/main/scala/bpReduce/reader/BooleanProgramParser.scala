@@ -293,7 +293,11 @@ final class BooleanProgramParser extends RegexParsers {
       Var(Sym(s), stateId, mixedId)
   }
 
-  lazy val label: Parser[String] = """[A-Za-z]\w*:(?!=)""".r
+  lazy val LabelRegex = """([A-Za-z]\w*):""".r
+
+  lazy val label: Parser[String] = """[A-Za-z]\w*:(?!=)""".r ^^ {
+    case LabelRegex(label) => label
+  }
 
   lazy val number: Parser[Int] =
     """\d+""".r ^^ {
