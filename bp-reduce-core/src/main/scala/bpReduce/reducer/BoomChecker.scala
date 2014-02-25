@@ -1,20 +1,28 @@
-package bpReduce.reducer
+package bpReduce
+package reducer
 
 import org.apache.commons.exec.{ExecuteException, DefaultExecuteResultHandler, DefaultExecutor, CommandLine}
-import bpReduce.Resources
 import bpReduce.ast.Program
+import bpReduce.writer.Formatter
+import org.apache.commons.io.FileUtils
+import java.io.File
+import scala.collection.JavaConverters._
 
 class BoomChecker extends Checker {
 
+  // TODO: uh plain ugly
+  var iteration = 0
+
   def apply(program: Program): CheckerResult = {
     val execName = "boom"
-    val file = Resources.getFileForUrlOrFile("trace_WP_bug2/main.bp")
+    val content = Formatter(program)
+    FileUtils.writeLines(new File(s"reduced.$iteration"), content.asJava)
 
     //  Map map = new HashMap();
     //  map.put("file", new File("invoice.pdf"));
     val cmdLine = new CommandLine(execName)
     cmdLine.addArgument("-t")
-    cmdLine.addArgument(file.getAbsolutePath)
+    //    cmdLine.addArgument(file.getAbsolutePath)
     val executor = new DefaultExecutor
     //  executor.setExitValue(1)
     val exitValue = executor.execute(cmdLine)

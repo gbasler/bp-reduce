@@ -76,4 +76,8 @@ object DependencyManagement {
    */
   def Kiama = "com.googlecode.kiama" %% "kiama" % "1.5.1"
 
+  /**
+   * Scopt, command line parsing
+   */
+  def Scopt = "com.github.scopt" %% "scopt" % "3.2.0"
 }

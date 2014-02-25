@@ -31,7 +31,8 @@ object build extends Build {
     base = file("bp-reduce-core"),
     settings = Defaults.defaultSettings ++ standardSettings ++ Seq(
       libraryDependencies ++= Seq(ScalazCore, ScalazConcurrent, Specs, JUnit, Scalacheck, MockitoAll, CommonsIo,
-        TreeHugger, JodaConvert, JodaTime, CommonsLang, Fastutil, Kiama, CommonsExec, SpringCore % "test")
+        TreeHugger, JodaConvert, JodaTime, CommonsLang, Fastutil, Kiama, CommonsExec, Scopt,
+        SpringCore % "test")
     )
   )
 

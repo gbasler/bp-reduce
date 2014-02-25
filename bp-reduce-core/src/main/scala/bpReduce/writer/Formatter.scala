@@ -24,7 +24,7 @@ object Formatter {
 
   private val end = ";"
 
-  def format(program: Program): String = {
+  def apply(program: Program): Seq[String] = {
     val globals = format(program.globals).map(_ + end)
     val functions = for {
       f <- program.functions
@@ -37,6 +37,11 @@ object Formatter {
       header +: content :+ "end"
     }
     val programAsLines = globals ++ functions.flatten
+    programAsLines
+  }
+
+  def format(program: Program): String = {
+    val programAsLines = apply(program)
     programAsLines.mkString("\n")
   }
 
