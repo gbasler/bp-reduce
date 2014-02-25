@@ -16,13 +16,12 @@ class BoomChecker extends Checker {
   def apply(program: Program): CheckerResult = {
     val execName = "boom"
     val content = Formatter(program)
-    FileUtils.writeLines(new File(s"reduced.$iteration"), content.asJava)
+    val candidate: File = new File(s"reduced.$iteration")
+    FileUtils.writeLines(candidate, content.asJava)
 
-    //  Map map = new HashMap();
-    //  map.put("file", new File("invoice.pdf"));
     val cmdLine = new CommandLine(execName)
     cmdLine.addArgument("-t")
-    //    cmdLine.addArgument(file.getAbsolutePath)
+    cmdLine.addArgument(candidate.getAbsolutePath)
     val executor = new DefaultExecutor
     //  executor.setExitValue(1)
     val exitValue = executor.execute(cmdLine)
