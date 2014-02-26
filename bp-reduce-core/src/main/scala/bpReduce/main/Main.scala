@@ -24,8 +24,7 @@ object Main {
       config =>
         val content = FileUtils.readFileToString(config.file)
         val program = new BooleanProgramParser().parse(content)
-        val checker = new BoomChecker("")
-//        checker(program)
+        val checker = new BoomChecker("Assertion.*?failed")
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
         val reducer = new Reducer(cfg)
         reducer(program)

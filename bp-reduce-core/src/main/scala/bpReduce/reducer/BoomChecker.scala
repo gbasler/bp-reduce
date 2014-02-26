@@ -14,7 +14,7 @@ class BoomChecker(errorLine: String) extends Checker {
   // TODO: uh plain ugly
   var iteration = 0
 
-  val args = Seq("-t", "--parallel", "2")
+  val args = Seq("-t", "--threadbound", "3")
 
   def apply(program: Program): CheckerResult = {
     val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
@@ -34,7 +34,7 @@ class BoomChecker(errorLine: String) extends Checker {
     val exitValue = executor.execute(cmdLine)
     println(s"Boom terminated with $exitValue")
     val output = outputStream.toString
-    if (output.contains(errorLine)) {
+    if (output.matches(errorLine)) {
       CheckerResult.Accept
     } else {
       CheckerResult.Reject
