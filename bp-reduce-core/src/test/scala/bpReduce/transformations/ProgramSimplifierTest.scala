@@ -131,5 +131,30 @@ class ProgramSimplifierTest extends BaseSpecification {
 
       ProgramSimplifier(program) must beSameProgram(simplified)
     }
+
+    "even more non removable skips as jump target" in {
+      val program: Program =
+        """|void main()
+          |begin
+          |l1: PC10:	if F then goto l6; fi;
+          |l5: PC39:	goto l1;
+          |l6: PC40:	skip;
+          |PC41:	skip;
+          |end
+          |
+        """.stripMargin
+
+      val simplified: Program =
+        """|void main()
+          |begin
+          |l1: PC10:	if F then goto l6; fi;
+          |l5: PC39:	goto l1;
+          |l6: PC40:	skip;
+          |end
+          |
+        """.stripMargin
+
+      ProgramSimplifier(program) must beSameProgram(simplified)
+    }
   }
 }

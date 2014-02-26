@@ -2,6 +2,7 @@ package bpReduce
 package ast
 
 import scala.collection.mutable.ListBuffer
+import bpReduce.ast.Stmt._
 
 final case class Function(name: String,
                           locals: VariableHolder = VariableHolder(),
@@ -15,11 +16,21 @@ final case class Function(name: String,
   def collect[T](pf: PartialFunction[Stmt, T]): List[T] = {
     val results = new ListBuffer[T]
 
-    for {
-      LabelledStmt(stmt, labels) <- stmts
-    } {
-      if (pf.isDefinedAt(stmt)) results += pf(stmt)
+    def collectStmts(stmts: List[LabelledStmt]) {
+      for {
+        LabelledStmt(stmt, labels) <- stmts
+      } {
+        if (pf.isDefinedAt(stmt)) results += pf(stmt)
+        stmt match {
+          case If(_, pos, neg) =>
+            collectStmts(pos)
+            collectStmts(neg)
+          case _               =>
+        }
+      }
     }
+
+    collectStmts(stmts)
 
     results.toList
   }

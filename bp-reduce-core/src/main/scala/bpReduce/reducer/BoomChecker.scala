@@ -14,9 +14,10 @@ class BoomChecker extends Checker {
   var iteration = 0
 
   def apply(program: Program): CheckerResult = {
-    val execName = "boom"
+    val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
+//    val execName = "boom"
     val content = Formatter(program)
-    val candidate: File = new File(s"reduced.$iteration")
+    val candidate: File = new File(s"reduced.$iteration.bp")
     FileUtils.writeLines(candidate, content.asJava)
 
     val cmdLine = new CommandLine(execName)

@@ -221,7 +221,7 @@ final class BooleanProgramParser extends RegexParsers {
     "if" ~> expr ~ ("then" ~> labelledStmtList) ~ rep("elif" ~> expr ~ "then" ~ labelledStmtList) ~ opt("else" ~> labelledStmtList) <~ "fi" ^^ {
       case expr ~ posStmts ~ elsifs ~ elseStmtsOpt =>
         if (elsifs.isEmpty) {
-          If(expr, posStmts, elseStmtsOpt.map(_.toSeq).toSeq.flatten)
+          If(expr, posStmts, elseStmtsOpt.toList.flatten)
         } else {
           // add last else to innermost if
           val elifs = elsifs.foldRight(elseStmtsOpt.toList.flatten) {
