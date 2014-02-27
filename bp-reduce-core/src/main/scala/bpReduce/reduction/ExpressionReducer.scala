@@ -145,7 +145,7 @@ object ExpressionReducer {
               val (e2, c2) = replace(b, c1)
               BinaryOp(op, e1, e2) -> c2
             case Not(a)                =>
-              val (e1, c1) = replace(e, counter)
+              val (e1, c1) = replace(a, counter)
               Not(e1) -> c1
             case True | False | _: Var =>
               e -> counter
