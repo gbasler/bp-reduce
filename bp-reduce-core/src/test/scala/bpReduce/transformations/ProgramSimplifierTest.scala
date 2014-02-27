@@ -156,5 +156,27 @@ class ProgramSimplifierTest extends BaseSpecification {
 
       ProgramSimplifier(program) must beSameProgram(simplified)
     }
+
+    "assign with constrain T" in {
+      val program: Program =
+        """|decl g;
+          |void main()
+          |begin
+          |decl l;
+          |l, g := g, l constrain T;
+          |end
+        """.stripMargin
+
+      val simplified: Program =
+        """|decl g;
+          |void main()
+          |begin
+          |decl l;
+          |l, g := g, l;
+          |end
+        """.stripMargin
+
+      ProgramSimplifier(program) must beSameProgram(simplified)
+    }
   }
 }

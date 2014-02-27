@@ -8,8 +8,6 @@ import java.io.File
 import scala.collection.JavaConverters._
 import org.apache.commons.io.output.{TeeOutputStream, ByteArrayOutputStream}
 import bpReduce.ast.Program
-import scala.util.matching.Regex
-import java.util.regex.Pattern
 
 class BoomChecker(errorLine: String) extends Checker {
 
@@ -22,6 +20,7 @@ class BoomChecker(errorLine: String) extends Checker {
     iteration += 1
 
     //    val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
+    //    val execName = """D:\code\boom-build\bin\Debug\boom.exe"""
     val execName = """/Users/geri/Documents/boom-svn-build-debug/bin/boom"""
     val content = Formatter(program)
     val candidate: File = new File(s"reduced.$iteration.bp")
@@ -38,9 +37,7 @@ class BoomChecker(errorLine: String) extends Checker {
     executor.setExitValues(Array(0, 1, -2, 134))
     val exitValue = executor.execute(cmdLine)
     println(s"Boom terminated with $exitValue")
-    val output = outpu2tStream.toString
-//      .filterNot(_ == '\n')
-    //    Pattern.compile(errorLine)
+    val output = outputStream.toString
     if (output.contains(errorLine)) {
       CheckerResult.Accept
     } else {

@@ -1,8 +1,13 @@
 package bpReduce
 package transformations
 
-import bpReduce.ast.{Stmt, Program, Function}
-import bpReduce.ast.Stmt.Skip
+import bpReduce.ast._
+import bpReduce.ast.Stmt.{Assign, Skip}
+import bpReduce.ast.Expr.{True, Var}
+import bpReduce.ast.Function
+import bpReduce.ast.Stmt.Assign
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
 
 /**
  * Checking a program is a very expensive operation.
@@ -35,9 +40,9 @@ object ProgramSimplifier {
   def apply(program: Program): Program = {
     val functions = for {
       function <- program.functions
-    } yield {
-      removeNonTargetSkips(function)
-    }
+      simplified = simplifyStmts(function)
+      noSkips = removeNonTargetSkips(simplified)
+    } yield noSkips
     program.copy(functions = functions)
   }
 
@@ -62,9 +67,10 @@ object ProgramSimplifier {
     function.copy(stmts = stmts)
   }
 
-  private def simplifyExprs(function: Function) = {
-    function.collect()
+  private def simplifyStmts(function: Function) = {
+    function.transform {
+      case l@LabelledStmt(assign@Assign(_, Some(True)), _) =>
+        l.copy(stmt = assign.copy(constrain = None))
+    }
   }
-
-
 }
