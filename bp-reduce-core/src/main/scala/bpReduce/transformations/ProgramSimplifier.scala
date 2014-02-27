@@ -62,5 +62,9 @@ object ProgramSimplifier {
     function.copy(stmts = stmts)
   }
 
+  private def simplifyExprs(function: Function) = {
+    function.collect()
+  }
+
 
 }

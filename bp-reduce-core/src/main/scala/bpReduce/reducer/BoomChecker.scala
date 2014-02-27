@@ -8,6 +8,8 @@ import java.io.File
 import scala.collection.JavaConverters._
 import org.apache.commons.io.output.{TeeOutputStream, ByteArrayOutputStream}
 import bpReduce.ast.Program
+import scala.util.matching.Regex
+import java.util.regex.Pattern
 
 class BoomChecker(errorLine: String) extends Checker {
 
@@ -17,8 +19,10 @@ class BoomChecker(errorLine: String) extends Checker {
   val args = Seq("-t", "--threadbound", "3")
 
   def apply(program: Program): CheckerResult = {
-    val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
-    //    val execName = "boom"
+    iteration += 1
+
+    //    val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
+    val execName = """/Users/geri/Documents/boom-svn-build-debug/bin/boom"""
     val content = Formatter(program)
     val candidate: File = new File(s"reduced.$iteration.bp")
     FileUtils.writeLines(candidate, content.asJava)
@@ -31,10 +35,13 @@ class BoomChecker(errorLine: String) extends Checker {
     val tee = new TeeOutputStream(outputStream, System.out)
     val streamHandler = new PumpStreamHandler(tee)
     executor.setStreamHandler(streamHandler)
+    executor.setExitValues(Array(0, 1, -2, 134))
     val exitValue = executor.execute(cmdLine)
     println(s"Boom terminated with $exitValue")
-    val output = outputStream.toString
-    if (output.matches(errorLine)) {
+    val output = outpu2tStream.toString
+//      .filterNot(_ == '\n')
+    //    Pattern.compile(errorLine)
+    if (output.contains(errorLine)) {
       CheckerResult.Accept
     } else {
       CheckerResult.Reject
