@@ -6,6 +6,7 @@ import scala.collection.mutable
 import org.apache.commons.io.FileUtils
 import java.io.File
 import scala.collection.JavaConverters._
+import scala.collection.immutable.IndexedSeq
 
 sealed abstract class CacheState
 
@@ -46,18 +47,7 @@ final class ProgramCache {
 }
 
 object ProgramCache {
-  def logFileName(iteration: Int): String = s"reduced.$iteration.log"
+  val LogSuffix = "log"
 
-  def loadFromLogs = {
-    val files = FileUtils.listFiles(new File("."), Array(".bp", ".log"), false).asScala.toIndexedSeq
-    val (candidates, logs) = files.partition(_.getName.endsWith(".bp"))
-    val done = candidates.flatMap {
-      c =>
-        val bp = c.getName
-        val log = bp.replaceAll(".bp", ".log")
-        logs.find(_.getName == log).map {
-          log => c -> log
-        }
-    }
-  }
+  def logFileName(iteration: Int): String = s"reduced.$iteration.$LogSuffix"
 }
