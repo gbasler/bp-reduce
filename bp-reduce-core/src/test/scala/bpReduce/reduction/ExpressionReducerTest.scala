@@ -11,16 +11,16 @@ class ExpressionReducerTest extends BaseSpecification {
   "reduce expressions" should {
 
     "no reduction" in {
-      ExpressionReducer(True) === Set()
-      ExpressionReducer(False) === Set()
+      ExpressionReducer(True) must beEmpty
+      ExpressionReducer(False) must beEmpty
     }
 
     "one reduction" in {
       val a = Var(Sym("a"))
       val b = Var(Sym("b"))
 
-      ExpressionReducer(And(a, b)) === Set(a, b, False)
-      ExpressionReducer(Or(a, b)) === Set(a, b, True)
+      ExpressionReducer(And(a, b)) === List(b, False, a)
+      ExpressionReducer(Or(a, b)) === List(True, b, a)
     }
 
     "two reductions" in {
@@ -28,13 +28,13 @@ class ExpressionReducerTest extends BaseSpecification {
       val b = Var(Sym("b"))
       val c = Var(Sym("c"))
 
-      ExpressionReducer(And(a, Or(b, c))) === Set(And(a, b), And(a, c), Or(b, c), a, False)
+      ExpressionReducer(And(a, Or(b, c))) === List(Or(b, c), False, a, And(a, c), And(a, b))
     }
 
     "nondet" in {
-      ExpressionReducer(Nondet) === Set(True, False)
-      ExpressionReducer(Or(Nondet, Nondet)) === Set(True, False)
-      ExpressionReducer(Equiv(Nondet, Nondet)) === Set(True, False)
+      ExpressionReducer(Nondet) === List(True, False)
+      ExpressionReducer(Or(Nondet, Nondet)) === List(True, False)
+      ExpressionReducer(Equiv(Nondet, Nondet)) === List(True, False)
     }
   }
 

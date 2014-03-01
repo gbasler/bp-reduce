@@ -8,6 +8,7 @@ import bpReduce.ast.Expr.BinaryOp
 import bpReduce.ast.Expr.Var
 import bpReduce.ast.Expr.Not
 import bpReduce.transformations.ExpressionSimplifier
+import scala.collection.immutable.IndexedSeq
 
 /**
  * Most essential reduction.
@@ -35,8 +36,7 @@ import bpReduce.transformations.ExpressionSimplifier
  */
 object ExpressionReducer {
 
-  // TODO: List is more elegant...
-  def apply(e: Expr): Set[Expr] = {
+  def apply(e: Expr): List[Expr] = {
 
     /**
      * We use a power set approach here:
@@ -48,11 +48,11 @@ object ExpressionReducer {
      * That is were the decrementing power set algorithm comes into play: it allows a nice recursive implementation
      * with a simple work list.
      */
-    def replaceAllVarsOnce(e: Expr): Set[Expr] = {
+    def replaceAllVarsOnce(e: Expr): List[Expr] = {
 
-      def collectVars(e: Expr) = e.collect {
+      def collectVars(e: Expr): List[Var] = e.collect {
         case v: Var => v
-      }.toSet
+      }.distinct
 
       /**
        * Replace only one variable at a time because
@@ -100,7 +100,7 @@ object ExpressionReducer {
         shortCircuit(reducedExpr, replaced)
       }
 
-      def decrementalPowerSet(expr: Expr): Set[Expr] = {
+      def decrementalPowerSet(expr: Expr): List[Expr] = {
         val vars = collectVars(expr)
         vars.flatMap {
           v =>
@@ -109,16 +109,16 @@ object ExpressionReducer {
 
             if (replaced.isDefined) {
               // not replaced
-              Set.empty[Expr]
+              List.empty[Expr]
             } else {
-              Set(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
+              List(ExpressionSimplifier(withTrue), ExpressionSimplifier(withFalse))
             }
-        }
+        }.distinct
       }
       decrementalPowerSet(e)
     }
 
-    def expandNondets(e: Expr): Set[Expr] = {
+    def expandNondets(e: Expr): List[Expr] = {
 
       /**
        * Unlike variables, where you'd expect all occurrences of the same
@@ -166,11 +166,11 @@ object ExpressionReducer {
         case _      => false
       }
 
-      (0 until nondets).flatMap {
+      (0 until nondets).toList.flatMap {
         counter =>
-          Seq(replaceNondetOnce(e, counter, True),
+          List(replaceNondetOnce(e, counter, True),
             replaceNondetOnce(e, counter, False))
-      }(collection.breakOut)
+      }.distinct
     }
 
     // simplify expression (in order to have as few runs as possible)
@@ -187,7 +187,7 @@ object ExpressionReducer {
     // expand nondet variables but only if there are any
     val reduced = for {
       replacedVars <- replaceAllVarsOnce(simplified)
-      expandedNondets <- if (hasNondets(replacedVars)) expandNondets(replacedVars) + replacedVars else Set(replacedVars)
+      expandedNondets <- if (hasNondets(replacedVars)) replacedVars :: expandNondets(replacedVars) else List(replacedVars)
     } yield expandedNondets
 
     val result = if (reduced.isEmpty && hasNondets(simplified)) {
