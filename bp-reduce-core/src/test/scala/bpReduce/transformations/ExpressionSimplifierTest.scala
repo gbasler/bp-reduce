@@ -3,9 +3,10 @@ package transformations
 
 import bpReduce.BaseSpecification
 import bpReduce.ast.Expr._
-import bpReduce.ast.Sym
+import bpReduce.ast.{Expr, Sym}
 import bpReduce.ast.Expr.Var
 import bpReduce.ast.Expr.Not
+import bpReduce.reader.BooleanProgramParser
 
 class ExpressionSimplifierTest extends BaseSpecification {
 
@@ -59,6 +60,17 @@ class ExpressionSimplifierTest extends BaseSpecification {
     "constants" in {
       ExpressionSimplifier(Not(False)) === True
       ExpressionSimplifier(Not(True)) === False
+    }
+  }
+
+  "from parser" should {
+    implicit def fromText(expr: String) = {
+      new BooleanProgramParser().parseExpr(expr)
+    }
+
+    "!(T & F & !(F) | T & !(T) & !(F) | F)" in {
+      val expr: Expr = "!(T & F & !(F) | T & !(T) & !(F) | F)"
+      ExpressionSimplifier(expr) === True
     }
   }
 }

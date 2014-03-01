@@ -26,13 +26,13 @@ object ExpressionSimplifier {
     }
 
     @tailrec
-    def isAtom(f: Expr): Boolean = f match {
+    def isAtom(e: Expr): Boolean = e match {
       case _: Var | True | False => true
       case Not(a)                => isAtom(a)
       case _                     => false
     }
 
-    f match {
+    def simplify(e: Expr) = e match {
       case NaryOp(op, fv)                              =>
 
         // value that, if one of the operands is set to this value
@@ -71,8 +71,10 @@ object ExpressionSimplifier {
         False
       case Not(False)                                  =>
         True
-      case Not(Not(a))                                 =>
-        apply(a)
+      case Not(Not(op))                                =>
+        apply(op)
+      case Not(op)                                     =>
+        Not(apply(op))
       case Not(NaryOp(And, ops)) if ops.forall(isAtom) =>
         // use De Morgan's rule to push negation into operands
         // (might allow flattening of tree of connectives closer to root)
@@ -106,5 +108,17 @@ object ExpressionSimplifier {
         }
       case p                                           => p
     }
+
+    @tailrec
+    def simplifyFP(e: Expr): Expr = {
+      val simplified = simplify(e)
+      if (simplified != e) {
+        simplifyFP(simplified)
+      } else {
+        simplified
+      }
+    }
+
+    simplifyFP(f)
   }
 }
