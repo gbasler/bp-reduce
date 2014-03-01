@@ -7,6 +7,9 @@ import org.apache.commons.io.FileUtils
 import bpReduce.reducer.{ReplayChecker, BoomChecker, ReducerConfig, Reducer}
 import bpReduce.reduction.Reducers
 import scopt.OptionParser
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.DateTime
+import java.nio.file.FileSystems
 
 object Main {
   val name = "bp-reduce"
@@ -35,7 +38,9 @@ object Main {
           case Some(replayDir) =>
             ReplayChecker(property, replayDir)
           case None    =>
-            new BoomChecker(property)
+            val fmt = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm-ss")
+            val logDir =  new DateTime().toString(fmt)
+            new BoomChecker(property, FileSystems.getDefault.getPath(logDir))
         }
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
         val reducer = new Reducer(cfg)

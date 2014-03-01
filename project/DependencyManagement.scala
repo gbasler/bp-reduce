@@ -56,7 +56,7 @@ object DependencyManagement {
   def TreeHugger = "com.eed3si9n" % "treehugger_2.9.1" % "0.1.0"
 
   /** Date and Time represenation */
-  def JodaTime = "joda-time" % "joda-time" % "2.2"
+  def JodaTime = "joda-time" % "joda-time" % "2.3"
 
   def JodaConvert = "org.joda" % "joda-convert" % "1.2"
 

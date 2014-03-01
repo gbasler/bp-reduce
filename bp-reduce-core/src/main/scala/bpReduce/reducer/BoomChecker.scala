@@ -8,8 +8,9 @@ import java.io.{FileOutputStream, File}
 import scala.collection.JavaConverters._
 import org.apache.commons.io.output.{TeeOutputStream, ByteArrayOutputStream}
 import bpReduce.ast.Program
+import java.nio.file.Path
 
-class BoomChecker(errorLine: String) extends Checker {
+class BoomChecker(errorLine: String, logDir: Path) extends Checker {
 
   // TODO: uh plain ugly
   var iteration = 0
@@ -23,16 +24,15 @@ class BoomChecker(errorLine: String) extends Checker {
     //    val execName = """D:\code\boom-build\bin\Debug\boom.exe"""
     val execName = """/Users/geri/Documents/boom-svn-build-debug/bin/boom"""
     val content = Formatter(program)
-    val fileName = s"reduced.$iteration.bp"
-    val candidate: File = new File(fileName)
-    FileUtils.writeLines(candidate, content.asJava)
-
+    val file = logDir.resolve(s"reduced.$iteration.bp").toFile
+    FileUtils.writeLines(file, content.asJava)
     val cmdLine = new CommandLine(execName)
     cmdLine.addArguments(args.toArray)
-    cmdLine.addArgument(candidate.getAbsolutePath)
+    cmdLine.addArgument(file.getAbsolutePath)
     val executor = new DefaultExecutor
     val outputStream = new ByteArrayOutputStream
-    val log = new FileOutputStream(ProgramCache.logFileName(iteration))
+    val logFilePath = logDir.resolve(ProgramCache.logFileName(iteration))
+    val log = FileUtils.openOutputStream(logFilePath.toFile) // creates path if it doesn't exist
     val tee = new TeeOutputStream(outputStream, log)
     val streamHandler = new PumpStreamHandler(tee)
     executor.setStreamHandler(streamHandler)
@@ -40,10 +40,10 @@ class BoomChecker(errorLine: String) extends Checker {
     val exitValue = executor.execute(cmdLine)
     val output = outputStream.toString
     if (output.contains(errorLine)) {
-      println(s"$fileName: accepted")
+      println(s"${file.getName}: accepted")
       CheckerResult.Accept
     } else {
-      println(s"$fileName: rejected")
+      println(s"${file.getName}: rejected")
       CheckerResult.Reject
     }
   }
