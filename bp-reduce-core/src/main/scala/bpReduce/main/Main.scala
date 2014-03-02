@@ -14,6 +14,7 @@ import scopt.OptionParser
 import bpReduce.reducer.Reducer
 import bpReduce.reducer.ReducerConfig
 import scala.Some
+import bpReduce.transformations.ProgramSimplifier
 
 object Main {
   val name = "bp-reduce"
@@ -40,8 +41,6 @@ object Main {
     }
     parser.parse(args, Config()) map {
       config =>
-        val content = FileUtils.readFileToString(config.file)
-        val program = new BooleanProgramParser().parse(content)
         val outputChecker = ErrorOutputChecker("Assertion failed")
         val checker = config.replay match {
           case Some(replayDir) =>
@@ -53,7 +52,10 @@ object Main {
         }
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
         val reducer = new Reducer(cfg)
-        val reduced = reducer(program)
+        val content = FileUtils.readFileToString(config.file)
+        val program = new BooleanProgramParser().parse(content)
+        val simplified = ProgramSimplifier(program)
+        val reduced = reducer(simplified)
         Formatter.writeToFile(reduced, config.outFile)
     } getOrElse {
       // arguments are bad, error message will have been displayed

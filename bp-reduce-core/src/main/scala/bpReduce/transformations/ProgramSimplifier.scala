@@ -2,11 +2,60 @@ package bpReduce
 package transformations
 
 import bpReduce.ast._
-import bpReduce.ast.Stmt.{Assign, Skip}
+import bpReduce.ast.Stmt._
 import bpReduce.ast.Expr.{True, Var}
 import bpReduce.ast.Function
-import bpReduce.ast.Stmt.Assign
 import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.reduction._
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Function
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Program
+import bpReduce.ast.Stmt.Call
+import bpReduce.ast.Stmt.Assume
+import bpReduce.ast.Stmt.Dead
+import bpReduce.ast.Stmt.StartThread
+import bpReduce.ast.Stmt.Goto
+import bpReduce.ast.Function
+import bpReduce.ast.Stmt.Assign
+import scala.Some
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Stmt.Assert
+import bpReduce.ast.Stmt.If
+import bpReduce.ast.Stmt.Return
 import bpReduce.ast.Program
 
 /**
@@ -42,7 +91,8 @@ object ProgramSimplifier {
       function <- program.functions
       simplified = simplifyStmts(function)
       noSkips = removeNonTargetSkips(simplified)
-    } yield noSkips
+      simplifiedExprs = simplifyExprs(noSkips)
+    } yield simplifiedExprs
     program.copy(functions = functions)
   }
 
@@ -68,9 +118,35 @@ object ProgramSimplifier {
   }
 
   private def simplifyStmts(function: Function) = {
-    function.transform {
-      case l@LabelledStmt(assign@Assign(_, Some(True)), _) =>
-        l.copy(stmt = assign.copy(constrain = None))
+    function.transformInside {
+      case assign@Assign(_, Some(True)) =>
+        assign.copy(constrain = None)
+    }
+  }
+
+  private def simplifyExprs(function: Function) = {
+    function.transformInside {
+      case Assign(assigns, constrain) =>
+        val a = assigns.map {
+          case (value, expr) => value -> ExpressionSimplifier(expr)
+        }
+        val c = constrain.map(ExpressionSimplifier.apply)
+        Assign(assigns = a, constrain = c)
+      case assume: Assume             =>
+        assume.copy(ExpressionSimplifier(assume.e))
+      case Assert(e)                  =>
+        Assert(ExpressionSimplifier(e))
+      case call: Call                 =>
+        val args = call.args.map(ExpressionSimplifier.apply)
+        call.copy(args = args)
+      case If(condition, pos, neg)    =>
+        val transformer = new StmtTransformer
+        val c = ExpressionSimplifier(condition)
+        val p = pos.map(transformer.transform)
+        val n = neg.map(transformer.transform)
+        If(c, p, n)
+      case Return(values)             =>
+        Return(values.map(ExpressionSimplifier.apply))
     }
   }
 }

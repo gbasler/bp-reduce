@@ -75,6 +75,25 @@ final case class Function(name: String,
 
     }
 
+    copy(stmts = transformer.transformTrees(stmts))
+  }
+
+  /**
+   * @param pf Applied to each stmt on which the function is defined and
+   *           returns a new function with the transformed statements.
+   */
+  def transformInside(pf: PartialFunction[Stmt, Stmt]): Function = {
+
+    val transformer = new StmtTransformer {
+
+      override def transform(stmt: LabelledStmt): LabelledStmt = {
+        if (pf.isDefinedAt(stmt.stmt)) {
+          stmt.copy(stmt = pf(stmt.stmt))
+        } else {
+          super.transform(stmt)
+        }
+      }
+    }
 
     copy(stmts = transformer.transformTrees(stmts))
   }
