@@ -6,7 +6,6 @@ import bpReduce.reader.BooleanProgramParser
 import org.apache.commons.io.FileUtils
 import bpReduce.reducer._
 import bpReduce.reduction.Reducers
-import scopt.OptionParser
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.DateTime
 import java.nio.file.FileSystems
