@@ -73,8 +73,6 @@ object ExpressionSimplifier {
         True
       case Not(Not(op))                                =>
         apply(op)
-      case Not(op)                                     =>
-        Not(apply(op))
       case Not(NaryOp(And, ops)) if ops.forall(isAtom) =>
         // use De Morgan's rule to push negation into operands
         // (might allow flattening of tree of connectives closer to root)
@@ -82,6 +80,8 @@ object ExpressionSimplifier {
       case Not(NaryOp(Or, ops)) if ops.forall(isAtom)  =>
         // De Morgan
         apply(NaryOp(And, ops.map(Not)))
+      case Not(op)                                     =>
+        Not(apply(op))
       case Equiv(a, b)                                 =>
         val a0 = apply(a)
         val b0 = apply(b)
