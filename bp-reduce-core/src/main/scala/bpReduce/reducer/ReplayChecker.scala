@@ -8,8 +8,9 @@ import bpReduce.ast.Program
 import bpReduce.reader.BooleanProgramParser
 import org.apache.commons.lang.StringUtils
 import bpReduce.writer.Formatter
+import bpReduce.reducer.CheckerResult.{Reject, Accept}
 
-class ReplayChecker(errorLine: String,
+class ReplayChecker(outputChecker: OutputChecker,
                     replays: Map[Program, (String, String)]) extends Checker {
 
   def apply(program: Program): CheckerResult = {
@@ -20,19 +21,19 @@ class ReplayChecker(errorLine: String,
     }
 
     val (fileName, output) = replays.getOrElse(program, error)
-    if (output.contains(errorLine)) {
-      println(s"$fileName: accepted")
-      CheckerResult.Accept
-    } else {
-      println(s"$fileName: rejected")
-      CheckerResult.Reject
+
+    val result = outputChecker(output)
+    result match {
+      case Accept => println(s"$fileName: accepted")
+      case Reject => println(s"$fileName: rejected")
     }
+    result
   }
 }
 
 object ReplayChecker {
 
-  def apply(errorLine: String, path: File = new File(".")) = {
+  def apply(outputChecker: OutputChecker, path: File = new File(".")) = {
     val files = FileUtils.listFiles(path, Array("bp", ProgramCache.LogSuffix), true).asScala.toIndexedSeq
     val (candidates, logs) = files.partition(_.getName.endsWith(".bp"))
     val candidatesAndLogs = candidates.flatMap {
@@ -56,6 +57,6 @@ object ReplayChecker {
       }
     }.toMap
 
-    new ReplayChecker(errorLine, replays)
+    new ReplayChecker(outputChecker, replays)
   }
 }

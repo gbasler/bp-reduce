@@ -4,13 +4,17 @@ package main
 import java.io.File
 import bpReduce.reader.BooleanProgramParser
 import org.apache.commons.io.FileUtils
-import bpReduce.reducer.{ReplayChecker, BoomChecker, ReducerConfig, Reducer}
+import bpReduce.reducer._
 import bpReduce.reduction.Reducers
 import scopt.OptionParser
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.DateTime
 import java.nio.file.FileSystems
 import bpReduce.writer.Formatter
+import scopt.OptionParser
+import bpReduce.reducer.Reducer
+import bpReduce.reducer.ReducerConfig
+import scala.Some
 
 object Main {
   val name = "bp-reduce"
@@ -39,14 +43,14 @@ object Main {
       config =>
         val content = FileUtils.readFileToString(config.file)
         val program = new BooleanProgramParser().parse(content)
-        val property = "Assertion failed"
+        val outputChecker = ErrorOutputChecker("Assertion failed")
         val checker = config.replay match {
           case Some(replayDir) =>
-            ReplayChecker(property, replayDir)
+            ReplayChecker(outputChecker, replayDir)
           case None            =>
             val fmt = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm-ss")
             val logDir = new DateTime().toString(fmt)
-            new BoomChecker(property, FileSystems.getDefault.getPath(logDir))
+            new BoomChecker(outputChecker, FileSystems.getDefault.getPath(logDir))
         }
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
         val reducer = new Reducer(cfg)

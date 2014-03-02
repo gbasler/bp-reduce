@@ -8,8 +8,9 @@ import org.apache.commons.io.output.{TeeOutputStream, ByteArrayOutputStream}
 import bpReduce.ast.Program
 import java.nio.file.Path
 import bpReduce.util.Timer
+import bpReduce.reducer.CheckerResult.{Reject, Accept}
 
-class BoomChecker(errorLine: String, logDir: Path) extends Checker {
+class BoomChecker(outputChecker: OutputChecker, logDir: Path) extends Checker {
 
   // TODO: uh plain ugly
   var iteration = 0
@@ -38,13 +39,11 @@ class BoomChecker(errorLine: String, logDir: Path) extends Checker {
     val (ms, exitValue) = Timer.timed {
       executor.execute(cmdLine)
     }
-    val output = outputStream.toString
-    if (output.contains(errorLine)) {
-      println(s"${file.getName}: accepted in ${ms} ms.")
-      CheckerResult.Accept
-    } else {
-      println(s"${file.getName}: rejected in ${ms} ms.")
-      CheckerResult.Reject
+    val result = outputChecker(outputStream.toString)
+    result match {
+      case Accept => println(s"${file.getName}: accepted in ${ms} ms.")
+      case Reject => println(s"${file.getName}: rejected in ${ms} ms.")
     }
+    result
   }
 }
