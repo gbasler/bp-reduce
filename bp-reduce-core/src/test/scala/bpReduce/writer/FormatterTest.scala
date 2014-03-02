@@ -1,4 +1,5 @@
-package bpReduce.writer
+package bpReduce
+package writer
 
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.{Resources, BaseSpecification}
