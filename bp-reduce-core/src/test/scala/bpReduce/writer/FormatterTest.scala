@@ -35,7 +35,10 @@ class FormatterTest extends BaseSpecification {
         |    ((!b0_s_le_2) | (!(b3_l_eq_s$)) | (!'b3_l_eq_s) | (b4_0_eq_l$) | (!'b4_0_eq_l))
       """.stripMargin
     val actual = Formatter.format(assign)
-    val expected = "b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l)"
+    val expected = "b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s |" +
+      " !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & " +
+      "(!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & " +
+      "(!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l)"
     actual === expected
   }
 }
