@@ -10,12 +10,14 @@ import scopt.OptionParser
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.DateTime
 import java.nio.file.FileSystems
+import bpReduce.writer.Formatter
 
 object Main {
   val name = "bp-reduce"
 
   def main(args: Array[String]) {
     final case class Config(file: File = new File("."),
+                            outFile: File = new File("reduced.bp"),
                             replay: Option[File] = None)
 
     val parser = new OptionParser[Config](name) {
@@ -23,6 +25,10 @@ object Main {
       opt[File]('r', "replay") valueName "<log-dir>" action {
         (x, c) =>
           c.copy(replay = Some(x))
+      } text "directory with logs from a previous run"
+      opt[File]('o', "output") valueName "<outfile>" action {
+        (x, c) =>
+          c.copy(outFile = x)
       } text "directory with logs from a previous run"
       arg[File]("<file>...") required() valueName "<file>" action {
         (x, c) =>
@@ -37,14 +43,15 @@ object Main {
         val checker = config.replay match {
           case Some(replayDir) =>
             ReplayChecker(property, replayDir)
-          case None    =>
+          case None            =>
             val fmt = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm-ss")
-            val logDir =  new DateTime().toString(fmt)
+            val logDir = new DateTime().toString(fmt)
             new BoomChecker(property, FileSystems.getDefault.getPath(logDir))
         }
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
         val reducer = new Reducer(cfg)
-        reducer(program)
+        val reduced = reducer(program)
+        Formatter.writeToFile(reduced, config.outFile)
     } getOrElse {
       // arguments are bad, error message will have been displayed
     }

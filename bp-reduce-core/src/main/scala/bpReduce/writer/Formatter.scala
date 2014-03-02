@@ -19,6 +19,9 @@ import bpReduce.ast.Stmt.Assert
 import bpReduce.ast.Stmt.If
 import bpReduce.ast.Stmt.Return
 import bpReduce.ast.Program
+import org.apache.commons.io.FileUtils
+import java.io.File
+import scala.collection.JavaConverters._
 
 object Formatter {
 
@@ -139,5 +142,10 @@ object Formatter {
       case Nondet                      => "*"
       case Var(sym, primed, mixed)     => primed + sym.name + mixed
     }
+  }
+
+  def writeToFile(program: Program, file: File) {
+    val content = apply(program)
+    FileUtils.writeLines(file, content.asJava)
   }
 }

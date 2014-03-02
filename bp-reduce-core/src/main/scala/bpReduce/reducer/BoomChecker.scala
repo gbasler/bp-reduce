@@ -4,7 +4,7 @@ package reducer
 import org.apache.commons.exec._
 import bpReduce.writer.Formatter
 import org.apache.commons.io.FileUtils
-import java.io.{FileOutputStream, File}
+import java.io.FileOutputStream
 import scala.collection.JavaConverters._
 import org.apache.commons.io.output.{TeeOutputStream, ByteArrayOutputStream}
 import bpReduce.ast.Program
@@ -23,9 +23,8 @@ class BoomChecker(errorLine: String, logDir: Path) extends Checker {
     //    val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
     //    val execName = """D:\code\boom-build\bin\Debug\boom.exe"""
     val execName = """/Users/geri/Documents/boom-svn-build-debug/bin/boom"""
-    val content = Formatter(program)
     val file = logDir.resolve(s"reduced.$iteration.bp").toFile
-    FileUtils.writeLines(file, content.asJava)
+    Formatter.writeToFile(program, file)
     val cmdLine = new CommandLine(execName)
     cmdLine.addArguments(args.toArray)
     cmdLine.addArgument(file.getAbsolutePath)

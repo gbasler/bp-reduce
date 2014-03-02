@@ -119,8 +119,10 @@ object ExpressionReducer {
     }
 
     /**
-     * @return original expression and original expression with
-     *         nondets replaced by constants
+     * @return Original expression and original expression with
+     *         nondets replaced by constants.
+     *         If there are no nondets in the expression then an empty List is returned.
+     *
      */
     def expandNondets(e: Expr): List[Expr] = {
 
@@ -176,16 +178,14 @@ object ExpressionReducer {
             replaceNondetOnce(e, counter, False))
       }
 
-      // put original expression first, since
-      // we always to from more general expression to reduced one
-      val exprs = e :: expanded
-      exprs.distinct
+      // can't use a set since we want stable results
+      expanded.distinct
     }
 
     // simplify expression (in order to have as few runs as possible)
     val simplified = ExpressionSimplifier(e)
 
-    def existsNondets(e: Expr) = {
+    def hasNondets(e: Expr) = {
       val nondets = e.count {
         case Nondet => true
         case _      => false
@@ -199,20 +199,24 @@ object ExpressionReducer {
     // 3) no nondet, vars -> expand vars
     // 4) nondets, vars -> take cross product of non det expansion and var expansion!
 
-    val hasNondets = existsNondets(simplified)
-
-    def expandIfNondets
+    def expandIfHasNondets(e: Expr) = {
+      if (hasNondets(e)) {
+        e :: expandNondets(e)
+      } else {
+        List(e)
+      }
+    }
 
     // expand nondet variables but only if there are any
     val reduced = for {
       replacedVars <- replaceAllVarsOnce(simplified)
-      expandedNondets <- expandNondets(replacedVars)
+      expandedNondets <- expandIfHasNondets(replacedVars)
     } yield expandedNondets
 
-    val result = if (reduced.isEmpty && existsNondets(simplified)) {
+    val result = if (reduced.isEmpty) {
       // we did not find a reduction
       // however there might be the possibility of nondet variables but no regular variables
-      expandNondets(simplified)
+      expandIfHasNondets(simplified)
     } else {
       reduced
     }
