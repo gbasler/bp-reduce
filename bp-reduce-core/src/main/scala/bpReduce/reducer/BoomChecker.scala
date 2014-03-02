@@ -4,11 +4,10 @@ package reducer
 import org.apache.commons.exec._
 import bpReduce.writer.Formatter
 import org.apache.commons.io.FileUtils
-import java.io.FileOutputStream
-import scala.collection.JavaConverters._
 import org.apache.commons.io.output.{TeeOutputStream, ByteArrayOutputStream}
 import bpReduce.ast.Program
 import java.nio.file.Path
+import bpReduce.util.Timer
 
 class BoomChecker(errorLine: String, logDir: Path) extends Checker {
 
@@ -36,13 +35,15 @@ class BoomChecker(errorLine: String, logDir: Path) extends Checker {
     val streamHandler = new PumpStreamHandler(tee)
     executor.setStreamHandler(streamHandler)
     executor.setExitValues(Array(0, 1, -2, 134))
-    val exitValue = executor.execute(cmdLine)
+    val (ms, exitValue) = Timer.timed {
+      executor.execute(cmdLine)
+    }
     val output = outputStream.toString
     if (output.contains(errorLine)) {
-      println(s"${file.getName}: accepted")
+      println(s"${file.getName}: accepted in ${ms} ms.")
       CheckerResult.Accept
     } else {
-      println(s"${file.getName}: rejected")
+      println(s"${file.getName}: rejected in ${ms} ms.")
       CheckerResult.Reject
     }
   }
