@@ -9,6 +9,14 @@ class FormatterTest extends BaseSpecification {
     val program = new BooleanProgramParser().parse(content)
     val prettyContent = Formatter.format(program)
     val reparsed = new BooleanProgramParser().parse(prettyContent)
-    program must be_==(reparsed)
+    program === reparsed
+  }
+
+  "missing in action" in {
+    val content = Resources.loadFileOrUrl("missing-in-action.bp")
+    val program = new BooleanProgramParser().parse(content)
+    val prettyContent = Formatter.format(program)
+    val reparsed = new BooleanProgramParser().parse(prettyContent)
+    program === reparsed
   }
 }
