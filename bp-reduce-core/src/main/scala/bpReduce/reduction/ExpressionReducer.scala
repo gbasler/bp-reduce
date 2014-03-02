@@ -118,6 +118,10 @@ object ExpressionReducer {
       decrementalPowerSet(e)
     }
 
+    /**
+     * @return original expression and original expression with
+     *         nondets replaced by constants
+     */
     def expandNondets(e: Expr): List[Expr] = {
 
       /**
@@ -166,17 +170,22 @@ object ExpressionReducer {
         case _      => false
       }
 
-      (0 until nondets).toList.flatMap {
+      val expanded = (0 until nondets).toList.flatMap {
         counter =>
           List(replaceNondetOnce(e, counter, True),
             replaceNondetOnce(e, counter, False))
-      }.distinct
+      }
+
+      // put original expression first, since
+      // we always to from more general expression to reduced one
+      val exprs = e :: expanded
+      exprs.distinct
     }
 
     // simplify expression (in order to have as few runs as possible)
     val simplified = ExpressionSimplifier(e)
 
-    def hasNondets(e: Expr) = {
+    def existsNondets(e: Expr) = {
       val nondets = e.count {
         case Nondet => true
         case _      => false
@@ -184,13 +193,23 @@ object ExpressionReducer {
       nondets > 0
     }
 
+    // cases
+    // 1) no nondet, no vars -> nothing to do
+    // 2) nondet, no vars -> expand nondet, do not add unexpanded nondets
+    // 3) no nondet, vars -> expand vars
+    // 4) nondets, vars -> take cross product of non det expansion and var expansion!
+
+    val hasNondets = existsNondets(simplified)
+
+    def expandIfNondets
+
     // expand nondet variables but only if there are any
     val reduced = for {
       replacedVars <- replaceAllVarsOnce(simplified)
-      expandedNondets <- if (hasNondets(replacedVars)) replacedVars :: expandNondets(replacedVars) else List(replacedVars)
+      expandedNondets <- expandNondets(replacedVars)
     } yield expandedNondets
 
-    val result = if (reduced.isEmpty && hasNondets(simplified)) {
+    val result = if (reduced.isEmpty && existsNondets(simplified)) {
       // we did not find a reduction
       // however there might be the possibility of nondet variables but no regular variables
       expandNondets(simplified)
