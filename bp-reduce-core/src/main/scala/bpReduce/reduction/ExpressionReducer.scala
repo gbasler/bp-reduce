@@ -213,10 +213,10 @@ object ExpressionReducer {
       expandedNondets <- expandIfHasNondets(replacedVars)
     } yield expandedNondets
 
-    val result = if (reduced.isEmpty) {
+    val result = if (reduced.isEmpty && hasNondets(simplified)) {
       // we did not find a reduction
       // however there might be the possibility of nondet variables but no regular variables
-      expandIfHasNondets(simplified)
+      expandNondets(simplified)
     } else {
       reduced
     }
