@@ -3,6 +3,7 @@ package writer
 
 import bpReduce.reader.BooleanProgramParser
 import bpReduce.{Resources, BaseSpecification}
+import bpReduce.ast.Stmt.Assign
 
 class FormatterTest extends BaseSpecification {
   "eat your own dogfood" in {
@@ -21,9 +22,20 @@ class FormatterTest extends BaseSpecification {
     program === reparsed
   }
 
-  "missing in action2" in {
-    val a = new BooleanProgramParser().parse(Resources.loadFileOrUrl("missing-in-action.bp"))
-    val b = new BooleanProgramParser().parse(Resources.loadFileOrUrl("reduced.53.bp"))
-    a === b
+  "complex expression" in {
+    implicit def assignFromString(str: String): Assign = {
+      new BooleanProgramParser().parseAssign(str)
+    }
+
+    val assign: Assign =
+      """|b3_l_eq_s,b4_0_eq_l,b5_1_eq_l := *,*,* constrain
+        |    ((!b0_s_le_2) | (!b3_l_eq_s) | 'b3_l_eq_s | (!b4_0_eq_l) | (!'b4_0_eq_l)) &
+        |    (b0_s_le_2 | (!'b3_l_eq_s) | (!'b4_0_eq_l)) &
+        |    ((!b0_s_le_2) | (!b3_l_eq_s) | (!'b3_l_eq_s) | b4_0_eq_l | (!'b4_0_eq_l)) &
+        |    ((!b0_s_le_2) | (!(b3_l_eq_s$)) | (!'b3_l_eq_s) | (b4_0_eq_l$) | (!'b4_0_eq_l))
+      """.stripMargin
+    val actual = Formatter.format(assign)
+    val expected = "b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l)"
+    actual === expected
   }
 }
