@@ -5,13 +5,14 @@ import org.apache.commons.io.FileUtils
 import java.io.File
 import scala.collection.JavaConverters._
 import bpReduce.ast.Program
-import bpReduce.reader.BooleanProgramParser
 import org.apache.commons.lang.StringUtils
 import bpReduce.writer.Formatter
 import bpReduce.reducer.CheckerResult.{Reject, Accept}
+import scala.collection.immutable.IndexedSeq
+import bpReduce.util.BooleanPrograms
 
-class ReplayChecker(outputChecker: OutputChecker,
-                    replays: Map[Program, (String, String)]) extends Checker {
+final class ReplayChecker(outputChecker: OutputChecker,
+                          replays: ReplayChecker.Replay) extends Checker {
 
   def apply(program: Program): CheckerResult = {
 
@@ -20,7 +21,8 @@ class ReplayChecker(outputChecker: OutputChecker,
       sys.error(s"Could not find program in replays.")
     }
 
-    val (fileName, output) = replays.getOrElse(program, error)
+    val content = Formatter.format(program).lines.toIndexedSeq
+    val (fileName, output) = replays.getOrElse(content, error)
 
     val result = outputChecker(output)
     result match {
@@ -33,27 +35,36 @@ class ReplayChecker(outputChecker: OutputChecker,
 
 object ReplayChecker {
 
+  /**
+   * TODO
+   * Storing the parsed programs never worked for me.
+   * Somehow the AST of the original program is different
+   * when the reduced program is created compared to writing it
+   * to disk and reading it back. Even running the simplifier over it
+   * did not help.
+   * Somehow the program is parsed differently...
+   * However writing, reading and writing the program resulted in the same progrm on disk...
+   */
+  type Replay = Map[IndexedSeq[String], (String, String)]
+
   def apply(outputChecker: OutputChecker, path: File = new File(".")) = {
-    val files = FileUtils.listFiles(path, Array("bp", ProgramCache.LogSuffix), true).asScala.toIndexedSeq
-    val (candidates, logs) = files.partition(_.getName.endsWith(".bp"))
+    val files = FileUtils.listFiles(path, Array(BooleanPrograms.Suffix, ProgramCache.LogSuffix), true).asScala.toIndexedSeq
+    val (candidates, logs) = files.partition(_.getName.endsWith(s".${BooleanPrograms.Suffix}"))
     val candidatesAndLogs = candidates.flatMap {
       c =>
-        val log = s"${StringUtils.removeEnd(c.getName, "bp")}${ProgramCache.LogSuffix}"
+        val log = s"${StringUtils.removeEnd(c.getName, BooleanPrograms.Suffix)}${ProgramCache.LogSuffix}"
         logs.find(_.getName == log).map {
           log => c -> log
         }
     }
 
-    val parser = new BooleanProgramParser()
-
-    val replays: Map[Program, (String, String)] = {
+    val replays = {
       for {
         (candidateFile, logFile) <- candidatesAndLogs
       } yield {
         val content = FileUtils.readFileToString(candidateFile)
         val log = FileUtils.readFileToString(logFile)
-        val program = parser.parse(content)
-        program ->(candidateFile.getName, log)
+        content.lines.toIndexedSeq ->(candidateFile.getName, log)
       }
     }.toMap
 
