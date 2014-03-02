@@ -1,7 +1,7 @@
 package bpReduce
 package reader
 
-import util.parsing.combinator.RegexParsers
+import scala.util.parsing.combinator.RegexParsers
 import bpReduce.ast.Stmt._
 import bpReduce.ast._
 import scala.collection.mutable
