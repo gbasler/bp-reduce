@@ -8,29 +8,29 @@ import bpReduce.ast.Program
 import org.apache.commons.lang.StringUtils
 import bpReduce.writer.Formatter
 import bpReduce.reducer.CheckerResult.{Reject, Accept}
-import scala.collection.immutable.IndexedSeq
 import bpReduce.util.BooleanPrograms
 
 final class ReplayChecker(outputChecker: OutputChecker,
                           replays: ReplayChecker.Replay,
                           verbose: Boolean) extends Checker {
 
-  def apply(program: Program): CheckerResult = {
+  def apply(program: Program,
+            iteration: Int): CheckerResult = {
 
     def error: Nothing = {
       Formatter.writeToFile(program, new File("missing-in-action.bp"))
       sys.error(s"Could not find program in replays.")
     }
 
-    val content = Formatter.format(program).lines.toIndexedSeq
+    val content = Formatter(program)
     val (fileName, output) = replays.getOrElse(content, error)
 
     val result = outputChecker(output)
     if (verbose)
       result match {
-      case Accept => println(s"$fileName: accepted")
-      case Reject => println(s"$fileName: rejected")
-    }
+        case Accept => println(s"$fileName: accepted")
+        case Reject => println(s"$fileName: rejected")
+      }
     result
   }
 }
@@ -62,7 +62,7 @@ object ReplayChecker {
         }
     }
 
-    val replays = {
+    val replays: Map[IndexedSeq[String], (String, String)] = {
       for {
         (candidateFile, logFile) <- candidatesAndLogs
       } yield {

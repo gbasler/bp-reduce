@@ -13,7 +13,7 @@ class ReducerTest extends BaseSpecification {
   "reducer algorithm" should {
     "one liner" in {
       val allAcceptChecker = new Checker {
-        override def apply(program: Program): CheckerResult = CheckerResult.Accept
+        def apply(program: Program, iteration: Int): CheckerResult = CheckerResult.Accept
       }
 
       val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker, simplify = false)
@@ -39,7 +39,7 @@ class ReducerTest extends BaseSpecification {
 
     "two liner" in {
       val allAcceptChecker = new Checker {
-        override def apply(program: Program): CheckerResult = CheckerResult.Accept
+        def apply(program: Program, iteration: Int): CheckerResult = CheckerResult.Accept
       }
 
       val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allAcceptChecker, simplify = false)
@@ -67,7 +67,7 @@ class ReducerTest extends BaseSpecification {
 
     "two liner: no reduction possible" in {
       val allRejectChecker = new Checker {
-        override def apply(program: Program): CheckerResult = CheckerResult.Reject
+        def apply(program: Program, iteration: Int): CheckerResult = CheckerResult.Reject
       }
 
       val config = ReducerConfig(List(Reducers.ReplaceWithSkip), allRejectChecker, simplify = false)

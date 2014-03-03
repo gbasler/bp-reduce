@@ -10,15 +10,14 @@ import java.nio.file.Path
 import bpReduce.util.Timer
 import bpReduce.reducer.CheckerResult.{Reject, Accept}
 
-class BoomChecker(outputChecker: OutputChecker, logDir: Path) extends Checker {
-
-  // TODO: uh plain ugly
-  var iteration = 0
+final class BoomChecker(outputChecker: OutputChecker,
+                        logDir: Path,
+                        verbose: Boolean = true) extends Checker {
 
   val args = Seq("-t", "--threadbound", "3")
 
-  def apply(program: Program): CheckerResult = {
-    iteration += 1
+  def apply(program: Program,
+            iteration: Int): CheckerResult = {
 
     //    val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
     //    val execName = """D:\code\boom-build\bin\Debug\boom.exe"""
@@ -40,10 +39,11 @@ class BoomChecker(outputChecker: OutputChecker, logDir: Path) extends Checker {
       executor.execute(cmdLine)
     }
     val result = outputChecker(outputStream.toString)
-    result match {
-      case Accept => println(s"${file.getName}: accepted in ${ms} ms.")
-      case Reject => println(s"${file.getName}: rejected in ${ms} ms.")
-    }
+    if (verbose)
+      result match {
+        case Accept => println(s"${file.getName}: accepted in ${ms} ms.")
+        case Reject => println(s"${file.getName}: rejected in ${ms} ms.")
+      }
     result
   }
 }

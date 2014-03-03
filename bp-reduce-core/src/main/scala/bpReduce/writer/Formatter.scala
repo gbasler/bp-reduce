@@ -27,7 +27,7 @@ object Formatter {
 
   private val end = ";"
 
-  def apply(program: Program): Seq[String] = {
+  def apply(program: Program): IndexedSeq[String] = {
     val globals = format(program.globals).map(_ + end)
     val functions = for {
       f <- program.functions
@@ -40,7 +40,7 @@ object Formatter {
       header +: content :+ "end"
     }
     val programAsLines = globals ++ functions.flatten
-    programAsLines
+    programAsLines.toIndexedSeq
   }
 
   def format(program: Program): String = {

@@ -14,6 +14,8 @@ final case class Reducer(config: ReducerConfig) {
   def apply(program: Program): Program = {
     import config.checker
 
+    var iteration = 0
+
     /**
      * Reduce program as much as possible, given the checker and
      * a program reduction.
@@ -32,7 +34,8 @@ final case class Reducer(config: ReducerConfig) {
           } else {
             variant
           }
-          checker(simplified) match {
+          iteration += 1
+          checker(simplified, iteration) match {
             case CheckerResult.Accept =>
               // reduction was accepted
               // continue with variant

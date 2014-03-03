@@ -17,5 +17,6 @@ object CheckerResult {
 }
 
 trait Checker {
-  def apply(program: Program): CheckerResult
+  def apply(program: Program,
+            iteration: Int): CheckerResult
 }

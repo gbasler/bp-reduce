@@ -20,7 +20,7 @@ class ReducerHighLevelTest extends BaseSpecification {
 
       // checker that accepts any program that sets `g`
       val smartChecker = new Checker {
-        def apply(program: Program): CheckerResult = {
+        def apply(program: Program, iteration: Int): CheckerResult = {
           val ok = program.exists {
             case Assign(vars, _) =>
               vars.exists {
@@ -85,7 +85,8 @@ class ReducerHighLevelTest extends BaseSpecification {
       class SmartChecker extends Checker {
         var checks = 0
 
-        def apply(program: Program): CheckerResult = {
+        def apply(program: Program,
+                  iteration: Int): CheckerResult = {
           checks += 1
           val ok = program.exists {
             case Assume(e) =>

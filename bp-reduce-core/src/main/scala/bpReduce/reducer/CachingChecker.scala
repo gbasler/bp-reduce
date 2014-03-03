@@ -11,16 +11,19 @@ class CachingChecker(checker: Checker) extends Checker {
 
   private val cache = new ProgramCache
 
-  def apply(program: Program): CheckerResult = {
+  def apply(program: Program,
+            iteration: Int): CheckerResult = {
     cache.check(program) match {
       case CacheState.Accepted =>
         // variant already checked and was ok
+        println(s"(cache): accepted.")
         CheckerResult.Accept
       case CacheState.Rejected =>
         // variant already checked and it failed
+        println(s"(cache): rejected.")
         CheckerResult.Reject
       case CacheState.Unknown  =>
-        val result = checker(program)
+        val result = checker(program, iteration)
         val translated = result match {
           case Accept => CacheState.Accepted
           case Reject => CacheState.Rejected

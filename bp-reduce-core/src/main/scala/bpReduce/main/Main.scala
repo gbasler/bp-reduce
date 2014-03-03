@@ -48,7 +48,8 @@ object Main {
           case None            =>
             val fmt = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm-ss")
             val logDir = new DateTime().toString(fmt)
-            new BoomChecker(outputChecker, FileSystems.getDefault.getPath(logDir))
+            val checker = new BoomChecker(outputChecker, FileSystems.getDefault.getPath(logDir))
+            new CachingChecker(checker)
         }
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
         val reducer = new Reducer(cfg)

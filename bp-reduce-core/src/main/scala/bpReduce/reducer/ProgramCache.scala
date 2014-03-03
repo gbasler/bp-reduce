@@ -3,10 +3,7 @@ package reducer
 
 import bpReduce.ast.Program
 import scala.collection.mutable
-import org.apache.commons.io.FileUtils
-import java.io.File
-import scala.collection.JavaConverters._
-import scala.collection.immutable.IndexedSeq
+import bpReduce.writer.Formatter
 
 sealed abstract class CacheState
 
@@ -28,18 +25,21 @@ object CacheState {
  * it might happen that a reduced variant corresponds to a positive
  * checked other variant after program simplification.
  *
+ * We store just the formatted program, see also [[ReplayChecker]].
  */
 final class ProgramCache {
-  val cache = mutable.Map.empty[Program, CacheState]
+  val cache = mutable.Map.empty[IndexedSeq[String], CacheState]
 
   def add(program: Program, state: CacheState) = {
-    require(!cache.contains(program))
-    cache += program -> state
+    val content = Formatter(program)
+    require(!cache.contains(content))
+    cache += content -> state
   }
 
   def check(program: Program): CacheState = {
     import CacheState._
-    cache.get(program) match {
+    val content = Formatter(program)
+    cache.get(content) match {
       case Some(state) => state
       case None        => Unknown
     }
