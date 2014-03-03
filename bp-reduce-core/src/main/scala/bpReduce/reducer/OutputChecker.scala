@@ -14,3 +14,7 @@ final case class ErrorOutputChecker(errorLine: String) extends OutputChecker {
     }
   }
 }
+
+object ErrorOutputChecker {
+  val Default = ErrorOutputChecker("Assertion failed")
+}

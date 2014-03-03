@@ -12,7 +12,8 @@ import scala.collection.immutable.IndexedSeq
 import bpReduce.util.BooleanPrograms
 
 final class ReplayChecker(outputChecker: OutputChecker,
-                          replays: ReplayChecker.Replay) extends Checker {
+                          replays: ReplayChecker.Replay,
+                          verbose: Boolean) extends Checker {
 
   def apply(program: Program): CheckerResult = {
 
@@ -25,7 +26,8 @@ final class ReplayChecker(outputChecker: OutputChecker,
     val (fileName, output) = replays.getOrElse(content, error)
 
     val result = outputChecker(output)
-    result match {
+    if (verbose)
+      result match {
       case Accept => println(s"$fileName: accepted")
       case Reject => println(s"$fileName: rejected")
     }
@@ -47,7 +49,9 @@ object ReplayChecker {
    */
   type Replay = Map[IndexedSeq[String], (String, String)]
 
-  def apply(outputChecker: OutputChecker, path: File = new File(".")) = {
+  def apply(outputChecker: OutputChecker,
+            path: File = new File("."),
+            verbose: Boolean = true) = {
     val files = FileUtils.listFiles(path, Array(BooleanPrograms.Suffix, ProgramCache.LogSuffix), true).asScala.toIndexedSeq
     val (candidates, logs) = files.partition(_.getName.endsWith(s".${BooleanPrograms.Suffix}"))
     val candidatesAndLogs = candidates.flatMap {
@@ -68,6 +72,6 @@ object ReplayChecker {
       }
     }.toMap
 
-    new ReplayChecker(outputChecker, replays)
+    new ReplayChecker(outputChecker, replays, verbose)
   }
 }

@@ -41,7 +41,7 @@ object Main {
     }
     parser.parse(args, Config()) map {
       config =>
-        val outputChecker = ErrorOutputChecker("Assertion failed")
+        val outputChecker = ErrorOutputChecker.Default
         val checker = config.replay match {
           case Some(replayDir) =>
             ReplayChecker(outputChecker, replayDir)
