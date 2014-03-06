@@ -1,7 +1,7 @@
 package bpReduce
 package reducer
 
-import bpReduce.reduction.{Reducers, ProgramReducerFacory}
+import bpReduce.reduction.ProgramReducerFacory
 
 /**
  *

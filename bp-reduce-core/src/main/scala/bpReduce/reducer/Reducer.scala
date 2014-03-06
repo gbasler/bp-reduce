@@ -69,11 +69,13 @@ final case class Reducer(config: ReducerConfig) {
 
     @tailrec
     def reduceUntilFixpoint(program: Program,
-                            iteration: Int = 1): Program = {
+                            iteration: Int = 1,
+                            fixpoints: Int = 0): Program = {
       reduce(program, config.reducers, iteration = iteration) match {
         case (Some(current), iter) =>
           // reduction was possible, try all reductions again
-          reduceUntilFixpoint(current, iter)
+          println("*** next fixpoint iteration ***")
+          reduceUntilFixpoint(current, iter, fixpoints + 1)
         case (None, _)             =>
           // all reducers have been applied but
           // no reduction was possible, so fixed point reached

@@ -41,8 +41,8 @@ final class BoomChecker(outputChecker: OutputChecker,
     val result = outputChecker(outputStream.toString)
     if (verbose)
       result match {
-        case Accept => println(s"${file.getName}: accepted in ${ms} ms.")
-        case Reject => println(s"${file.getName}: rejected in ${ms} ms.")
+        case Accept => println(s"[$iteration] ${file.getName}: √ ${ms} ms.")
+        case Reject => println(s"[$iteration] ${file.getName}: - ${ms} ms.")
       }
     result
   }
