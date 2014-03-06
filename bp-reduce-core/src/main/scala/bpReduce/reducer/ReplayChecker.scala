@@ -28,8 +28,8 @@ final class ReplayChecker(outputChecker: OutputChecker,
     val result = outputChecker(output)
     if (verbose)
       result match {
-        case Accept => println(s"$fileName: accepted")
-        case Reject => println(s"$fileName: rejected")
+        case Accept => println(s"[$iteration] $fileName: accepted")
+        case Reject => println(s"[$iteration] $fileName: rejected")
       }
     result
   }
