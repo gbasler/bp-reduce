@@ -21,6 +21,7 @@ final class BoomChecker(outputChecker: OutputChecker,
 
     //    val execName = """D:\code\boom-dropbox-svn\bin\Debug\boom.exe"""
     //    val execName = """D:\code\boom-build\bin\Debug\boom.exe"""
+    //    val execName = """D:\code\boom-build\bin\RelWithDebInfo\boom.exe"""
     val execName = """/Users/geri/Documents/boom-svn-build-debug/bin/boom"""
     val file = logDir.resolve(s"reduced.$iteration.bp").toFile
     Formatter.writeToFile(program, file)
