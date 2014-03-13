@@ -9,6 +9,12 @@ import bpReduce.ast.Program
 trait ProgramReducer {
 
   /**
+   * Unreduced program.
+   * @return
+   */
+  def original: Program = ???
+
+  /**
    * @return current reduction.
    */
   def current: Program
@@ -19,8 +25,8 @@ trait ProgramReducer {
    * Intuitively this means "try to reduce more".
    *
    * Important: Calling this method means that [[current]]
-   *            returns a program with desired properties
-   *            that should be kept after this method.
+   * returns a program with desired properties
+   * that should be kept after this method.
    *
    * @return A [[ProgramReducer]] that can produce the reduced program
    *         or `None` if no reduction is possible.

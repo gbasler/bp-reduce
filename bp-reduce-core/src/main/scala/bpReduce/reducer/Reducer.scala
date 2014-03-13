@@ -19,15 +19,12 @@ final case class Reducer(config: ReducerConfig) {
      * a program reduction.
      */
     @tailrec
-    def reduceMax(reducer: Option[ProgramReducer],
+    def reduceMax(reducerOpt: Option[ProgramReducer],
                   lastFeasible: Option[Program],
                   iteration: Int): (Option[Program], Int) = {
-      val possibleVariant = reducer.map(_.current)
-      possibleVariant match {
-        case None          =>
-          // reduction not possible, return last feasible reduction
-          lastFeasible -> iteration
-        case Some(variant) =>
+      reducerOpt match {
+        case Some(reducer) =>
+          val variant = reducer.current
           val simplified = if (config.simplify) {
             ProgramSimplifier(variant)
           } else {
@@ -37,12 +34,15 @@ final case class Reducer(config: ReducerConfig) {
             case CheckerResult.Accept =>
               // reduction was accepted
               // continue with (simplified) variant
-              reduceMax(reducer.flatMap(_.reduce), Some(simplified), iteration + 1)
+              reduceMax(reducer.reduce, Some(simplified), iteration + 1)
             case CheckerResult.Reject =>
               // reduction did not meet criteria
               // check next opportunity
-              reduceMax(reducer.flatMap(_.advance), lastFeasible, iteration + 1)
+              reduceMax(reducer.advance, lastFeasible, iteration + 1)
           }
+        case None          =>
+          // reduction not possible, return last feasible reduction
+          lastFeasible -> iteration
       }
     }
 
