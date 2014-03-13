@@ -36,8 +36,8 @@ final case class Reducer(config: ReducerConfig) {
           checker(simplified, iteration) match {
             case CheckerResult.Accept =>
               // reduction was accepted
-              // continue with variant
-              reduceMax(reducer.flatMap(_.reduce), Some(variant), iteration + 1)
+              // continue with (simplified) variant
+              reduceMax(reducer.flatMap(_.reduce), Some(simplified), iteration + 1)
             case CheckerResult.Reject =>
               // reduction did not meet criteria
               // check next opportunity
