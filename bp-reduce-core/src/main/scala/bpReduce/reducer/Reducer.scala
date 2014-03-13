@@ -34,6 +34,10 @@ final case class Reducer(config: ReducerConfig) {
             case CheckerResult.Accept =>
               // reduction was accepted
               // continue with (simplified) variant
+
+              // TODO: prioritize the dependent reducers which should be run immediately after...
+//              val tainted = reducer.original
+
               reduceMax(reducer.reduce, Some(simplified), iteration + 1)
             case CheckerResult.Reject =>
               // reduction did not meet criteria

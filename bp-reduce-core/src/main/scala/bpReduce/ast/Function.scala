@@ -16,6 +16,7 @@ final case class Function(name: String,
   def collect[T](pf: PartialFunction[Stmt, T]): List[T] = {
     val results = new ListBuffer[T]
 
+    // TODO use StmtTraverser
     def collectStmts(stmts: List[LabelledStmt]) {
       for {
         LabelledStmt(stmt, labels) <- stmts
@@ -33,6 +34,13 @@ final case class Function(name: String,
     collectStmts(stmts)
 
     results.toList
+  }
+
+  /**
+   * @param pf Applied to each expr on which the function is defined and collect the results.
+   */
+  def collectExpr[T](pf: PartialFunction[Expr, T]): List[T] = {
+    ???
   }
 
   def filter(predicate: Stmt => Boolean): List[Stmt] = {

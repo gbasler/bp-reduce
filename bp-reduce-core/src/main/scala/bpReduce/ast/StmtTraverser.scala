@@ -32,3 +32,25 @@ class StmtTraverser {
     trees foreach traverse
   }
 }
+
+final class StmtTraverserForExpr[T](pf: PartialFunction[Expr, T]) extends StmtTraverser {
+  override def traverse(stmt: LabelledStmt) = stmt.stmt match {
+    case Assign(assigns, constrain) =>
+      assigns.map(_._2.collect(pf))
+      constrain.map(_.collect(pf))
+    case Assume(e)                  =>
+      e.collect(pf)
+    case Assert(e)                  =>
+      e.collect(pf)
+    case Call(name, assigns, args)  =>
+      args.map(_.collect(pf))
+    case If(condition, pos, neg)    =>
+      condition.collect(pf)
+      traverseTrees(pos)
+      traverseTrees(neg)
+    case Return(values)             =>
+      values.map(_.collect(pf))
+    case _                          =>
+      super.traverse(stmt)
+  }
+}
