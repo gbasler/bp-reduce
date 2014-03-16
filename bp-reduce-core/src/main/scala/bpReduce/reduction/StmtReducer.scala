@@ -2,6 +2,7 @@ package bpReduce
 package reduction
 
 import bpReduce.ast.Stmt
+import bpReduce.ast.Expr.Var
 
 /**
  * Reduces a single statement.

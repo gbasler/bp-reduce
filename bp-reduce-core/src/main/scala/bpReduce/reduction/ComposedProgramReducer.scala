@@ -7,6 +7,7 @@ import bpReduce.ast.LabelledStmt
 import bpReduce.ast.Program
 import scala.collection.immutable.Nil
 import scala.annotation.tailrec
+import bpReduce.ast.Expr.Var
 
 /**
  * @param original
@@ -43,6 +44,10 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
                                         inProgress: PartitionedFunction) extends ProgramReducer {
 
   import ComposedProgramReducer._
+
+  override def tainted: Set[Var] = {
+
+  }
 
   def current: Program = {
     val stmts = inProgress.unreduced match {

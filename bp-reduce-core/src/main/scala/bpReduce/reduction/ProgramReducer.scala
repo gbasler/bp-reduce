@@ -2,6 +2,7 @@ package bpReduce
 package reduction
 
 import bpReduce.ast.Program
+import bpReduce.ast.Expr.Var
 
 /**
  * Reduces a program.
@@ -13,6 +14,8 @@ trait ProgramReducer {
    * @return
    */
   def original: Program = ???
+
+  def tainted: Set[Var] = Set()
 
   /**
    * @return current reduction.
@@ -47,6 +50,4 @@ trait ProgramReducer {
    *         `None` if no reduction is possible.
    */
   def advance: Option[ProgramReducer]
-
-  // TODO: what if advance is called before reduce returns None?
 }

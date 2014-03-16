@@ -36,7 +36,7 @@ final case class Reducer(config: ReducerConfig) {
               // continue with (simplified) variant
 
               // TODO: prioritize the dependent reducers which should be run immediately after...
-//              val tainted = reducer.original
+              val tainted = reducer.original
 
               reduceMax(reducer.reduce, Some(simplified), iteration + 1)
             case CheckerResult.Reject =>
