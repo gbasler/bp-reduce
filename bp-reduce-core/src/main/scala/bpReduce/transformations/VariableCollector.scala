@@ -1,20 +1,22 @@
 package bpReduce
 package transformations
 
-import bpReduce.ast.Function
-import bpReduce.ast.Stmt._
+import bpReduce.ast._
+import scala.collection.mutable.ListBuffer
+import bpReduce.ast.LabelledStmt
+import bpReduce.ast.Expr.Var
 
 object VariableCollector {
   /**
-   * @param function
    * @return All variables that are read / written by a statement.
    */
-  def apply(function: Function): Set[String] = {
-    function.collect {
-      case goto@Goto(targets)       =>
-        targets
-      case start@StartThread(label) =>
-        Seq(label)
-    }.flatten.toSet
+  def apply(stmt: Stmt): Set[Sym] = {
+    val results = new ListBuffer[Sym]
+
+    new StmtTraverserForExpr({
+      case v: Var => results += v.sym
+    }).traverse(stmt)
+
+    results.toSet
   }
 }

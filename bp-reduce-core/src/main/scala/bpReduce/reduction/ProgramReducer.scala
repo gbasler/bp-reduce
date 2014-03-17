@@ -1,7 +1,7 @@
 package bpReduce
 package reduction
 
-import bpReduce.ast.Program
+import bpReduce.ast.{Sym, Program}
 import bpReduce.ast.Expr.Var
 
 /**
@@ -15,7 +15,7 @@ trait ProgramReducer {
    */
   def original: Program = ???
 
-  def tainted: Set[Var] = Set()
+  def rwSyms: Set[Sym] = Set()
 
   /**
    * @return current reduction.

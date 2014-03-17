@@ -7,9 +7,9 @@ import bpReduce.ast.Stmt.Assume
 import bpReduce.ast.Stmt.Assign
 import bpReduce.ast.Stmt.Assert
 
-class StmtTraverser {
+class LabelledStmtTraverser {
 
-  def traverse(stmt: Stmt): Unit = stmt match {
+  def traverse(stmt: LabelledStmt): Unit = stmt.stmt match {
     case Assign(assigns, constrain) =>
     case Assume(e)                  =>
     case Assert(e)                  =>
@@ -17,8 +17,8 @@ class StmtTraverser {
     case Dead(vars)                 =>
     case Goto(targets)              =>
     case If(condition, pos, neg)    =>
-      traverseTrees(pos.map(_.stmt))
-      traverseTrees(neg.map(_.stmt))
+      traverseTrees(pos)
+      traverseTrees(neg)
     case Skip                       =>
     case Return(values)             =>
     case AtomicBegin                =>
@@ -28,13 +28,13 @@ class StmtTraverser {
   }
 
   /** Traverses a list of stmts. */
-  def traverseTrees(trees: List[Stmt]) {
+  def traverseTrees(trees: List[LabelledStmt]) {
     trees foreach traverse
   }
 }
 
-final class StmtTraverserForExpr[T](pf: PartialFunction[Expr, T]) extends StmtTraverser {
-  override def traverse(stmt: Stmt) = stmt match {
+final class LabelledStmtTraverserForExpr[T](pf: PartialFunction[Expr, T]) extends LabelledStmtTraverser {
+  override def traverse(stmt: LabelledStmt) = stmt.stmt match {
     case Assign(assigns, constrain) =>
       assigns.map(_._2.collect(pf))
       constrain.map(_.collect(pf))
@@ -46,8 +46,8 @@ final class StmtTraverserForExpr[T](pf: PartialFunction[Expr, T]) extends StmtTr
       args.map(_.collect(pf))
     case If(condition, pos, neg)    =>
       condition.collect(pf)
-      traverseTrees(pos.map(_.stmt))
-      traverseTrees(neg.map(_.stmt))
+      traverseTrees(pos)
+      traverseTrees(neg)
     case Return(values)             =>
       values.map(_.collect(pf))
     case _                          =>

@@ -8,6 +8,7 @@ import bpReduce.ast.Program
 import scala.collection.immutable.Nil
 import scala.annotation.tailrec
 import bpReduce.ast.Expr.Var
+import bpReduce.transformations.VariableCollector
 
 /**
  * @param original
@@ -45,8 +46,8 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
 
   import ComposedProgramReducer._
 
-  override def tainted: Set[Var] = {
-
+  override def rwSyms: Set[Sym] = {
+    VariableCollector(reducer.from)
   }
 
   def current: Program = {

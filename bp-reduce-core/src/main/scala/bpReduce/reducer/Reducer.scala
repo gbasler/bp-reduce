@@ -1,7 +1,7 @@
 package bpReduce
 package reducer
 
-import bpReduce.ast.Program
+import bpReduce.ast.{Sym, Program}
 import scala.annotation.tailrec
 import bpReduce.reduction.{ProgramReducer, ProgramReducerFacory}
 import bpReduce.transformations.ProgramSimplifier
@@ -21,7 +21,8 @@ final case class Reducer(config: ReducerConfig) {
     @tailrec
     def reduceMax(reducerOpt: Option[ProgramReducer],
                   lastFeasible: Option[Program],
-                  iteration: Int): (Option[Program], Int) = {
+                  iteration: Int,
+                  rwSyms: Set[Sym]): (Option[Program], Int, Set[Sym]) = {
       reducerOpt match {
         case Some(reducer) =>
           val variant = reducer.current
@@ -36,17 +37,17 @@ final case class Reducer(config: ReducerConfig) {
               // continue with (simplified) variant
 
               // TODO: prioritize the dependent reducers which should be run immediately after...
-              val tainted = reducer.original
+              val tainted: Set[Sym] = reducer.rwSyms
 
-              reduceMax(reducer.reduce, Some(simplified), iteration + 1)
+              reduceMax(reducer.reduce, Some(simplified), iteration + 1, tainted ++ rwSyms)
             case CheckerResult.Reject =>
               // reduction did not meet criteria
               // check next opportunity
-              reduceMax(reducer.advance, lastFeasible, iteration + 1)
+              reduceMax(reducer.advance, lastFeasible, iteration + 1, rwSyms)
           }
         case None          =>
           // reduction not possible, return last feasible reduction
-          lastFeasible -> iteration
+          (lastFeasible, iteration, rwSyms)
       }
     }
 
@@ -65,7 +66,10 @@ final case class Reducer(config: ReducerConfig) {
           current -> iteration
         case factory :: tail =>
           val reducer = factory(current.getOrElse(original))
-          val (variant, iter) = reduceMax(reducer, None, iteration)
+          val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
+          // TODO: pull up reducers
+          start here
+
           // if no reduction was possible, we must continue with last possible one
           reduce(original, tail, variant.orElse(current), iter)
       }
