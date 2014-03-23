@@ -11,7 +11,7 @@ import bpReduce.ast.Stmt.Assert
 /**
  * Reduces any expression in statements.
  */
-object ReduceExpr extends ProgramReducerFacory {
+object ReduceExpr extends ProgramReducerFactory {
   def apply(program: Program): Option[ProgramReducer] = {
     val exprReducer = new StmtReducerFactory {
       def apply(stmt: Stmt) = stmt match {

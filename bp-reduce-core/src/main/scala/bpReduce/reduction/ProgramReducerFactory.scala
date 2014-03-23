@@ -3,7 +3,7 @@ package reduction
 
 import bpReduce.ast.Program
 
-trait ProgramReducerFacory {
+trait ProgramReducerFactory {
   /**
    *
    * @param program

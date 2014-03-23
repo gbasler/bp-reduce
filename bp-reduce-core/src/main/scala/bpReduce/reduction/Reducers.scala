@@ -7,7 +7,7 @@ import bpReduce.ast.Program
 
 object Reducers {
 
-  object ReplaceWithSkip extends ProgramReducerFacory {
+  object ReplaceWithSkip extends ProgramReducerFactory {
     def apply(program: Program) = {
       val skipReducer = new StmtReducerFactory {
         def apply(stmt: Stmt) = {
@@ -32,7 +32,7 @@ object Reducers {
     }
   }
 
-  object ReduceAssigns extends ProgramReducerFacory {
+  object ReduceAssigns extends ProgramReducerFactory {
     def apply(program: Program): Option[ProgramReducer] = {
       val assignReducer = new StmtReducerFactory {
         def apply(stmt: Stmt): Option[ReduceAssign] = ReduceAssign(stmt)

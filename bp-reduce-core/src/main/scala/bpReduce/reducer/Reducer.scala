@@ -3,7 +3,7 @@ package reducer
 
 import bpReduce.ast.{Sym, Program}
 import scala.annotation.tailrec
-import bpReduce.reduction.{ProgramReducer, ProgramReducerFacory}
+import bpReduce.reduction.{ProgramReducer, ProgramReducerFactory}
 import bpReduce.transformations.ProgramSimplifier
 
 final case class Reducer(config: ReducerConfig) {
@@ -58,7 +58,7 @@ final case class Reducer(config: ReducerConfig) {
      */
     @tailrec
     def reduce(original: Program,
-               reducers: List[ProgramReducerFacory],
+               reducers: List[ProgramReducerFactory],
                current: Option[Program] = None,
                iteration: Int = 0): (Option[Program], Int) = {
       reducers match {
@@ -86,7 +86,9 @@ final case class Reducer(config: ReducerConfig) {
           // idea: list of high priority reducers that are depending on a stmt (expr reducer, stmt remover, etc...)
           // only when that list is finished, we iterate over the rest...
           // problem: when we iterate over the rest, we don't have to run the high priority reducers again...
+          // since they run with a filter, we'd only need to run the inverse filters afterwards...
 
+//          val highPriorityReducers: Map[Reducer] = ???
 
           // if no reduction was possible, we must continue with last possible one
           reduce(original, tail, variant.orElse(current), iter)
