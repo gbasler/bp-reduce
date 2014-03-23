@@ -5,6 +5,7 @@ import bpReduce.ast.{Sym, Program}
 import scala.annotation.tailrec
 import bpReduce.reduction.{ProgramReducer, ProgramReducerFactory}
 import bpReduce.transformations.ProgramSimplifier
+import scala.collection.immutable.ListMap
 
 final case class Reducer(config: ReducerConfig) {
   /**
@@ -59,14 +60,51 @@ final case class Reducer(config: ReducerConfig) {
     @tailrec
     def reduce(original: Program,
                reducers: List[ProgramReducerFactory],
+               allReducers: Set[ProgramReducerFactory],
+               highPriorityReducers: ListMap[ProgramReducerFactory, Set[Sym]] = Nil, // list for deterministic results
                current: Option[Program] = None,
                iteration: Int = 0): (Option[Program], Int) = {
+
+      @inline
+      def con(factory: ProgramReducerFactory,
+              tail: List[ProgramReducerFactory],
+              highPriority: ListMap[ProgramReducerFactory, Set[Sym]]) = {
+
+      }
+
+      highPriorityReducers match {
+        case Nil          =>
+          reducers match {
+            case Nil             =>
+              current -> iteration
+            case factory :: tail =>
+              con(factory, tail, highPriorityReducers)
+          }
+        case high :: tail =>
+          con(high._1, reducers, tail)
+
+      }
+
+
+
       reducers match {
         case Nil             =>
           current -> iteration
         case factory :: tail =>
           val reducer = factory(current.getOrElse(original))
           val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
+
+          // 1. find all reducers that are influenced by changed symbols
+          val influenced = allReducers - factory
+
+          // 2. add reducers to high priority list
+          // problem: we need to add them with a filter!!! (since we do not know the statements in advance!!!)
+          // thus we need to lazily add them and keep the filter
+          val updatedHighPriorityReducers: Map[ProgramReducerFactory, Set[Sym]] = influenced.foldLeft(highPriorityReducers) {
+            case (map, reducer) =>
+              val syms = map.find(_._1 == reducer).map(_._2 ++ rwSyms).getOrElse(rwSyms)
+              map + (reducer -> syms)
+          }
 
           // either inner loop, or list...
 
@@ -88,10 +126,10 @@ final case class Reducer(config: ReducerConfig) {
           // problem: when we iterate over the rest, we don't have to run the high priority reducers again...
           // since they run with a filter, we'd only need to run the inverse filters afterwards...
 
-//          val highPriorityReducers: Map[Reducer] = ???
+          // symbols -> reducers
 
           // if no reduction was possible, we must continue with last possible one
-          reduce(original, tail, variant.orElse(current), iter)
+          reduce(original, tail, allReducers, updatedHighPriorityReducers, variant.orElse(current), iter)
       }
     }
 
@@ -99,7 +137,7 @@ final case class Reducer(config: ReducerConfig) {
     def reduceUntilFixpoint(program: Program,
                             iteration: Int = 1,
                             fixpoints: Int = 0): Program = {
-      reduce(program, config.reducers, iteration = iteration) match {
+      reduce(program, config.reducers, config.reducers.toSet, iteration = iteration) match {
         case (Some(current), iter) =>
           // reduction was possible, try all reductions again
           println("*** next fixpoint iteration ***")
