@@ -67,8 +67,26 @@ final case class Reducer(config: ReducerConfig) {
         case factory :: tail =>
           val reducer = factory(current.getOrElse(original))
           val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
+
+          // either inner loop, or list...
+
           // TODO: pull up reducers
-          start here
+
+          // list of dependent reducers
+          // is not easy to create,
+          // since we just do not know the exact reducers
+          // (a program reducer can contain several stmt reducers, which we don't know in advance)
+          // add a filter?
+
+
+          // case study:
+          // - 3 reductions remove assignment stmt
+          //
+
+          // idea: list of high priority reducers that are depending on a stmt (expr reducer, stmt remover, etc...)
+          // only when that list is finished, we iterate over the rest...
+          // problem: when we iterate over the rest, we don't have to run the high priority reducers again...
+
 
           // if no reduction was possible, we must continue with last possible one
           reduce(original, tail, variant.orElse(current), iter)
