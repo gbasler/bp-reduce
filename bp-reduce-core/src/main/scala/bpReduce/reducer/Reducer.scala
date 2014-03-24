@@ -61,7 +61,7 @@ final case class Reducer(config: ReducerConfig) {
     def reduce(original: Program,
                reducers: List[ProgramReducerFactory],
                allReducers: Set[ProgramReducerFactory],
-               highPriorityReducers: ListMap[ProgramReducerFactory, Set[Sym]] = Nil, // list for deterministic results
+               highPriorityReducers: ListMap[ProgramReducerFactory, Set[Sym]] = ListMap(), // list for deterministic results
                current: Option[Program] = None,
                iteration: Int = 0): (Option[Program], Int) = {
 
@@ -72,20 +72,16 @@ final case class Reducer(config: ReducerConfig) {
 
       }
 
-      highPriorityReducers match {
-        case Nil          =>
-          reducers match {
-            case Nil             =>
-              current -> iteration
-            case factory :: tail =>
-              con(factory, tail, highPriorityReducers)
-          }
-        case high :: tail =>
-          con(high._1, reducers, tail)
-
+      if (highPriorityReducers.isEmpty) {
+        reducers match {
+          case Nil             =>
+            current -> iteration
+          case factory :: tail =>
+            con(factory, tail, highPriorityReducers)
+        }
+      } else {
+        con(highPriorityReducers.head._1, reducers, highPriorityReducers.tail)
       }
-
-
 
       reducers match {
         case Nil             =>
@@ -100,10 +96,10 @@ final case class Reducer(config: ReducerConfig) {
           // 2. add reducers to high priority list
           // problem: we need to add them with a filter!!! (since we do not know the statements in advance!!!)
           // thus we need to lazily add them and keep the filter
-          val updatedHighPriorityReducers: Map[ProgramReducerFactory, Set[Sym]] = influenced.foldLeft(highPriorityReducers) {
+          val updatedHighPriorityReducers = influenced.foldLeft(highPriorityReducers) {
             case (map, reducer) =>
-              val syms = map.find(_._1 == reducer).map(_._2 ++ rwSyms).getOrElse(rwSyms)
-              map + (reducer -> syms)
+              val syms = map.get(reducer).map(_ ++ rwSyms).getOrElse(rwSyms)
+              map - reducer + (reducer -> syms)
           }
 
           // either inner loop, or list...
