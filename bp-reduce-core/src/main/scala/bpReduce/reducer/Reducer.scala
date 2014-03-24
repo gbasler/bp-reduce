@@ -65,68 +65,34 @@ final case class Reducer(config: ReducerConfig) {
                current: Option[Program] = None,
                iteration: Int = 0): (Option[Program], Int) = {
 
-      @inline
-      def con(factory: ProgramReducerFactory,
-              tail: List[ProgramReducerFactory],
-              highPriority: ListMap[ProgramReducerFactory, Set[Sym]]) = {
-
-      }
-
-      if (highPriorityReducers.isEmpty) {
+      val (factory, tail, highPriority) = if (highPriorityReducers.isEmpty) {
         reducers match {
           case Nil             =>
-            current -> iteration
+            return current -> iteration
           case factory :: tail =>
-            con(factory, tail, highPriorityReducers)
+            (factory, tail, highPriorityReducers)
         }
       } else {
-        con(highPriorityReducers.head._1, reducers, highPriorityReducers.tail)
+        (highPriorityReducers.head._1, reducers, highPriorityReducers.tail)
       }
 
-      reducers match {
-        case Nil             =>
-          current -> iteration
-        case factory :: tail =>
-          val reducer = factory(current.getOrElse(original))
-          val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
+      val reducer = factory(current.getOrElse(original))
+      val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
 
-          // 1. find all reducers that are influenced by changed symbols
-          val influenced = allReducers - factory
+      // 1. find all reducers that are influenced by changed symbols
+      val influenced = allReducers - factory
 
-          // 2. add reducers to high priority list
-          // problem: we need to add them with a filter!!! (since we do not know the statements in advance!!!)
-          // thus we need to lazily add them and keep the filter
-          val updatedHighPriorityReducers = influenced.foldLeft(highPriorityReducers) {
-            case (map, reducer) =>
-              val syms = map.get(reducer).map(_ ++ rwSyms).getOrElse(rwSyms)
-              map - reducer + (reducer -> syms)
-          }
-
-          // either inner loop, or list...
-
-          // TODO: pull up reducers
-
-          // list of dependent reducers
-          // is not easy to create,
-          // since we just do not know the exact reducers
-          // (a program reducer can contain several stmt reducers, which we don't know in advance)
-          // add a filter?
-
-
-          // case study:
-          // - 3 reductions remove assignment stmt
-          //
-
-          // idea: list of high priority reducers that are depending on a stmt (expr reducer, stmt remover, etc...)
-          // only when that list is finished, we iterate over the rest...
-          // problem: when we iterate over the rest, we don't have to run the high priority reducers again...
-          // since they run with a filter, we'd only need to run the inverse filters afterwards...
-
-          // symbols -> reducers
-
-          // if no reduction was possible, we must continue with last possible one
-          reduce(original, tail, allReducers, updatedHighPriorityReducers, variant.orElse(current), iter)
+      // 2. add reducers to high priority list
+      // problem: we need to add them with a filter!!! (since we do not know the statements in advance!!!)
+      // thus we need to lazily add them and keep the filter
+      val updatedHighPriorityReducers = influenced.foldLeft(highPriority) {
+        case (map, reducer) =>
+          val syms = map.get(reducer).map(_ ++ rwSyms).getOrElse(rwSyms)
+          map - reducer + (reducer -> syms)
       }
+
+      // if no reduction was possible, we must continue with last possible one
+      reduce(original, tail, allReducers, updatedHighPriorityReducers, variant.orElse(current), iter)
     }
 
     @tailrec
