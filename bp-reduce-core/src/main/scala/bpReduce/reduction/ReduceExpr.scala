@@ -1,7 +1,7 @@
 package bpReduce
 package reduction
 
-import bpReduce.ast.{Stmt, Program}
+import bpReduce.ast.{Sym, Stmt, Program}
 import bpReduce.ast.Stmt._
 import bpReduce.ast.Stmt.Call
 import bpReduce.ast.Stmt.Assume
@@ -12,7 +12,8 @@ import bpReduce.ast.Stmt.Assert
  * Reduces any expression in statements.
  */
 case object ReduceExpr extends ProgramReducerFactory {
-  def apply(program: Program): Option[ProgramReducer] = {
+  def apply(program: Program,
+            filter: Option[Set[Sym]]): Option[ProgramReducer] = {
     val exprReducer = new StmtReducerFactory {
       def apply(stmt: Stmt) = stmt match {
         case assign: Assign                         =>
@@ -32,7 +33,7 @@ case object ReduceExpr extends ProgramReducerFactory {
           None
       }
     }
-    ComposedProgramReducer(exprReducer, program)
+    ComposedProgramReducer(exprReducer, program, filter)
   }
 }
 

@@ -1,7 +1,7 @@
 package bpReduce
 package reduction
 
-import bpReduce.ast.Program
+import bpReduce.ast.{Sym, Program}
 
 /**
  * Note: these guys are added to a map / set, so derived classed should be case classes
@@ -13,5 +13,5 @@ trait ProgramReducerFactory {
    * @return A reducer, if at least one reduction is possible,
    *         `None` otherwise.
    */
-  def apply(program: Program): Option[ProgramReducer]
+  def apply(program: Program, filter: Option[Set[Sym]]): Option[ProgramReducer]
 }

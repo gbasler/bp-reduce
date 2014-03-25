@@ -1,14 +1,14 @@
 package bpReduce
 package reduction
 
-import bpReduce.ast.Stmt
+import bpReduce.ast.{Sym, Stmt, Program}
 import bpReduce.ast.Stmt._
-import bpReduce.ast.Program
 
 object Reducers {
 
   case object ReplaceWithSkip extends ProgramReducerFactory {
-    def apply(program: Program) = {
+    def apply(program: Program,
+              filter: Option[Set[Sym]]) = {
       val skipReducer = new StmtReducerFactory {
         def apply(stmt: Stmt) = {
           // check if reduction really possible,
@@ -28,16 +28,16 @@ object Reducers {
 
         }
       }
-      ComposedProgramReducer(skipReducer, program)
+      ComposedProgramReducer(skipReducer, program, filter)
     }
   }
 
   case object ReduceAssigns extends ProgramReducerFactory {
-    def apply(program: Program): Option[ProgramReducer] = {
+    def apply(program: Program, filter: Option[Set[Sym]]): Option[ProgramReducer] = {
       val assignReducer = new StmtReducerFactory {
         def apply(stmt: Stmt): Option[ReduceAssign] = ReduceAssign(stmt)
       }
-      ComposedProgramReducer(assignReducer, program)
+      ComposedProgramReducer(assignReducer, program, filter)
     }
   }
 

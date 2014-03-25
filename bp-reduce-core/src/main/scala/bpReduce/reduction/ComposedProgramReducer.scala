@@ -9,6 +9,7 @@ import scala.collection.immutable.Nil
 import scala.annotation.tailrec
 import bpReduce.ast.Expr.Var
 import bpReduce.transformations.VariableCollector
+import scala.annotation.tailrec
 
 /**
  * @param original
@@ -42,7 +43,8 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
                                         program: Program,
                                         reduced: List[Function],
                                         unreduced: List[Function],
-                                        inProgress: PartitionedFunction) extends ProgramReducer {
+                                        inProgress: PartitionedFunction,
+                                        filter: Option[Set[Sym]]) extends ProgramReducer {
 
   import ComposedProgramReducer._
 
@@ -86,7 +88,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
           val last = reducer.to
           inProgress.copy(reduced = inProgress.reduced :+ head.copy(stmt = last), unreduced = tail)
       }
-      apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
+      apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress), filter)
     }
   }
 
@@ -109,22 +111,47 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
           None
         case head :: tail =>
           val updatedInProgress = inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail)
-          apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress))
+          apply(reducerFactory, program, reduced, unreduced, Some(updatedInProgress), filter)
       }
     }
   }
+
+  //  /**
+  //   * @return Next stmt that passes filter
+  //   */
+  //  @tailrec
+  //  private def findNextReducer(inProgress: PartitionedFunction): Option[ComposedProgramReducer] = {
+  //    inProgress.unreduced match {
+  //      case Nil          =>
+  //        // already looked at last statement
+  //        None
+  //      case head :: tail =>
+  //        val updatedProgess = inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail)
+  //        val passedFilter = filter.map {
+  //          filter => (VariableCollector(head.stmt) union filter).isEmpty
+  //        }.getOrElse(true)
+  //        if (passedFilter) {
+  //          updatedProgess
+  //        } else {
+  //          // skip stmt since it did not pass filter
+  //          findNextReducer(updatedProgess)
+  //        }
+  //    }
+  //  }
+
 }
 
 object ComposedProgramReducer {
 
   def apply(reducerFactory: StmtReducerFactory,
-            program: Program): Option[ComposedProgramReducer] = {
+            program: Program,
+            filter: Option[Set[Sym]]): Option[ComposedProgramReducer] = {
 
     program.functions match {
       case Nil       =>
         None
       case functions =>
-        apply(reducerFactory, program, Nil, functions, None)
+        apply(reducerFactory, program, Nil, functions, None, filter)
     }
   }
 
@@ -132,7 +159,8 @@ object ComposedProgramReducer {
             program: Program,
             reduced: List[Function],
             unreduced: List[Function],
-            inProgress: Option[PartitionedFunction]): Option[ComposedProgramReducer] = {
+            inProgress: Option[PartitionedFunction],
+            filter: Option[Set[Sym]]): Option[ComposedProgramReducer] = {
 
     /**
      * @param reduced
@@ -147,7 +175,7 @@ object ComposedProgramReducer {
                      inProgress: PartitionedFunction): Option[ComposedProgramReducer] = {
 
       inProgress.unreduced match {
-        case Nil      =>
+        case Nil          =>
           // look at next function
           unreduced match {
             case Nil      =>
@@ -157,17 +185,28 @@ object ComposedProgramReducer {
               // look at next function
               findNextStmt(reduced :+ inProgress.function, tl.tail, PartitionedFunction(tl.head))
           }
-        case hd :: tl =>
-          // stay in current function: search for next stmt to reduce...
-          val reducer = reducerFactory(hd.stmt)
-          reducer match {
-            case Some(reducer) =>
-              // reduction possible on that statement
-              Some(ComposedProgramReducer(reducerFactory, reducer, program, reduced, unreduced, inProgress))
-            case None          =>
-              // reducer can't reduce that statement, take next one
-              findNextStmt(reduced, unreduced,
-                inProgress.copy(reduced = inProgress.reduced :+ hd, unreduced = tl))
+        case head :: tail =>
+
+          // skip stmts that do not pass filter
+          val passedFilter = filter.map {
+            filter => (VariableCollector(head.stmt) union filter).isEmpty
+          }.getOrElse(true)
+
+          if (passedFilter) {
+            // stay in current function: search for next stmt to reduce...
+            val reducer = reducerFactory(head.stmt)
+            reducer match {
+              case Some(reducer) =>
+                // reduction possible on that statement
+                Some(apply(reducerFactory, reducer, program, reduced, unreduced, filter = filter))
+              case None          =>
+                // reducer can't reduce that statement, take next one
+                findNextStmt(reduced, unreduced,
+                  inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail))
+            }
+          } else {
+            findNextStmt(reduced, unreduced,
+              inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail))
           }
       }
     }

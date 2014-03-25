@@ -65,18 +65,18 @@ final case class Reducer(config: ReducerConfig) {
                current: Option[Program] = None,
                iteration: Int = 0): (Option[Program], Int) = {
 
-      val (factory, tail, highPriority) = if (highPriorityReducers.isEmpty) {
+      val (factory, symsOpt, tail, highPriority) = if (highPriorityReducers.isEmpty) {
         reducers match {
           case Nil             =>
             return current -> iteration
           case factory :: tail =>
-            (factory, tail, highPriorityReducers)
+            (factory, None, tail, highPriorityReducers)
         }
       } else {
-        (highPriorityReducers.head._1, reducers, highPriorityReducers.tail)
+        (highPriorityReducers.head._1, Some(highPriorityReducers.head._2), reducers, highPriorityReducers.tail)
       }
 
-      val reducer = factory(current.getOrElse(original))
+      val reducer = factory(current.getOrElse(original), symsOpt)
       val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
 
       // 1. find all reducers that are influenced by changed symbols
@@ -88,7 +88,12 @@ final case class Reducer(config: ReducerConfig) {
       val updatedHighPriorityReducers = influenced.foldLeft(highPriority) {
         case (map, reducer) =>
           val syms = map.get(reducer).map(_ ++ rwSyms).getOrElse(rwSyms)
-          map - reducer + (reducer -> syms)
+          // TODO: don't add if syms empty
+          if (syms.nonEmpty) {
+            map - reducer + (reducer -> syms)
+          } else {
+            map
+          }
       }
 
       // if no reduction was possible, we must continue with last possible one
