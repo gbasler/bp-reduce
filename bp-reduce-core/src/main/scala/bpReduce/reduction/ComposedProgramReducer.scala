@@ -44,7 +44,7 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
                                         reduced: List[Function],
                                         unreduced: List[Function],
                                         inProgress: PartitionedFunction,
-                                        filter: Option[Set[Sym]]) extends ProgramReducer {
+                                        filter: StmtFilter) extends ProgramReducer {
 
   import ComposedProgramReducer._
 
@@ -122,7 +122,7 @@ object ComposedProgramReducer {
 
   def apply(reducerFactory: StmtReducerFactory,
             program: Program,
-            filter: Option[Set[Sym]]): Option[ComposedProgramReducer] = {
+            filter: StmtFilter): Option[ComposedProgramReducer] = {
 
     program.functions match {
       case Nil       =>
@@ -137,7 +137,7 @@ object ComposedProgramReducer {
             reduced: List[Function],
             unreduced: List[Function],
             inProgress: Option[PartitionedFunction],
-            filter: Option[Set[Sym]]): Option[ComposedProgramReducer] = {
+            filter: StmtFilter): Option[ComposedProgramReducer] = {
 
     /**
      * @param reduced
@@ -165,9 +165,7 @@ object ComposedProgramReducer {
         case head :: tail =>
 
           // skip stmts that do not pass filter
-          val passedFilter = filter.map {
-            filter => (VariableCollector(head.stmt) union filter).isEmpty
-          }.getOrElse(true)
+          val passedFilter = filter.filter(head.stmt)
 
           if (passedFilter) {
             // stay in current function: search for next stmt to reduce...

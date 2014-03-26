@@ -13,5 +13,5 @@ trait ProgramReducerFactory {
    * @return A reducer, if at least one reduction is possible,
    *         `None` otherwise.
    */
-  def apply(program: Program, filter: Option[Set[Sym]]): Option[ProgramReducer]
+  def apply(program: Program, filter: StmtFilter): Option[ProgramReducer]
 }

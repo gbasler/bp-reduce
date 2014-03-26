@@ -21,7 +21,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
       }
 
       val program = Program(VariableHolder(), List(Function("main")))
-      ComposedProgramReducer(factory, program, None) must beNone
+      ComposedProgramReducer(factory, program, StmtFilter.Empty) must beNone
     }
 
     "one line program" in {
@@ -54,7 +54,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val reducer = ComposedProgramReducer(factory, program, None).get
+      val reducer = ComposedProgramReducer(factory, program, StmtFilter.Empty).get
       reducer.current === skip
       reducer.reduce must beNone
       reducer.advance must beNone
@@ -127,7 +127,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val reducer = ComposedProgramReducer(factory, program, None).get
+      val reducer = ComposedProgramReducer(factory, program, StmtFilter.Empty).get
       reducer.current === reducedToSkip
       reducer.reduce.get.current === reducedFurtherToAtomicEnd
       reducer.advance.get.current === endThread
@@ -185,7 +185,7 @@ class ComposedProgramReducerTest extends BaseSpecification {
           |
         """.stripMargin
 
-      val reducer = ComposedProgramReducer(factory, program, None).get
+      val reducer = ComposedProgramReducer(factory, program, StmtFilter.Empty).get
       reducer.current === skipFirst
       reducer.advance.get.current must beSameProgram(skipLast)
       reducer.reduce.get.current must beSameProgram(skipTwice)

@@ -8,7 +8,7 @@ object Reducers {
 
   case object ReplaceWithSkip extends ProgramReducerFactory {
     def apply(program: Program,
-              filter: Option[Set[Sym]]) = {
+              filter: StmtFilter) = {
       val skipReducer = new StmtReducerFactory {
         def apply(stmt: Stmt) = {
           // check if reduction really possible,
@@ -33,7 +33,7 @@ object Reducers {
   }
 
   case object ReduceAssigns extends ProgramReducerFactory {
-    def apply(program: Program, filter: Option[Set[Sym]]): Option[ProgramReducer] = {
+    def apply(program: Program, filter: StmtFilter): Option[ProgramReducer] = {
       val assignReducer = new StmtReducerFactory {
         def apply(stmt: Stmt): Option[ReduceAssign] = ReduceAssign(stmt)
       }

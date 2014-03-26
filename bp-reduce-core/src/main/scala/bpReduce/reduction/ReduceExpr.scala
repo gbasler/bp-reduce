@@ -13,7 +13,7 @@ import bpReduce.ast.Stmt.Assert
  */
 case object ReduceExpr extends ProgramReducerFactory {
   def apply(program: Program,
-            filter: Option[Set[Sym]]): Option[ProgramReducer] = {
+            filter: StmtFilter): Option[ProgramReducer] = {
     val exprReducer = new StmtReducerFactory {
       def apply(stmt: Stmt) = stmt match {
         case assign: Assign                         =>

@@ -1,10 +1,10 @@
 package bpReduce
 package reducer
 
-import bpReduce.ast.{Sym, Program}
+import bpReduce.ast.{Stmt, Sym, Program}
 import scala.annotation.tailrec
-import bpReduce.reduction.{ProgramReducer, ProgramReducerFactory}
-import bpReduce.transformations.ProgramSimplifier
+import bpReduce.reduction.{StmtFilter, ProgramReducer, ProgramReducerFactory}
+import bpReduce.transformations.{VariableCollector, ProgramSimplifier}
 import scala.collection.immutable.ListMap
 
 final case class Reducer(config: ReducerConfig) {
@@ -65,18 +65,25 @@ final case class Reducer(config: ReducerConfig) {
                current: Option[Program] = None,
                iteration: Int = 0): (Option[Program], Int) = {
 
-      val (factory, symsOpt, tail, highPriority) = if (highPriorityReducers.isEmpty) {
+      val (factory, filter, tail, highPriority) = if (highPriorityReducers.isEmpty) {
         reducers match {
           case Nil             =>
             return current -> iteration
           case factory :: tail =>
-            (factory, None, tail, highPriorityReducers)
+            (factory, StmtFilter.Empty, tail, highPriorityReducers)
         }
       } else {
-        (highPriorityReducers.head._1, Some(highPriorityReducers.head._2), reducers, highPriorityReducers.tail)
+
+        val syms: Set[Sym] = highPriorityReducers.head._2
+
+        val filter = new StmtFilter {
+          def filter(stmt: Stmt): Boolean = (VariableCollector(stmt) union syms).isEmpty
+        }
+
+        (highPriorityReducers.head._1, filter, reducers, highPriorityReducers.tail)
       }
 
-      val reducer = factory(current.getOrElse(original), symsOpt)
+      val reducer = factory(current.getOrElse(original), filter)
       val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
 
       // 1. find all reducers that are influenced by changed symbols
