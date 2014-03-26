@@ -198,7 +198,7 @@ object ComposedProgramReducer {
             reducer match {
               case Some(reducer) =>
                 // reduction possible on that statement
-                Some(apply(reducerFactory, reducer, program, reduced, unreduced, filter = filter))
+                Some(apply(reducerFactory, reducer, program, reduced, unreduced, inProgress, filter = filter))
               case None          =>
                 // reducer can't reduce that statement, take next one
                 findNextStmt(reduced, unreduced,
