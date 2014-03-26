@@ -116,29 +116,6 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
     }
   }
 
-  //  /**
-  //   * @return Next stmt that passes filter
-  //   */
-  //  @tailrec
-  //  private def findNextReducer(inProgress: PartitionedFunction): Option[ComposedProgramReducer] = {
-  //    inProgress.unreduced match {
-  //      case Nil          =>
-  //        // already looked at last statement
-  //        None
-  //      case head :: tail =>
-  //        val updatedProgess = inProgress.copy(reduced = inProgress.reduced :+ head, unreduced = tail)
-  //        val passedFilter = filter.map {
-  //          filter => (VariableCollector(head.stmt) union filter).isEmpty
-  //        }.getOrElse(true)
-  //        if (passedFilter) {
-  //          updatedProgess
-  //        } else {
-  //          // skip stmt since it did not pass filter
-  //          findNextReducer(updatedProgess)
-  //        }
-  //    }
-  //  }
-
 }
 
 object ComposedProgramReducer {
