@@ -1,7 +1,7 @@
 package bpReduce
 package reduction
 
-import bpReduce.ast.{Sym, Stmt, Program}
+import bpReduce.ast.{Stmt, Program}
 import bpReduce.ast.Stmt._
 import bpReduce.ast.Stmt.Call
 import bpReduce.ast.Stmt.Assume

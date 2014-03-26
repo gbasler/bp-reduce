@@ -73,7 +73,6 @@ final case class Reducer(config: ReducerConfig) {
             (factory, StmtFilter.Empty, tail, highPriorityReducers)
         }
       } else {
-
         val syms: Set[Sym] = highPriorityReducers.head._2
 
         val filter = new StmtFilter {
