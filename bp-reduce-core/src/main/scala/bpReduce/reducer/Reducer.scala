@@ -76,7 +76,9 @@ final case class Reducer(config: ReducerConfig) {
         val syms: Set[Sym] = highPriorityReducers.head._2
 
         val filter = new StmtFilter {
-          def filter(stmt: Stmt): Boolean = (VariableCollector(stmt) union syms).isEmpty
+          def filter(stmt: Stmt): Boolean = {
+            (VariableCollector(stmt) union syms).nonEmpty
+          }
         }
 
         (highPriorityReducers.head._1, filter, reducers, highPriorityReducers.tail)
