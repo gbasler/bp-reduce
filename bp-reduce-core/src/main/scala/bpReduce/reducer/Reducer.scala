@@ -5,7 +5,6 @@ import bpReduce.ast.{Stmt, Sym, Program}
 import scala.annotation.tailrec
 import bpReduce.reduction.{StmtFilter, ProgramReducer, ProgramReducerFactory}
 import bpReduce.transformations.{VariableCollector, ProgramSimplifier}
-import scala.collection.immutable.ListMap
 
 final case class Reducer(config: ReducerConfig) {
   /**
@@ -55,69 +54,58 @@ final case class Reducer(config: ReducerConfig) {
     /**
      * Applies successively all reductions that are given.
      *
+     * @param filter abbreviate this run by applying the supplied filter
      * @return Reduced program, or `None`, if no reduction possible.
      */
     @tailrec
     def reduce(original: Program,
                reducers: List[ProgramReducerFactory],
                allReducers: Set[ProgramReducerFactory],
-               highPriorityReducers: ListMap[ProgramReducerFactory, Set[Sym]] = ListMap(), // list for deterministic results
+               filter: StmtFilter,
+               rwSymsAcc: Set[Sym] = Set(),
                current: Option[Program] = None,
-               iteration: Int = 0): (Option[Program], Int) = {
+               iteration: Int = 0): (Option[Program], Int, Set[Sym]) = {
 
-      val (factory, filter, tail, highPriority) = if (highPriorityReducers.isEmpty) {
-        reducers match {
-          case Nil             =>
-            return current -> iteration
-          case factory :: tail =>
-            (factory, StmtFilter.Empty, tail, highPriorityReducers)
-        }
-      } else {
-        val syms: Set[Sym] = highPriorityReducers.head._2
+      reducers match {
+        case Nil             =>
+          return (current, iteration, rwSymsAcc)
+        case factory :: tail =>
+          val reducer = factory(current.getOrElse(original), filter)
+          val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
 
-        val filter = new StmtFilter {
-          def filter(stmt: Stmt): Boolean = {
-            (VariableCollector(stmt) union syms).nonEmpty
-          }
-        }
 
-        (highPriorityReducers.head._1, filter, reducers, highPriorityReducers.tail)
+          // if no reduction was possible, we must continue with last possible one
+          reduce(original, tail, allReducers, filter, rwSyms ++ rwSymsAcc, variant.orElse(current), iter)
       }
-
-      val reducer = factory(current.getOrElse(original), filter)
-      val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
-
-      // 1. find all reducers that are influenced by changed symbols
-      val influenced = allReducers - factory
-
-      // 2. add reducers to high priority list
-      // problem: we need to add them with a filter!!! (since we do not know the statements in advance!!!)
-      // thus we need to lazily add them and keep the filter
-      val updatedHighPriorityReducers = influenced.foldLeft(highPriority) {
-        case (map, reducer) =>
-          val syms = map.get(reducer).map(_ ++ rwSyms).getOrElse(rwSyms)
-          // TODO: don't add if syms empty
-          if (syms.nonEmpty) {
-            map - reducer + (reducer -> syms)
-          } else {
-            map
-          }
-      }
-
-      // if no reduction was possible, we must continue with last possible one
-      reduce(original, tail, allReducers, updatedHighPriorityReducers, variant.orElse(current), iter)
     }
 
     @tailrec
     def reduceUntilFixpoint(program: Program,
+                            filter: StmtFilter = StmtFilter.Empty,
                             iteration: Int = 1,
                             fixpoints: Int = 0): Program = {
-      reduce(program, config.reducers, config.reducers.toSet, iteration = iteration) match {
-        case (Some(current), iter) =>
+      reduce(program, config.reducers, config.reducers.toSet, filter, iteration = iteration) match {
+        case (Some(current), iter, rwSyms) =>
           // reduction was possible, try all reductions again
-          println("*** next fixpoint iteration ***")
-          reduceUntilFixpoint(current, iter, fixpoints + 1)
-        case (None, _)             =>
+
+          if (rwSyms.isEmpty) {
+            println("*** next fixpoint iteration ***")
+            reduceUntilFixpoint(current, StmtFilter.Empty, iter, fixpoints + 1)
+          } else {
+            println("*** next quick fixpoint iteration ***")
+            val filter = new StmtFilter {
+              def filter(stmt: Stmt): Boolean = {
+                (VariableCollector(stmt) union rwSyms).nonEmpty
+              }
+            }
+            reduceUntilFixpoint(current, filter, iter, fixpoints + 1)
+          }
+
+        case (None, iter, _) if filter != StmtFilter.Empty =>
+          // all reducers have been applied but
+          // we had a quick run
+          reduceUntilFixpoint(program, StmtFilter.Empty, iter, fixpoints + 1)
+        case (None, _, _)                                  =>
           // all reducers have been applied but
           // no reduction was possible, so fixed point reached
           program
@@ -132,4 +120,5 @@ final case class Reducer(config: ReducerConfig) {
     }
 
   }
+
 }
