@@ -8,7 +8,7 @@ import bpReduce.reducer._
 import bpReduce.reduction.Reducers
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.DateTime
-import java.nio.file.FileSystems
+import java.nio.file.{Paths, FileSystems}
 import bpReduce.writer.Formatter
 import scopt.OptionParser
 import bpReduce.reducer.Reducer
@@ -22,7 +22,8 @@ object Main {
   def main(args: Array[String]) {
     final case class Config(file: File = new File("."),
                             outFile: File = new File("reduced.bp"),
-                            replay: Option[File] = None)
+                            replay: Option[File] = None,
+                            diskCache: Boolean = false)
 
     val parser = new OptionParser[Config](name) {
       head(name)
@@ -30,6 +31,10 @@ object Main {
         (x, c) =>
           c.copy(replay = Some(x))
       } text "directory with logs from a previous run"
+      opt[Unit]("disk-cache") action {
+        (_, c) =>
+          c.copy(diskCache = true)
+      } text "does a full recursive search for bp and log files"
       opt[File]('o', "output") valueName "<outfile>" action {
         (x, c) =>
           c.copy(outFile = x)
@@ -44,12 +49,17 @@ object Main {
         val outputChecker = ErrorOutputChecker.Default
         val checker = config.replay match {
           case Some(replayDir) =>
-            ReplayChecker(outputChecker, replayDir)
+            ReplayChecker(outputChecker, replayDir.toPath)
           case None            =>
             val fmt = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm-ss")
             val logDir = new DateTime().toString(fmt)
             val checker = new BoomChecker(outputChecker, FileSystems.getDefault.getPath(logDir))
-            new CachingChecker(checker)
+            if (config.diskCache) {
+              println("Using disk cache.")
+              new CachingChecker(checker, ProgramCache.fromCurrentDir(outputChecker))
+            } else {
+              new CachingChecker(checker)
+            }
         }
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
         val reducer = new Reducer(cfg)

@@ -1,14 +1,11 @@
 package bpReduce
 package reducer
 
-import org.apache.commons.io.FileUtils
 import java.io.File
-import scala.collection.JavaConverters._
 import bpReduce.ast.Program
-import org.apache.commons.lang.StringUtils
 import bpReduce.writer.Formatter
 import bpReduce.reducer.CheckerResult.{Reject, Accept}
-import bpReduce.util.BooleanPrograms
+import java.nio.file.{Paths, Path}
 
 final class ReplayChecker(outputChecker: OutputChecker,
                           replays: ReplayChecker.Replay,
@@ -50,28 +47,10 @@ object ReplayChecker {
   type Replay = Map[IndexedSeq[String], (String, String)]
 
   def apply(outputChecker: OutputChecker,
-            path: File = new File("."),
+            path: Path = Paths.get("."),
             verbose: Boolean = true) = {
-    val files = FileUtils.listFiles(path, Array(BooleanPrograms.Suffix, ProgramCache.LogSuffix), true).asScala.toIndexedSeq
-    val (candidates, logs) = files.partition(_.getName.endsWith(s".${BooleanPrograms.Suffix}"))
-    val candidatesAndLogs = candidates.flatMap {
-      c =>
-        val log = s"${StringUtils.removeEnd(c.getName, BooleanPrograms.Suffix)}${ProgramCache.LogSuffix}"
-        logs.find(_.getName == log).map {
-          log => c -> log
-        }
-    }
 
-    val replays: Map[IndexedSeq[String], (String, String)] = {
-      for {
-        (candidateFile, logFile) <- candidatesAndLogs
-      } yield {
-        val content = FileUtils.readFileToString(candidateFile)
-        val log = FileUtils.readFileToString(logFile)
-        content.lines.toIndexedSeq ->(candidateFile.getName, log)
-      }
-    }.toMap
-
+    val replays = ProgramCache.loadCandidatesAndLogs(path)
     new ReplayChecker(outputChecker, replays, verbose)
   }
 }
