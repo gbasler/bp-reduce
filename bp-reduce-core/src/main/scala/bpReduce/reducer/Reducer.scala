@@ -1,6 +1,9 @@
 package bpReduce
 package reducer
 
+import _root_.Run.Full
+import _root_.Run.Quick
+import _root_.Run.QuickRemaining
 import bpReduce.ast.{Stmt, Sym, Program}
 import scala.annotation.tailrec
 import bpReduce.reduction.{StmtFilter, ProgramReducer, ProgramReducerFactory}
@@ -79,11 +82,32 @@ final case class Reducer(config: ReducerConfig) {
       }
     }
 
+    sealed abstract class Run
+
+    object Run {
+
+      case object Full extends Run
+
+      final case class Quick(filter: StmtFilter) extends Run
+
+      final case class QuickRemaining(filter: StmtFilter) extends Run
+
+    }
+
     @tailrec
     def reduceUntilFixpoint(program: Program,
-                            filter: StmtFilter = StmtFilter.Empty,
+                            run: Run,
                             iteration: Int = 1,
                             fixpoints: Int = 0): Program = {
+
+      import Run._
+
+      val filter = run match {
+        case Full                   => StmtFilter.Empty
+        case Quick(filter)          => filter
+        case QuickRemaining(filter) => filter
+      }
+
       reduce(program, config.reducers, config.reducers.toSet, filter, iteration = iteration) match {
         case (Some(current), iter, rwSyms) =>
           // reduction was possible, try all reductions again
@@ -104,7 +128,7 @@ final case class Reducer(config: ReducerConfig) {
         case (None, iter, _) if filter != StmtFilter.Empty =>
           // all reducers have been applied but
           // we had a quick run
-          reduceUntilFixpoint(program, StmtFilter.Empty, iter, fixpoints + 1)
+          reduceUntilFixpoint(program, StmtFilter.invert(filter), iter, fixpoints + 1)
         case (None, _, _)                                  =>
           // all reducers have been applied but
           // no reduction was possible, so fixed point reached
