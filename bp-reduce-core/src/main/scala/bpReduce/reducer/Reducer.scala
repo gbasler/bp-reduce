@@ -1,13 +1,22 @@
 package bpReduce
 package reducer
 
-import _root_.Run.Full
-import _root_.Run.Quick
-import _root_.Run.QuickRemaining
-import bpReduce.ast.{Stmt, Sym, Program}
+import bpReduce.ast.{Sym, Program}
 import scala.annotation.tailrec
-import bpReduce.reduction.{StmtFilter, ProgramReducer, ProgramReducerFactory}
-import bpReduce.transformations.{VariableCollector, ProgramSimplifier}
+import bpReduce.reduction.{InfluencedBySymbolFilter, StmtFilter, ProgramReducer, ProgramReducerFactory}
+import bpReduce.transformations.ProgramSimplifier
+
+sealed abstract class Run
+
+object Run {
+
+  case object Full extends Run
+
+  final case class Quick(filter: StmtFilter) extends Run
+
+  final case class QuickRemaining(filter: StmtFilter) extends Run
+
+}
 
 final case class Reducer(config: ReducerConfig) {
   /**
@@ -82,18 +91,6 @@ final case class Reducer(config: ReducerConfig) {
       }
     }
 
-    sealed abstract class Run
-
-    object Run {
-
-      case object Full extends Run
-
-      final case class Quick(filter: StmtFilter) extends Run
-
-      final case class QuickRemaining(filter: StmtFilter) extends Run
-
-    }
-
     @tailrec
     def reduceUntilFixpoint(program: Program,
                             run: Run,
@@ -105,38 +102,45 @@ final case class Reducer(config: ReducerConfig) {
       val filter = run match {
         case Full                   => StmtFilter.Empty
         case Quick(filter)          => filter
-        case QuickRemaining(filter) => filter
+        case QuickRemaining(filter) => filter.negate
       }
 
       reduce(program, config.reducers, config.reducers.toSet, filter, iteration = iteration) match {
         case (Some(current), iter, rwSyms) =>
           // reduction was possible, try all reductions again
-
           if (rwSyms.isEmpty) {
-            println("*** next fixpoint iteration ***")
-            reduceUntilFixpoint(current, StmtFilter.Empty, iter, fixpoints + 1)
+            run match {
+              case Quick(f)            =>
+                // all reducers that were influenced by a variable have been applied but
+                // this time no variable was influenced => take shortcut
+                println("*** next remaining fixpoint iteration ***")
+                reduceUntilFixpoint(program,  QuickRemaining(f), iter, fixpoints + 1)
+              case Full | QuickRemaining(_) =>
+                println("*** next fixpoint iteration ***")
+                reduceUntilFixpoint(current, Full, iter, fixpoints + 1)
+            }
           } else {
             println("*** next quick fixpoint iteration ***")
-            val filter = new StmtFilter {
-              def filter(stmt: Stmt): Boolean = {
-                (VariableCollector(stmt) union rwSyms).nonEmpty
-              }
-            }
-            reduceUntilFixpoint(current, filter, iter, fixpoints + 1)
+            val filter = InfluencedBySymbolFilter(rwSyms)
+            reduceUntilFixpoint(current, Quick(filter), iter, fixpoints + 1)
           }
 
-        case (None, iter, _) if filter != StmtFilter.Empty =>
-          // all reducers have been applied but
-          // we had a quick run
-          reduceUntilFixpoint(program, StmtFilter.invert(filter), iter, fixpoints + 1)
-        case (None, _, _)                                  =>
-          // all reducers have been applied but
-          // no reduction was possible, so fixed point reached
-          program
+        case (None, iter, _) =>
+          run match {
+            case Full | _: QuickRemaining =>
+              // all reducers have been applied but
+              // no reduction was possible, so fixed point reached
+              program
+            case Quick(f)            =>
+              // all reducers have been applied but
+              // we had a quick run
+              println("*** next remaining fixpoint iteration (no success) ***")
+              reduceUntilFixpoint(program, QuickRemaining(f), iter, fixpoints + 1)
+          }
       }
     }
 
-    val reduced = reduceUntilFixpoint(program)
+    val reduced = reduceUntilFixpoint(program, run = Run.Full)
     if (config.simplify) {
       ProgramSimplifier(reduced)
     } else {
