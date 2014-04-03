@@ -110,12 +110,28 @@ final case class Reducer(config: ReducerConfig) {
           // reduction was possible, try all reductions again
           if (rwSyms.isEmpty) {
             run match {
-              case Quick(f)            =>
+              case Quick(f)          =>
                 // all reducers that were influenced by a variable have been applied but
                 // this time no variable was influenced => take shortcut
                 println("*** next remaining fixpoint iteration ***")
-                reduceUntilFixpoint(program,  QuickRemaining(f), iter, fixpoints + 1)
-              case Full | QuickRemaining(_) =>
+                reduceUntilFixpoint(program, QuickRemaining(f), iter, fixpoints + 1)
+              case QuickRemaining(_) =>
+                // we just had a quick remaining run that reduced something
+                // however, no stmts that influence or are influenced by
+                // symbols were reduced
+                // so what's left?
+                // atomic_begin / atomic_end / thread_start
+                // let's say that we removed one of these...
+                // the first iteration does a full reduction
+                // what was it not removed then?
+                // removing a start_thread stmt reduces behavior significantly
+                // usually a thread needs the help of another thread to reach a certain state
+                // if the other thread is missing, it can't reach that state anymore
+                // if it can still reach that state then the other thread was not needed
+                println("*** next we just had a quick that did not remove any stmt that ***")
+                println("*** influences or is influenced by a stmt, so I'm stopping here ***")
+                program
+              case Full              =>
                 println("*** next fixpoint iteration ***")
                 reduceUntilFixpoint(current, Full, iter, fixpoints + 1)
             }
@@ -131,9 +147,10 @@ final case class Reducer(config: ReducerConfig) {
               // all reducers have been applied but
               // no reduction was possible, so fixed point reached
               program
-            case Quick(f)            =>
-              // all reducers have been applied but
+            case Quick(f)                 =>
+              // all reducers have been applied without success but
               // we had a quick run
+              // need to run the omitted reducers as well
               println("*** next remaining fixpoint iteration (no success) ***")
               reduceUntilFixpoint(program, QuickRemaining(f), iter, fixpoints + 1)
           }
