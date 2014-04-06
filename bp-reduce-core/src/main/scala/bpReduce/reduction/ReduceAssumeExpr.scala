@@ -5,7 +5,7 @@ import bpReduce.ast.Stmt.Assume
 import bpReduce.ast.Expr
 
 // TODO: generalize?
-final case class ReduceAssumeExpr(override val from: Assume,
+final case class ReduceAssumeExpr(from: Assume,
                                   reductions: List[Expr]) extends StmtReducer {
 
   require(reductions.nonEmpty)

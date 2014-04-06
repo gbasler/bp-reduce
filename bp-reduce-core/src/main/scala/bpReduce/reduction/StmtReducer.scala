@@ -3,6 +3,7 @@ package reduction
 
 import bpReduce.ast.Stmt
 import bpReduce.ast.Expr.Var
+import bpReduce.writer.Formatter
 
 /**
  * Reduces a single statement.
@@ -48,6 +49,13 @@ trait StmtReducer {
    *         If no reduction is possible, `None` is returned.
    */
   def to: Stmt
+
+  /**
+   * @return String commenting the current reduction.
+   */
+  def currentComment: String = {
+    s"${Formatter.format(from)} -> ${Formatter.format(to)}."
+  }
 
   /**
    * Goes one step up towards `Skip`. The next statement will be simpler than

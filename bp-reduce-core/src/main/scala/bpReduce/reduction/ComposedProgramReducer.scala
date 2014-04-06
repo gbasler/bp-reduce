@@ -65,6 +65,11 @@ final case class ComposedProgramReducer(reducerFactory: StmtReducerFactory,
   }
 
   /**
+   * @return String commenting the current reduction.
+   */
+  def currentComment: String = reducer.currentComment
+
+  /**
    * Reduces current statement if possible. Keeps last reduction.
    */
   def reduce: Option[ComposedProgramReducer] = {

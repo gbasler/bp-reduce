@@ -1,15 +1,17 @@
 package bpReduce
 package reducer
 
-import bpReduce.ast.Program
 import scala.collection.mutable
 import bpReduce.writer.Formatter
-import org.apache.commons.io.FileUtils
+import org.apache.commons.io.{FilenameUtils, FileUtils}
 import bpReduce.util.BooleanPrograms
 import org.apache.commons.lang.StringUtils
 import java.nio.file.{Paths, Path}
 import scala.collection.JavaConverters._
 import bpReduce.reducer.CheckerResult.{Reject, Accept}
+import org.apache.commons.io.filefilter._
+import java.io.File
+import bpReduce.ast.Program
 
 sealed abstract class CacheState
 
@@ -33,7 +35,7 @@ object CacheState {
  *
  * We store just the formatted program, see also [[ReplayChecker]].
  */
-final class ProgramCache(cache: mutable.Map[IndexedSeq[String], CacheState]) {
+final class ProgramCache(val cache: mutable.Map[IndexedSeq[String], CacheState]) {
 
   def this() = {
     this(mutable.Map.empty[IndexedSeq[String], CacheState])
@@ -60,8 +62,29 @@ object ProgramCache {
 
   def logFileName(iteration: Int): String = s"reduced.$iteration.$LogSuffix"
 
-  def loadCandidatesAndLogs(dir: Path): Map[IndexedSeq[String], (String, String)] = {
-    val files = FileUtils.listFiles(dir.toFile, Array(BooleanPrograms.Suffix, ProgramCache.LogSuffix), true).asScala.toIndexedSeq
+  def loadCandidatesAndLogs(dir: Path,
+                            directoryFilter: Boolean = true): Map[IndexedSeq[String], (String, String)] = {
+
+    val suffixFilter = new SuffixFileFilter(Array(BooleanPrograms.Suffix, ProgramCache.LogSuffix).map("." + _))
+
+    val (fileFilter, dirFilter) = if (directoryFilter) {
+      val wildcard = "????-??-??-??-??-??"
+
+      val pathFilter = new AbstractFileFilter {
+        override def accept(dir: File, name: String): Boolean = {
+          FilenameUtils.wildcardMatch(dir.getName, wildcard)
+        }
+      }
+
+      val fileFilter = new AndFileFilter(suffixFilter, pathFilter)
+      val dirFilter = new WildcardFileFilter(wildcard)
+      fileFilter -> dirFilter
+    } else {
+      suffixFilter -> TrueFileFilter.INSTANCE
+    }
+
+    val files = FileUtils.listFiles(dir.toFile, fileFilter, dirFilter).asScala.toIndexedSeq
+
     val (candidates, logs) = files.partition(_.getName.endsWith(s".${BooleanPrograms.Suffix}"))
     val candidatesAndLogs = candidates.flatMap {
       c =>
@@ -77,7 +100,7 @@ object ProgramCache {
       } yield {
         val content = FileUtils.readFileToString(candidateFile)
         val log = FileUtils.readFileToString(logFile)
-        content.lines.toIndexedSeq ->(candidateFile.getName, log)
+        content.lines.toIndexedSeq ->(candidateFile.getPath, log)
       }
     }.toMap
 
@@ -88,20 +111,29 @@ object ProgramCache {
    * Populate cache from all bp files and log files that can be found.
    * Useful in order to debug the program reducer itself.
    */
-  def fromCurrentDir(outputChecker: OutputChecker): ProgramCache = {
-    val cache = mutable.Map.empty[IndexedSeq[String], CacheState]
+  def fromDir(outputChecker: OutputChecker,
+              path: Path = Paths.get("."),
+              cache: ProgramCache = new ProgramCache,
+              directoryFilter: Boolean = true): ProgramCache = {
 
-    val replays: Map[IndexedSeq[String], (String, String)] = loadCandidatesAndLogs(Paths.get("."))
+    val replays: Map[IndexedSeq[String], (String, String)] = loadCandidatesAndLogs(path, directoryFilter)
+
     for {
       (content, (fileName, output)) <- replays
     } {
-      cache += (content -> (outputChecker(output) match {
+      val result = outputChecker(output) match {
         case Accept => CacheState.Accepted
         case Reject => CacheState.Rejected
-      }))
+      }
 
+//      if (fileName.contains("2014-04-03-22-54-05") && fileName.contains("reduced.222.bp")) {
+//        println("wtf")
+//      }
+
+      cache.cache += (content -> result)
     }
-    new ProgramCache(cache)
+
+    cache
   }
 
 }

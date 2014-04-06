@@ -23,7 +23,8 @@ object Main {
     final case class Config(file: File = new File("."),
                             outFile: File = new File("reduced.bp"),
                             replay: Option[File] = None,
-                            diskCache: Boolean = false)
+                            diskCache: Boolean = false,
+                            verbose: Boolean = false)
 
     val parser = new OptionParser[Config](name) {
       head(name)
@@ -35,6 +36,10 @@ object Main {
         (_, c) =>
           c.copy(diskCache = true)
       } text "does a full recursive search for bp and log files"
+      opt[Unit]("verbose") action {
+        (_, c) =>
+          c.copy(diskCache = true)
+      } text "Verbose output"
       opt[File]('o', "output") valueName "<outfile>" action {
         (x, c) =>
           c.copy(outFile = x)
@@ -56,7 +61,7 @@ object Main {
             val checker = new BoomChecker(outputChecker, FileSystems.getDefault.getPath(logDir))
             if (config.diskCache) {
               println("Using disk cache.")
-              new CachingChecker(checker, ProgramCache.fromCurrentDir(outputChecker))
+              new CachingChecker(checker, ProgramCache.fromDir(outputChecker))
             } else {
               new CachingChecker(checker)
             }

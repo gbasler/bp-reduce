@@ -23,6 +23,11 @@ trait ProgramReducer {
   def current: Program
 
   /**
+   * @return String commenting the current reduction.
+   */
+  def currentComment: String
+
+  /**
    * Goes one step up towards an empty program.
    *
    * Intuitively this means "try to reduce more".

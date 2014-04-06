@@ -43,14 +43,15 @@ final case class Reducer(config: ReducerConfig) {
           } else {
             variant
           }
+          println(s"Checking ${reducer.currentComment}")
           checker(simplified, iteration) match {
             case CheckerResult.Accept =>
               // reduction was accepted
               // continue with (simplified) variant
 
-              // TODO: prioritize the dependent reducers which should be run immediately after...
+              // record symbols that influence or are influenced by current stmt
+              // in order to run only dependent reductions in next iteration
               val tainted: Set[Sym] = reducer.rwSyms
-
               reduceMax(reducer.reduce, Some(simplified), iteration + 1, tainted ++ rwSyms)
             case CheckerResult.Reject =>
               // reduction did not meet criteria
