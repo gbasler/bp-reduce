@@ -34,7 +34,7 @@ class ReducerTest extends BaseSpecification {
           |
         """.stripMargin
 
-      Reducer(config)(program) must beSameProgram(skip)
+      Reducer(config, verbose = false)(program) must beSameProgram(skip)
     }
 
     "two liner" in {
@@ -62,7 +62,7 @@ class ReducerTest extends BaseSpecification {
           |
         """.stripMargin
 
-      Reducer(config)(program) must beSameProgram(skip)
+      Reducer(config, verbose = false)(program) must beSameProgram(skip)
     }
 
     "two liner: no reduction possible" in {
@@ -81,7 +81,7 @@ class ReducerTest extends BaseSpecification {
           |
         """.stripMargin
 
-      Reducer(config)(program) must beSameProgram(program)
+      Reducer(config, verbose = false)(program) must beSameProgram(program)
     }
   }
 }

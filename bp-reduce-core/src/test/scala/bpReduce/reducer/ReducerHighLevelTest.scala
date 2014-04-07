@@ -74,7 +74,7 @@ class ReducerHighLevelTest extends BaseSpecification {
           |
         """.stripMargin
 
-      Reducer(config)(program) must beSameProgram(reduced)
+      Reducer(config, verbose = false)(program) must beSameProgram(reduced)
     }
 
     "reduce expression with smart checker" should {
@@ -138,7 +138,7 @@ class ReducerHighLevelTest extends BaseSpecification {
         val smartChecker = new SmartChecker
         import Reducers._
         val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = false)
-        Reducer(config)(program) must beSameProgram(reduced)
+        Reducer(config, verbose = false)(program) must beSameProgram(reduced)
       }
 
       "with simplifcation" in {
@@ -156,7 +156,7 @@ class ReducerHighLevelTest extends BaseSpecification {
         val smartChecker = new SmartChecker
         import Reducers._
         val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = true)
-        Reducer(config)(program) must beSameProgram(reduced)
+        Reducer(config, verbose = false)(program) must beSameProgram(reduced)
         smartChecker.checks === 9
       }
 
@@ -173,12 +173,12 @@ class ReducerHighLevelTest extends BaseSpecification {
           """.stripMargin
 
         val smartChecker = new SmartChecker
-        val cachingChecker = new CachingChecker(smartChecker)
+        val cachingChecker = new CachingChecker(smartChecker, verbose = false)
 
         import Reducers._
         val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), cachingChecker, simplify = true)
-        Reducer(config)(program) must beSameProgram(reduced)
-        smartChecker.checks === 9 // TODO: chache can't improve anything here...
+        Reducer(config, verbose = false)(program) must beSameProgram(reduced)
+        smartChecker.checks === 9 // TODO: cache can't improve anything here...
       }
     }
   }

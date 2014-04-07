@@ -35,24 +35,24 @@ object CacheState {
  *
  * We store just the formatted program, see also [[ReplayChecker]].
  */
-final class ProgramCache(val cache: mutable.Map[IndexedSeq[String], CacheState]) {
+final class ProgramCache(val cache: mutable.Map[IndexedSeq[String], (CacheState, Option[String])]) {
 
   def this() = {
-    this(mutable.Map.empty[IndexedSeq[String], CacheState])
+    this(mutable.Map.empty[IndexedSeq[String], (CacheState, Option[String])])
   }
 
   def add(program: Program, state: CacheState) = {
     val content = Formatter(program)
     require(!cache.contains(content))
-    cache += content -> state
+    cache += content ->(state, None)
   }
 
-  def check(program: Program): CacheState = {
+  def check(program: Program): (CacheState, Option[String]) = {
     import CacheState._
     val content = Formatter(program)
     cache.get(content) match {
       case Some(state) => state
-      case None        => Unknown
+      case None        => Unknown -> None
     }
   }
 }
@@ -63,16 +63,25 @@ object ProgramCache {
   def logFileName(iteration: Int): String = s"reduced.$iteration.$LogSuffix"
 
   def loadCandidatesAndLogs(dir: Path,
-                            directoryFilter: Boolean = true): Map[IndexedSeq[String], (String, String)] = {
+                            directoryFilter: Boolean = true,
+                            verbose: Boolean = false): Map[IndexedSeq[String], (String, String)] = {
 
-    val suffixFilter = new SuffixFileFilter(Array(BooleanPrograms.Suffix, ProgramCache.LogSuffix).map("." + _))
+    val suffixFilter = new SuffixFileFilter(Array(BooleanPrograms.Suffix).map("." + _))
 
     val (fileFilter, dirFilter) = if (directoryFilter) {
       val wildcard = "????-??-??-??-??-??"
 
       val pathFilter = new AbstractFileFilter {
+        val reported = mutable.Set[String]()
+
         override def accept(dir: File, name: String): Boolean = {
-          FilenameUtils.wildcardMatch(dir.getName, wildcard)
+          val ok = FilenameUtils.wildcardMatch(dir.getName, wildcard)
+          val path = dir.getPath
+          if (verbose && ok && !reported.contains(path)) {
+            reported += path
+            println(s"Adding .bp and .log from <$path>...")
+          }
+          ok
         }
       }
 
@@ -83,20 +92,18 @@ object ProgramCache {
       suffixFilter -> TrueFileFilter.INSTANCE
     }
 
-    val files = FileUtils.listFiles(dir.toFile, fileFilter, dirFilter).asScala.toIndexedSeq
+    val candidates = FileUtils.listFiles(dir.toFile, fileFilter, dirFilter).asScala.toIndexedSeq
 
-    val (candidates, logs) = files.partition(_.getName.endsWith(s".${BooleanPrograms.Suffix}"))
-    val candidatesAndLogs = candidates.flatMap {
-      c =>
-        val log = s"${StringUtils.removeEnd(c.getName, BooleanPrograms.Suffix)}${ProgramCache.LogSuffix}"
-        logs.find(_.getName == log).map {
-          log => c -> log
-        }
+    def logFileNameFor(file: File) = {
+      FilenameUtils.removeExtension(file.getPath) + "." + ProgramCache.LogSuffix
     }
 
     val replays: Map[IndexedSeq[String], (String, String)] = {
       for {
-        (candidateFile, logFile) <- candidatesAndLogs
+        candidateFile <- candidates
+        logFileName = logFileNameFor(candidateFile)
+        logFile = new File(logFileName)
+        if logFile.exists
       } yield {
         val content = FileUtils.readFileToString(candidateFile)
         val log = FileUtils.readFileToString(logFile)
@@ -114,9 +121,10 @@ object ProgramCache {
   def fromDir(outputChecker: OutputChecker,
               path: Path = Paths.get("."),
               cache: ProgramCache = new ProgramCache,
-              directoryFilter: Boolean = true): ProgramCache = {
+              directoryFilter: Boolean = true,
+              verbose: Boolean = false): ProgramCache = {
 
-    val replays: Map[IndexedSeq[String], (String, String)] = loadCandidatesAndLogs(path, directoryFilter)
+    val replays = loadCandidatesAndLogs(path, directoryFilter, verbose)
 
     for {
       (content, (fileName, output)) <- replays
@@ -126,11 +134,7 @@ object ProgramCache {
         case Reject => CacheState.Rejected
       }
 
-//      if (fileName.contains("2014-04-03-22-54-05") && fileName.contains("reduced.222.bp")) {
-//        println("wtf")
-//      }
-
-      cache.cache += (content -> result)
+      cache.cache += (content ->(result, Some(fileName)))
     }
 
     cache

@@ -8,24 +8,27 @@ import bpReduce.reducer.CheckerResult.{Reject, Accept}
  * Adapter that wraps a [[Checker]] with a transparent cache.
  */
 class CachingChecker(checker: Checker,
-                     cache: ProgramCache) extends Checker {
-
-  def this(checker: Checker) = {
-    this(checker, new ProgramCache)
-  }
+                     verbose: Boolean,
+                     cache: ProgramCache = new ProgramCache) extends Checker {
 
   def apply(program: Program,
             iteration: Int): CheckerResult = {
+
+    @inline
+    def formatFileName(fileName: Option[String]) = {
+      fileName.filter(_ => verbose).map(" <" + _ + ">").getOrElse("")
+    }
+
     cache.check(program) match {
-      case CacheState.Accepted =>
+      case (CacheState.Accepted, fileName) =>
         // variant already checked and was ok
-        println(s"[$iteration] (cache): √")
+        println(s"[$iteration] (cache${formatFileName(fileName)}) : √")
         CheckerResult.Accept
-      case CacheState.Rejected =>
+      case (CacheState.Rejected, fileName) =>
         // variant already checked and it failed
-        println(s"[$iteration] (cache): -")
+        println(s"[$iteration] (cache${formatFileName(fileName)}) : -")
         CheckerResult.Reject
-      case CacheState.Unknown  =>
+      case (CacheState.Unknown, _)         =>
         val result = checker(program, iteration)
         val translated = result match {
           case Accept => CacheState.Accepted

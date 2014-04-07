@@ -18,7 +18,7 @@ object Run {
 
 }
 
-final case class Reducer(config: ReducerConfig) {
+final case class Reducer(config: ReducerConfig, verbose: Boolean) {
   /**
    * Main loop, corresponds to algorithm in the c-reduce paper.
    * @param program to reduce
@@ -43,7 +43,9 @@ final case class Reducer(config: ReducerConfig) {
           } else {
             variant
           }
-          println(s"Checking ${reducer.currentComment}")
+          if(verbose) {
+            println(s"Checking ${reducer.currentComment}")
+          }
           checker(simplified, iteration) match {
             case CheckerResult.Accept =>
               // reduction was accepted
@@ -81,11 +83,10 @@ final case class Reducer(config: ReducerConfig) {
 
       reducers match {
         case Nil             =>
-          return (current, iteration, rwSymsAcc)
+          (current, iteration, rwSymsAcc)
         case factory :: tail =>
           val reducer = factory(current.getOrElse(original), filter)
           val (variant, iter, rwSyms) = reduceMax(reducer, None, iteration, Set())
-
 
           // if no reduction was possible, we must continue with last possible one
           reduce(original, tail, allReducers, filter, rwSyms ++ rwSymsAcc, variant.orElse(current), iter)

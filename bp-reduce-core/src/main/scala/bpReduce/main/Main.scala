@@ -61,13 +61,13 @@ object Main {
             val checker = new BoomChecker(outputChecker, FileSystems.getDefault.getPath(logDir))
             if (config.diskCache) {
               println("Using disk cache.")
-              new CachingChecker(checker, ProgramCache.fromDir(outputChecker))
+              new CachingChecker(checker, config.verbose, ProgramCache.fromDir(outputChecker, verbose = config.verbose))
             } else {
-              new CachingChecker(checker)
+              new CachingChecker(checker, config.verbose)
             }
         }
         val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
-        val reducer = new Reducer(cfg)
+        val reducer = new Reducer(cfg, config.verbose)
         val content = FileUtils.readFileToString(config.file)
         val program = new BooleanProgramParser().parse(content)
         val simplified = ProgramSimplifier(program)
