@@ -24,6 +24,7 @@ object Main {
                             outFile: File = new File("reduced.bp"),
                             replay: Option[File] = None,
                             diskCache: Boolean = false,
+                            smartAcceleration: Boolean = false,
                             verbose: Boolean = false)
 
     val parser = new OptionParser[Config](name) {
@@ -36,9 +37,13 @@ object Main {
         (_, c) =>
           c.copy(diskCache = true)
       } text "does a full recursive search for bp and log files"
+      opt[Unit]("smart") action {
+        (_, c) =>
+          c.copy(smartAcceleration = true)
+      } text "Use smart acceleration algorithm"
       opt[Unit]("verbose") action {
         (_, c) =>
-          c.copy(diskCache = true)
+          c.copy(verbose = true)
       } text "Verbose output"
       opt[File]('o', "output") valueName "<outfile>" action {
         (x, c) =>
@@ -66,7 +71,7 @@ object Main {
               new CachingChecker(checker, config.verbose)
             }
         }
-        val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true)
+        val cfg = ReducerConfig(reducers = Reducers.All, checker = checker, simplify = true, config.smartAcceleration)
         val reducer = new Reducer(cfg, config.verbose)
         val content = FileUtils.readFileToString(config.file)
         val program = new BooleanProgramParser().parse(content)

@@ -43,7 +43,7 @@ final case class Reducer(config: ReducerConfig, verbose: Boolean) {
           } else {
             variant
           }
-          if(verbose) {
+          if (verbose) {
             println(s"Checking ${reducer.currentComment}")
           }
           checker(simplified, iteration) match {
@@ -112,12 +112,12 @@ final case class Reducer(config: ReducerConfig, verbose: Boolean) {
           // reduction was possible, try all reductions again
           if (rwSyms.isEmpty) {
             run match {
-              case Quick(f)          =>
+              case Quick(f) if config.smartAcceleration          =>
                 // all reducers that were influenced by a variable have been applied but
                 // this time no variable was influenced => take shortcut
                 println("*** next remaining fixpoint iteration ***")
                 reduceUntilFixpoint(program, QuickRemaining(f), iter, fixpoints + 1)
-              case QuickRemaining(_) =>
+              case QuickRemaining(_) if config.smartAcceleration =>
                 // we just had a quick remaining run that reduced something
                 // however, no stmts that influence or are influenced by
                 // symbols were reduced
@@ -133,7 +133,7 @@ final case class Reducer(config: ReducerConfig, verbose: Boolean) {
                 println("*** next we just had a quick that did not remove any stmt that ***")
                 println("*** influences or is influenced by a stmt, so I'm stopping here ***")
                 program
-              case Full              =>
+              case Full | _ if !config.smartAcceleration         =>
                 println("*** next fixpoint iteration ***")
                 reduceUntilFixpoint(current, Full, iter, fixpoints + 1)
             }

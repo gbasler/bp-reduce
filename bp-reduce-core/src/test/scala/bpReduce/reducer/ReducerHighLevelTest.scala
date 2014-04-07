@@ -40,7 +40,7 @@ class ReducerHighLevelTest extends BaseSpecification {
       }
 
       import Reducers._
-      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns), smartChecker, simplify = false)
+      val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns), smartChecker, simplify = false, smartAcceleration = false)
 
       val program: Program =
         """|decl g;
@@ -137,7 +137,7 @@ class ReducerHighLevelTest extends BaseSpecification {
 
         val smartChecker = new SmartChecker
         import Reducers._
-        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = false)
+        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = false, smartAcceleration = false)
         Reducer(config, verbose = false)(program) must beSameProgram(reduced)
       }
 
@@ -155,7 +155,7 @@ class ReducerHighLevelTest extends BaseSpecification {
 
         val smartChecker = new SmartChecker
         import Reducers._
-        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = true)
+        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), smartChecker, simplify = true, smartAcceleration = false)
         Reducer(config, verbose = false)(program) must beSameProgram(reduced)
         smartChecker.checks === 9
       }
@@ -176,7 +176,7 @@ class ReducerHighLevelTest extends BaseSpecification {
         val cachingChecker = new CachingChecker(smartChecker, verbose = false)
 
         import Reducers._
-        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), cachingChecker, simplify = true)
+        val config = ReducerConfig(List(ReplaceWithSkip, ReduceAssigns, ReduceExpr), cachingChecker, simplify = true, smartAcceleration = false)
         Reducer(config, verbose = false)(program) must beSameProgram(reduced)
         smartChecker.checks === 9 // TODO: cache can't improve anything here...
       }
