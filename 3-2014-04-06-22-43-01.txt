@@ -1,0 +1,521 @@
+/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/bin/java -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:50020,suspend=y,server=n -Dfile.encoding=UTF-8 -classpath "/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/ant-javafx.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/dt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/javafx-doclet.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/javafx-mx.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/jconsole.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/sa-jdi.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/tools.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/deploy.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/htmlconverter.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/javaws.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfxrt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/management-agent.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/plugin.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/dnsns.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/localedata.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunec.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/zipfs.jar:/Users/geri/Documents/bp-reduce/bp-reduce-core/target/scala-2.10/classes:/Users/geri/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.3.jar:/Users/geri/.sbt/boot/scala-2.10.3/lib/scala-library.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-core_2.10/jars/scalaz-core_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-core_2.10/bundles/scalaz-core_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-concurrent_2.10/jars/scalaz-concurrent_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-concurrent_2.10/bundles/scalaz-concurrent_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-effect_2.10/jars/scalaz-effect_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-effect_2.10/bundles/scalaz-effect_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/commons-io/commons-io/jars/commons-io-2.4.jar:/Users/geri/.ivy2/cache/com.eed3si9n/treehugger_2.9.1/jars/treehugger_2.9.1-0.1.0.jar:/Users/geri/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.2.jar:/Users/geri/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.3.jar:/Users/geri/.ivy2/cache/commons-lang/commons-lang/jars/commons-lang-2.4.jar:/Users/geri/.ivy2/cache/it.unimi.dsi/fastutil/jars/fastutil-6.5.9.jar:/Users/geri/.ivy2/cache/com.googlecode.kiama/kiama_2.10/jars/kiama_2.10-1.5.1.jar:/Users/geri/.ivy2/cache/org.bitbucket.inkytonik.dsinfo/dsinfo_2.10/jars/dsinfo_2.10-0.2.0.jar:/Users/geri/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.1.jar:/Users/geri/.ivy2/cache/org.bitbucket.inkytonik.dsprofile/dsprofile_2.10/jars/dsprofile_2.10-0.2.0.jar:/Users/geri/.ivy2/cache/jline/jline/jars/jline-1.0.jar:/Users/geri/.ivy2/cache/org.apache.commons/commons-exec/jars/commons-exec-1.2.jar:/Users/geri/.ivy2/cache/com.github.scopt/scopt_2.10/jars/scopt_2.10-3.2.0.jar:/Applications/IntelliJ IDEA 13 CE.app/lib/idea_rt.jar" bpReduce.main.Main --disk-cache /Users/geri/Documents/bp-reduce/bp-reduce-core/src/test/resources/trace_WP_bug2/main.bp
+Connected to the target VM, address: '127.0.0.1:50020', transport: 'socket'
+Using disk cache.
+Checking b0_s_le_2 := * -> skip.
+[1] (cache): √
+Checking b1 := * -> skip.
+[2] (cache): √
+Checking b2 := * -> skip.
+[3] (cache): √
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> skip.
+[4] (cache): -
+Checking b1, b2 := F, F constrain !b4_0_eq_l | !b5_1_eq_l -> skip.
+[5] (cache): -
+Checking b1, b2 := b1 | b1 & *, b2 | b2 & * constrain !b4_0_eq_l | !b5_1_eq_l -> skip.
+[6] (cache): √
+Checking if F then goto l6; fi -> skip.
+[7] (cache): √
+Checking start_thread goto l5 -> skip.
+[8] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> skip.
+[9] (cache): -
+Checking if * then goto l2; fi -> skip.
+[10] (cache): √
+Checking if !b1 then goto l2; fi -> skip.
+[11] (cache): -
+Checking if !b2 then goto l2; fi -> skip.
+[12] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, b4_0_eq_l & b3_l_eq_s | !(b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | b3_l_eq_s & !b4_0_eq_l | !b0_s_le_2) & *, b5_1_eq_l & b3_l_eq_s | !(b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & !b3_l_eq_s | b3_l_eq_s & !b5_1_eq_l | !b0_s_le_2) & * constrain (b0_s_le_2 | !b3_l_eq_s | !b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> skip.
+[13] (cache): √
+Checking if ((b0_s_le_2 | !b3_l_eq_s) & !b4_0_eq_l & !b5_1_eq_l | !b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s) & (!b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s | *) then goto l2; fi -> skip.
+[14] (cache): -
+Checking assert F -> skip.
+[15] (cache): -
+Checking if b4_0_eq_l | b5_1_eq_l then goto l3; fi -> skip.
+[16] (cache): -
+Checking goto l4 -> skip.
+[17] (cache): √
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> skip.
+[18] (cache): -
+Checking b1, b2 := *, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> skip.
+[19] (cache): -
+Checking end_thread -> skip.
+[20] (cache): -
+Checking goto l1 -> skip.
+[21] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b0_s_le_2, b3_l_eq_s := T, b4_0_eq_l constrain !'b3_l_eq_s | !b5_1_eq_l.
+[22] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b0_s_le_2, b3_l_eq_s$ := T, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l.
+[23] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l.
+[24] (cache): √
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s := b4_0_eq_l constrain !'b3_l_eq_s | !b5_1_eq_l.
+[25] (cache): -
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s$ := b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l.
+[26] (cache): -
+Checking b1, b2 := F, F constrain !b4_0_eq_l | !b5_1_eq_l -> b1 := F constrain !b4_0_eq_l | !b5_1_eq_l.
+[27] (cache): -
+Checking b1, b2 := F, F constrain !b4_0_eq_l | !b5_1_eq_l -> b2 := F constrain !b4_0_eq_l | !b5_1_eq_l.
+[28] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l := *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[29] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b5_1_eq_l := *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[30] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b4_0_eq_l, b5_1_eq_l := *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[31] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[32] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s$ := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[33] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b3_l_eq_s, b3_l_eq_s$ := !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[34] (cache): -
+Checking b1, b2 := *, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1 := * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[35] (cache): -
+Checking b1, b2 := *, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b2 := * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[36] (cache): -
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := T, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l.
+[37] (cache): -
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := F, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l.
+[38] (cache): -
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, T constrain !'b3_l_eq_s | !b5_1_eq_l.
+[39] (cache): -
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, b4_0_eq_l$ constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l.
+[40] reduced.40.bp: √ 21278.848 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := T, F constrain !'b3_l_eq_s | !b5_1_eq_l.
+[41] reduced.41.bp: - 17116.927 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := F, F constrain !'b3_l_eq_s | !b5_1_eq_l.
+[42] reduced.42.bp: - 20891.391 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !b5_1_eq_l.
+[43] reduced.43.bp: - 18853.102 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain T.
+[44] reduced.44.bp: - 18280.2 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s.
+[45] reduced.45.bp: - 17848.577 ms.
+Checking b1, b2 := F, F constrain !b4_0_eq_l | !b5_1_eq_l -> b1, b2 := F, F constrain !b5_1_eq_l.
+[46] reduced.46.bp: - 21147.654 ms.
+Checking b1, b2 := F, F constrain !b4_0_eq_l | !b5_1_eq_l -> b1, b2 := F, F constrain T.
+[47] reduced.47.bp: √ 19471.499 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[48] reduced.48.bp: - 9286.991 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[49] reduced.49.bp: - 9038.284 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[50] reduced.50.bp: - 2380.336 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[51] reduced.51.bp: - 1832.025 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[52] reduced.52.bp: - 3827.157 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[53] reduced.53.bp: - 3424.27 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[54] reduced.54.bp: √ 19224.788 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[55] reduced.55.bp: - 9328.538 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[56] reduced.56.bp: - 8913.928 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[57] reduced.57.bp: - 2190.389 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[58] reduced.58.bp: - 1810.988 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[59] reduced.59.bp: - 3527.871 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[60] reduced.60.bp: - 3349.374 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | 'b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[61] reduced.61.bp: √ 19110.996 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[62] reduced.62.bp: - 9397.706 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[63] reduced.63.bp: - 9076.65 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[64] reduced.64.bp: - 2229.982 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[65] reduced.65.bp: - 1819.185 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[66] reduced.66.bp: - 3419.197 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[67] reduced.67.bp: - 3338.854 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain ('b3_l_eq_s | !b4_0_eq_l | !'b4_0_eq_l) & (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[68] reduced.68.bp: √ 19957.937 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[69] reduced.69.bp: - 9409.152 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[70] reduced.70.bp: - 8925.34 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[71] reduced.71.bp: - 2527.367 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[72] reduced.72.bp: - 1843.532 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[73] reduced.73.bp: - 3549.776 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[74] reduced.74.bp: - 3333.448 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (b0_s_le_2 | !'b3_l_eq_s | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[75] reduced.75.bp: √ 16044.513 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[76] reduced.76.bp: - 8448.512 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[77] reduced.77.bp: - 9237.631 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[78] reduced.78.bp: - 1627.86 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[79] reduced.79.bp: - 1793.548 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[80] reduced.80.bp: - 2935.178 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[81] reduced.81.bp: - 2750.668 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l).
+[82] reduced.82.bp: - 16976.743 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!b0_s_le_2 | !b3_l_eq_s | !'b3_l_eq_s | b4_0_eq_l | !'b4_0_eq_l) & (!b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l) -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[83] reduced.83.bp: √ 15876.143 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[84] reduced.84.bp: - 8528.798 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[85] reduced.85.bp: - 8907.174 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[86] reduced.86.bp: - 1593.3 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[87] reduced.87.bp: - 1786.304 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[88] reduced.88.bp: - 2748.719 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[89] reduced.89.bp: - 2779.336 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[90] reduced.90.bp: - 13395.644 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain T.
+[91] reduced.91.bp: - 9511.062 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !b3_l_eq_s$ | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[92] reduced.92.bp: √ 15008.879 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[93] reduced.93.bp: - 8663.044 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[94] reduced.94.bp: - 8905.577 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[95] reduced.95.bp: - 1612.368 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[96] reduced.96.bp: - 1797.749 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[97] reduced.97.bp: - 2309.549 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[98] reduced.98.bp: - 2713.404 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l.
+[99] reduced.99.bp: - 8373.761 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain T.
+[100] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b3_l_eq_s | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l.
+[101] reduced.101.bp: √ 12100.075 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l.
+[102] reduced.102.bp: - 8557.912 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l.
+[103] reduced.103.bp: - 13217.859 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l.
+[104] reduced.104.bp: - 1522.647 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l.
+[105] reduced.105.bp: - 1842.465 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l.
+[106] reduced.106.bp: - 1890.416 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l.
+[107] reduced.107.bp: - 2367.085 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain b4_0_eq_l$ | !'b4_0_eq_l.
+[108] reduced.108.bp: - 8264.527 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain T.
+[109] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | b4_0_eq_l$ | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[110] reduced.110.bp: √ 10687.492 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := T, *, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[111] reduced.111.bp: - 7925.138 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := F, *, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[112] reduced.112.bp: - 12935.744 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, T, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[113] reduced.113.bp: - 1916.62 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, F, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[114] reduced.114.bp: - 2117.471 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, T constrain !b0_s_le_2 | !'b4_0_eq_l.
+[115] reduced.115.bp: - 2151.453 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, F constrain !b0_s_le_2 | !'b4_0_eq_l.
+[116] reduced.116.bp: - 2414.248 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !'b4_0_eq_l.
+[117] reduced.117.bp: - 2143.493 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain T.
+[118] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2.
+[119] reduced.119.bp: - 7445.356 ms.
+Checking if !b1 then goto l2; fi -> if F then goto l2; fi.
+[120] reduced.120.bp: √ 3583.239 ms.
+Checking if !b2 then goto l2; fi -> if F then goto l2; fi.
+[121] reduced.121.bp: - 260.523 ms.
+Checking if !b2 then goto l2; fi -> if T then goto l2; fi.
+[122] reduced.122.bp: - 5594.141 ms.
+Checking if ((b0_s_le_2 | !b3_l_eq_s) & !b4_0_eq_l & !b5_1_eq_l | !b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s) & (!b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s | *) then goto l2; fi -> if (!b4_0_eq_l & !b5_1_eq_l | !b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s) & (!b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s | *) then goto l2; fi.
+[123] reduced.123.bp: √ 3570.071 ms.
+Checking if (!b4_0_eq_l & !b5_1_eq_l | !b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s) & (!b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s | *) then goto l2; fi -> if !b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s & (!b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s | *) then goto l2; fi.
+[124] reduced.124.bp: √ 3527.949 ms.
+Checking if !b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s & (!b4_0_eq_l & !b5_1_eq_l & b0_s_le_2 & b3_l_eq_s | *) then goto l2; fi -> if F then goto l2; fi.
+[125] reduced.125.bp: √ 3126.144 ms.
+Checking if b4_0_eq_l | b5_1_eq_l then goto l3; fi -> if T then goto l3; fi.
+[126] reduced.126.bp: - 2241.002 ms.
+Checking if b4_0_eq_l | b5_1_eq_l then goto l3; fi -> if b5_1_eq_l then goto l3; fi.
+[127] reduced.127.bp: - 3808.084 ms.
+Checking if b4_0_eq_l | b5_1_eq_l then goto l3; fi -> if b4_0_eq_l then goto l3; fi.
+[128] reduced.128.bp: - 2537.404 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[129] reduced.129.bp: √ 3163.558 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | (!b0_s_le_2 | !b3_l_eq_s | b4_0_eq_l | b5_1_eq_l) & *, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[130] reduced.130.bp: √ 2269.172 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, !(b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[131] reduced.131.bp: - 1453.769 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, !(b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s), b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[132] reduced.132.bp: - 1464.662 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, !(b0_s_le_2 & b4_0_eq_l & !b3_l_eq_s | b5_1_eq_l & !b0_s_le_2 & !b3_l_eq_s | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[133] reduced.133.bp: √ 1790.561 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[134] reduced.134.bp: √ 1637.381 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b5_1_eq_l$ & b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[135] reduced.135.bp: √ 1648.511 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[136] reduced.136.bp: - 1333.234 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[137] reduced.137.bp: - 1319.424 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !b3_l_eq_s$ constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[138] reduced.138.bp: - 1307.54 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[139] reduced.139.bp: - 1464.002 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[140] reduced.140.bp: - 1498.702 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[141] reduced.141.bp: - 1091.893 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s & !b3_l_eq_s$ | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[142] reduced.142.bp: √ 1753.521 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[143] reduced.143.bp: - 1161.814 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[144] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[145] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[146] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b0_s_le_2 & b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[147] reduced.147.bp: √ 1798.305 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[148] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[149] reduced.149.bp: - 1143.838 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[150] reduced.150.bp: - 1184.783 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[151] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s | !(b4_0_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l & b5_1_eq_l$ & !b3_l_eq_s & !b3_l_eq_s$ | b4_0_eq_l & b3_l_eq_s & !b5_1_eq_l$ & !b3_l_eq_s$ | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !b3_l_eq_s$ | b5_1_eq_l$ & b3_l_eq_s & !b4_0_eq_l & !b3_l_eq_s$ | b5_1_eq_l$ & !b0_s_le_2 & !b3_l_eq_s$ | b3_l_eq_s$) & * constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[152] reduced.152.bp: √ 1754.125 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[153] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[154] (cache): -
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b4_0_eq_l | !b5_1_eq_l) & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b5_1_eq_l & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[155] reduced.155.bp: √ 1513.948 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b5_1_eq_l & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain !b5_1_eq_l & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[156] reduced.156.bp: - 961.055 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b5_1_eq_l & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain !b5_1_eq_l & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[157] reduced.157.bp: - 985.957 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b5_1_eq_l & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain F.
+[158] reduced.158.bp: - 525.117 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b5_1_eq_l & (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[159] reduced.159.bp: √ 1759.881 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[160] reduced.160.bp: - 1151.208 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[161] reduced.161.bp: - 1045.227 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$).
+[162] reduced.162.bp: - 1800.238 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain (!b0_s_le_2 | !'b0_s_le_2 | b3_l_eq_s | 'b3_l_eq_s | !b5_1_eq_l) & (!b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$) -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[163] reduced.163.bp: √ 1730.736 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain !b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[164] reduced.164.bp: - 1147.94 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain !b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[165] reduced.165.bp: - 1033.578 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b0_s_le_2 | !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[166] reduced.166.bp: √ 1736.599 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[167] reduced.167.bp: - 1134.98 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[168] reduced.168.bp: - 1034.342 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[169] reduced.169.bp: √ 1722.846 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[170] reduced.170.bp: - 1134.105 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$.
+[171] reduced.171.bp: - 1028.595 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b3_l_eq_s$ | !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b4_0_eq_l | b4_0_eq_l$.
+[172] reduced.172.bp: √ 1575.111 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain !b4_0_eq_l | b4_0_eq_l$.
+[173] reduced.173.bp: - 998.04 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain !b4_0_eq_l | b4_0_eq_l$.
+[174] reduced.174.bp: - 984.725 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain !b4_0_eq_l | b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain b4_0_eq_l$.
+[175] reduced.175.bp: √ 1387.263 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain b4_0_eq_l$.
+[176] reduced.176.bp: - 802.007 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain b4_0_eq_l$.
+[177] reduced.177.bp: - 817.467 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain b4_0_eq_l$ -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain T.
+[178] reduced.178.bp: √ 1726.425 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain T -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, T constrain T.
+[179] reduced.179.bp: - 1152.672 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s constrain T -> b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, F constrain T.
+[180] reduced.180.bp: - 1062.103 ms.
+Checking b1, b2 := *, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1, b2 := T, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[181] reduced.181.bp: √ 2533.885 ms.
+Checking b1, b2 := T, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1, b2 := T, T constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[182] reduced.182.bp: - 1004.133 ms.
+Checking b1, b2 := T, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1, b2 := T, F constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[183] reduced.183.bp: - 1645.638 ms.
+Checking b1, b2 := T, * constrain (b1 | !'b1 | b2 | !'b2) & (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1, b2 := T, * constrain (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[184] reduced.184.bp: √ 1529.659 ms.
+Checking b1, b2 := T, * constrain (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1, b2 := T, T constrain (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[185] reduced.185.bp: √ 1500.248 ms.
+Checking b1, b2 := T, T constrain (!b0_s_le_2 | b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1, b2 := T, T constrain (b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2).
+[186] reduced.186.bp: √ 1548.633 ms.
+Checking b1, b2 := T, T constrain (b1 | !'b1 | b3_l_eq_s | !b3_l_eq_s$ | !b4_0_eq_l$) & (!b1 | 'b1 | b2 | !'b2) -> b1, b2 := T, T constrain !b1 | 'b1 | b2 | !'b2.
+[187] reduced.187.bp: √ 1348.29 ms.
+Checking b1, b2 := T, T constrain !b1 | 'b1 | b2 | !'b2 -> b1, b2 := T, T constrain 'b1 | b2 | !'b2.
+[188] reduced.188.bp: √ 1341.363 ms.
+Checking b1, b2 := T, T constrain 'b1 | b2 | !'b2 -> b1, b2 := T, T constrain T.
+[189] reduced.189.bp: √ 1351.334 ms.
+*** next quick fixpoint iteration ***
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> skip.
+[190] (cache): -
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> skip.
+[191] reduced.191.bp: - 204.829 ms.
+Checking if !b2 then goto l2; fi -> skip.
+[192] reduced.192.bp: - 100.079 ms.
+Checking if b4_0_eq_l | b5_1_eq_l then goto l3; fi -> skip.
+[193] reduced.193.bp: √ 1108.972 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s -> skip.
+[194] reduced.194.bp: - 366.394 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s := b4_0_eq_l constrain !'b3_l_eq_s | !b5_1_eq_l.
+[195] (cache): -
+Checking b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s$ := F constrain !'b3_l_eq_s | !b5_1_eq_l.
+[196] reduced.196.bp: √ 1005.531 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b4_0_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[197] reduced.197.bp: - 490.81 ms.
+Checking b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[198] reduced.198.bp: √ 990.451 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s := * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[199] reduced.199.bp: - 428.859 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b5_1_eq_l := * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[200] reduced.200.bp: - 313.332 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s -> b0_s_le_2, b3_l_eq_s := T, F.
+[201] reduced.201.bp: - 313.323 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s -> b0_s_le_2, b3_l_eq_s$ := T, b3_l_eq_s.
+[202] reduced.202.bp: - 480.783 ms.
+Checking b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s -> b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s.
+[203] reduced.203.bp: √ 1062.273 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s := F.
+[204] reduced.204.bp: - 399.387 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s$ := b3_l_eq_s.
+[205] reduced.205.bp: - 751.396 ms.
+Checking b3_l_eq_s$ := F constrain !'b3_l_eq_s | !b5_1_eq_l -> b3_l_eq_s$ := F constrain !b5_1_eq_l.
+[206] reduced.206.bp: √ 954.531 ms.
+Checking b3_l_eq_s$ := F constrain !b5_1_eq_l -> b3_l_eq_s$ := F constrain F.
+[207] reduced.207.bp: - 25.614 ms.
+Checking b3_l_eq_s$ := F constrain !b5_1_eq_l -> b3_l_eq_s$ := F constrain T.
+[208] reduced.208.bp: - 282.889 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := T, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[209] reduced.209.bp: - 261.766 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := F, * constrain !b0_s_le_2 | !'b4_0_eq_l.
+[210] reduced.210.bp: - 231.836 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, T constrain !b0_s_le_2 | !'b4_0_eq_l.
+[211] reduced.211.bp: - 261.419 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, F constrain !b0_s_le_2 | !'b4_0_eq_l.
+[212] reduced.212.bp: - 267.983 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !b0_s_le_2 | !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, * constrain !'b4_0_eq_l.
+[213] reduced.213.bp: √ 820.042 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := T, * constrain !'b4_0_eq_l.
+[214] reduced.214.bp: - 126.624 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := F, * constrain !'b4_0_eq_l.
+[215] reduced.215.bp: - 127.254 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, T constrain !'b4_0_eq_l.
+[216] reduced.216.bp: - 129.214 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, F constrain !'b4_0_eq_l.
+[217] reduced.217.bp: - 137.462 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, * constrain F.
+[218] reduced.218.bp: - 27.901 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain !'b4_0_eq_l -> b3_l_eq_s, b5_1_eq_l := *, * constrain T.
+[219] reduced.219.bp: √ 827.661 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain T -> b3_l_eq_s, b5_1_eq_l := T, * constrain T.
+[220] reduced.220.bp: - 129.833 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain T -> b3_l_eq_s, b5_1_eq_l := F, * constrain T.
+[221] reduced.221.bp: - 136.519 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, * constrain T -> b3_l_eq_s, b5_1_eq_l := *, T constrain T.
+[222] reduced.222.bp: √ 815.621 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, T constrain T -> b3_l_eq_s, b5_1_eq_l := T, T constrain T.
+[223] reduced.223.bp: - 109.588 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, T constrain T -> b3_l_eq_s, b5_1_eq_l := F, T constrain T.
+[224] reduced.224.bp: - 109.337 ms.
+Checking if !b2 then goto l2; fi -> if F then goto l2; fi.
+[225] reduced.225.bp: - 64.959 ms.
+Checking if !b2 then goto l2; fi -> if T then goto l2; fi.
+[226] reduced.226.bp: - 47.039 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s, b3_l_eq_s$ := F, T.
+[227] reduced.227.bp: - 130.921 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s, b3_l_eq_s$ := F, F.
+[228] reduced.228.bp: - 130.921 ms.
+*** next quick fixpoint iteration ***
+Checking b3_l_eq_s$ := F constrain !b5_1_eq_l -> skip.
+[229] reduced.229.bp: - 127.514 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> skip.
+[230] reduced.230.bp: - 147.889 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s := F.
+[231] reduced.231.bp: - 126.726 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s$ := b3_l_eq_s.
+[232] reduced.232.bp: - 144.618 ms.
+Checking b3_l_eq_s$ := F constrain !b5_1_eq_l -> b3_l_eq_s$ := F constrain F.
+[233] reduced.233.bp: - 25.177 ms.
+Checking b3_l_eq_s$ := F constrain !b5_1_eq_l -> b3_l_eq_s$ := F constrain T.
+[234] reduced.234.bp: - 131.231 ms.
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s, b3_l_eq_s$ := F, T.
+[235] (cache): -
+Checking b3_l_eq_s, b3_l_eq_s$ := F, b3_l_eq_s -> b3_l_eq_s, b3_l_eq_s$ := F, F.
+[236] (cache): -
+*** next remaining fixpoint iteration (no success) ***
+Checking b1, b2 := F, F -> skip.
+[237] reduced.237.bp: - 63.683 ms.
+Checking start_thread goto l5 -> skip.
+[238] reduced.238.bp: - 30.795 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, T -> skip.
+[239] reduced.239.bp: - 115.978 ms.
+Checking if F then goto l2; fi -> skip.
+[240] reduced.240.bp: - 104.855 ms.
+Checking if !b2 then goto l2; fi -> skip.
+[241] reduced.241.bp: - 64.687 ms.
+Checking if F then goto l2; fi -> skip.
+[242] reduced.242.bp: √ 807.089 ms.
+Checking assert F -> skip.
+[243] reduced.243.bp: - 58.706 ms.
+Checking b1, b2 := T, T -> skip.
+[244] reduced.244.bp: - 44.747 ms.
+Checking end_thread -> skip.
+[245] reduced.245.bp: - 127.974 ms.
+Checking goto l1 -> skip.
+[246] reduced.246.bp: - 29.744 ms.
+Checking b1, b2 := F, F -> b1 := F.
+[247] reduced.247.bp: - 57.076 ms.
+Checking b1, b2 := F, F -> b2 := F.
+[248] reduced.248.bp: - 116.994 ms.
+Checking b3_l_eq_s, b5_1_eq_l := *, T -> b3_l_eq_s := *.
+[249] reduced.249.bp: √ 813.179 ms.
+Checking b1, b2 := T, T -> b1 := T.
+[250] reduced.250.bp: - 55.205 ms.
+Checking b1, b2 := T, T -> b2 := T.
+[251] reduced.251.bp: √ 809.059 ms.
+Checking b3_l_eq_s := * -> b3_l_eq_s := T.
+[252] reduced.252.bp: - 89.301 ms.
+Checking b3_l_eq_s := * -> b3_l_eq_s := F.
+[253] reduced.253.bp: - 91.685 ms.
+Checking if !b2 then goto l2; fi -> if F then goto l2; fi.
+[254] reduced.254.bp: - 55.59 ms.
+Checking if !b2 then goto l2; fi -> if T then goto l2; fi.
+[255] reduced.255.bp: - 49.071 ms.
+*** next we just had a quick that did not remove any stmt that ***
+*** influences or is influenced by a stmt, so I'm stopping here ***
+Disconnected from the target VM, address: '127.0.0.1:50020', transport: 'socket'
+
+Process finished with exit code 0

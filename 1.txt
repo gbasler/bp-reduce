@@ -1,0 +1,308 @@
+/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/bin/java -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:64906,suspend=y,server=n -Dfile.encoding=UTF-8 -classpath "/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/ant-javafx.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/dt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/javafx-doclet.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/javafx-mx.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/jconsole.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/sa-jdi.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/tools.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/deploy.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/htmlconverter.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/javaws.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfxrt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/management-agent.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/plugin.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/dnsns.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/localedata.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunec.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/zipfs.jar:/Users/geri/Documents/bp-reduce/bp-reduce-core/target/scala-2.10/classes:/Users/geri/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.3.jar:/Users/geri/.sbt/boot/scala-2.10.3/lib/scala-library.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-core_2.10/jars/scalaz-core_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-core_2.10/bundles/scalaz-core_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-concurrent_2.10/jars/scalaz-concurrent_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-concurrent_2.10/bundles/scalaz-concurrent_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-effect_2.10/jars/scalaz-effect_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/org.scalaz/scalaz-effect_2.10/bundles/scalaz-effect_2.10-7.0.0.jar:/Users/geri/.ivy2/cache/commons-io/commons-io/jars/commons-io-2.4.jar:/Users/geri/.ivy2/cache/com.eed3si9n/treehugger_2.9.1/jars/treehugger_2.9.1-0.1.0.jar:/Users/geri/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.2.jar:/Users/geri/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.3.jar:/Users/geri/.ivy2/cache/commons-lang/commons-lang/jars/commons-lang-2.4.jar:/Users/geri/.ivy2/cache/it.unimi.dsi/fastutil/jars/fastutil-6.5.9.jar:/Users/geri/.ivy2/cache/com.googlecode.kiama/kiama_2.10/jars/kiama_2.10-1.5.1.jar:/Users/geri/.ivy2/cache/org.bitbucket.inkytonik.dsinfo/dsinfo_2.10/jars/dsinfo_2.10-0.2.0.jar:/Users/geri/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.1.jar:/Users/geri/.ivy2/cache/org.bitbucket.inkytonik.dsprofile/dsprofile_2.10/jars/dsprofile_2.10-0.2.0.jar:/Users/geri/.ivy2/cache/jline/jline/jars/jline-1.0.jar:/Users/geri/.ivy2/cache/org.apache.commons/commons-exec/jars/commons-exec-1.2.jar:/Users/geri/.ivy2/cache/com.github.scopt/scopt_2.10/jars/scopt_2.10-3.2.0.jar:/Applications/IntelliJ IDEA 13 CE.app/lib/idea_rt.jar" bpReduce.main.Main --disk-cache /Users/geri/Documents/bp-reduce/bp-reduce-core/src/test/resources/trace_WP_bug2/main.bp
+Connected to the target VM, address: '127.0.0.1:64906', transport: 'socket'
+Using disk cache.
+[1] (cache): √
+[2] (cache): √
+[3] (cache): √
+[4] (cache): -
+[5] (cache): -
+[6] (cache): √
+[7] (cache): √
+[8] (cache): -
+[9] (cache): -
+[10] (cache): √
+[11] (cache): -
+[12] (cache): -
+[13] (cache): √
+[14] (cache): -
+[15] (cache): -
+[16] (cache): -
+[17] (cache): √
+[18] (cache): -
+[19] (cache): -
+[20] (cache): -
+[21] (cache): -
+[22] (cache): -
+[23] (cache): -
+[24] (cache): √
+[25] (cache): -
+[26] (cache): -
+[27] (cache): -
+[28] (cache): -
+[29] (cache): -
+[30] (cache): -
+[31] (cache): -
+[32] (cache): -
+[33] (cache): -
+[34] (cache): -
+[35] (cache): -
+[36] (cache): -
+[37] (cache): -
+[38] (cache): -
+[39] (cache): √
+[40] (cache): -
+[41] (cache): -
+[42] (cache): -
+[43] (cache): -
+[44] (cache): -
+[45] (cache): -
+[46] (cache): √
+[47] (cache): -
+[48] (cache): -
+[49] (cache): -
+[50] (cache): -
+[51] (cache): -
+[52] (cache): -
+[53] (cache): √
+[54] (cache): -
+[55] (cache): -
+[56] (cache): -
+[57] (cache): -
+[58] (cache): -
+[59] (cache): -
+[60] (cache): √
+[61] (cache): -
+[62] (cache): -
+[63] (cache): -
+[64] (cache): -
+[65] (cache): -
+[66] (cache): -
+[67] (cache): √
+[68] (cache): -
+[69] (cache): -
+[70] (cache): -
+[71] (cache): -
+[72] (cache): -
+[73] (cache): -
+[74] (cache): √
+[75] (cache): -
+[76] (cache): -
+[77] (cache): -
+[78] (cache): -
+[79] (cache): -
+[80] (cache): -
+[81] (cache): -
+[82] (cache): √
+[83] (cache): -
+[84] (cache): -
+[85] (cache): -
+[86] (cache): -
+[87] (cache): -
+[88] (cache): -
+[89] (cache): -
+[90] (cache): -
+[91] (cache): √
+[92] (cache): -
+[93] (cache): -
+[94] (cache): -
+[95] (cache): -
+[96] (cache): -
+[97] (cache): -
+[98] (cache): -
+[99] (cache): -
+[100] (cache): √
+[101] (cache): -
+[102] (cache): -
+[103] (cache): -
+[104] (cache): -
+[105] (cache): -
+[106] (cache): -
+[107] (cache): -
+[108] (cache): -
+[109] (cache): √
+[110] (cache): -
+[111] (cache): -
+[112] (cache): -
+[113] (cache): -
+[114] (cache): -
+[115] (cache): -
+[116] (cache): -
+[117] (cache): -
+[118] (cache): -
+[119] (cache): √
+[120] (cache): -
+[121] (cache): -
+[122] (cache): √
+[123] (cache): √
+[124] (cache): √
+[125] (cache): -
+[126] (cache): -
+[127] (cache): -
+[128] (cache): √
+[129] (cache): √
+[130] (cache): -
+[131] (cache): -
+[132] (cache): √
+[133] (cache): √
+[134] (cache): √
+[135] (cache): -
+[136] (cache): -
+[137] (cache): -
+[138] (cache): -
+[139] (cache): -
+[140] (cache): -
+[141] (cache): √
+[142] (cache): -
+[143] (cache): -
+[144] (cache): -
+[145] (cache): -
+[146] (cache): √
+[147] (cache): -
+[148] (cache): -
+[149] (cache): -
+[150] (cache): -
+[151] (cache): √
+[152] (cache): -
+[153] (cache): -
+[154] (cache): √
+[155] (cache): -
+[156] (cache): -
+[157] (cache): -
+[158] (cache): √
+[159] (cache): -
+[160] (cache): -
+[161] (cache): -
+[162] (cache): √
+[163] (cache): -
+[164] (cache): -
+[165] (cache): √
+[166] (cache): -
+[167] (cache): -
+[168] (cache): √
+[169] (cache): -
+[170] (cache): -
+[171] (cache): √
+[172] (cache): -
+[173] (cache): -
+[174] (cache): √
+[175] (cache): -
+[176] (cache): -
+[177] (cache): √
+[178] (cache): -
+[179] (cache): -
+[180] (cache): √
+[181] (cache): -
+[182] (cache): -
+[183] (cache): √
+[184] (cache): √
+[185] (cache): √
+[186] (cache): √
+[187] (cache): √
+[188] (cache): √
+*** next quick fixpoint iteration ***
+[189] (cache): -
+[190] (cache): -
+[191] (cache): -
+[192] (cache): -
+[193] (cache): -
+[194] (cache): -
+[195] reduced.195.bp: √ 1196.127 ms.
+[196] reduced.196.bp: - 472.848 ms.
+[197] reduced.197.bp: √ 1166.448 ms.
+[198] reduced.198.bp: - 430.614 ms.
+[199] reduced.199.bp: - 484.378 ms.
+[200] reduced.200.bp: - 504.553 ms.
+[201] reduced.201.bp: - 782.834 ms.
+[202] reduced.202.bp: √ 1350.932 ms.
+[203] reduced.203.bp: - 663.169 ms.
+[204] reduced.204.bp: - 1426.901 ms.
+[205] reduced.205.bp: √ 1074.636 ms.
+[206] reduced.206.bp: - 25.393 ms.
+[207] reduced.207.bp: - 411.615 ms.
+[208] reduced.208.bp: - 380.721 ms.
+[209] reduced.209.bp: - 315.753 ms.
+[210] reduced.210.bp: - 269.85 ms.
+[211] reduced.211.bp: - 271.978 ms.
+[212] reduced.212.bp: √ 867.304 ms.
+[213] reduced.213.bp: - 181.504 ms.
+[214] reduced.214.bp: - 183.36 ms.
+[215] reduced.215.bp: - 149.756 ms.
+[216] reduced.216.bp: - 152.067 ms.
+[217] reduced.217.bp: - 27.295 ms.
+[218] reduced.218.bp: - 251.188 ms.
+[219] reduced.219.bp: - 69.587 ms.
+[220] reduced.220.bp: - 157.031 ms.
+[221] reduced.221.bp: √ 861.135 ms.
+[222] reduced.222.bp: - 186.98 ms.
+[223] reduced.223.bp: - 188.896 ms.
+*** next quick fixpoint iteration ***
+[224] reduced.224.bp: - 160.909 ms.
+[225] reduced.225.bp: - 134.384 ms.
+[226] reduced.226.bp: - 273.241 ms.
+[227] reduced.227.bp: - 148.653 ms.
+[228] reduced.228.bp: - 225.565 ms.
+[229] reduced.229.bp: - 178.577 ms.
+[230] reduced.230.bp: - 176.731 ms.
+[231] reduced.231.bp: - 29.131 ms.
+[232] reduced.232.bp: - 164.588 ms.
+[233] reduced.233.bp: - 149.613 ms.
+[234] reduced.234.bp: - 146.557 ms.
+[235] reduced.235.bp: - 153.518 ms.
+[236] reduced.236.bp: - 151.639 ms.
+[237] reduced.237.bp: - 33.888 ms.
+[238] reduced.238.bp: √ 840.77 ms.
+[239] reduced.239.bp: - 153.559 ms.
+[240] reduced.240.bp: - 151.152 ms.
+[241] reduced.241.bp: √ 847.233 ms.
+[242] reduced.242.bp: - 132.04 ms.
+[243] reduced.243.bp: - 125.639 ms.
+[244] reduced.244.bp: - 154.711 ms.
+[245] reduced.245.bp: - 153.251 ms.
+*** next quick fixpoint iteration ***
+*** next remaining fixpoint iteration (no success) ***
+[246] reduced.246.bp: - 144.742 ms.
+[247] reduced.247.bp: - 67.687 ms.
+[248] reduced.248.bp: - 36.319 ms.
+[249] (cache): -
+[250] reduced.250.bp: - 115.641 ms.
+[251] reduced.251.bp: - 58.36 ms.
+[252] reduced.252.bp: √ 849.245 ms.
+[253] reduced.253.bp: - 68.659 ms.
+[254] reduced.254.bp: √ 809.699 ms.
+[255] reduced.255.bp: - 124.194 ms.
+[256] reduced.256.bp: - 48.386 ms.
+[257] reduced.257.bp: - 131.945 ms.
+[258] reduced.258.bp: - 34.34 ms.
+[259] reduced.259.bp: - 56.591 ms.
+[260] reduced.260.bp: - 112.722 ms.
+[261] reduced.261.bp: √ 844.238 ms.
+[262] reduced.262.bp: - 110.255 ms.
+[263] reduced.263.bp: - 119.518 ms.
+[264] reduced.264.bp: - 59.918 ms.
+[265] reduced.265.bp: √ 837.655 ms.
+[266] reduced.266.bp: - 26.419 ms.
+[267] reduced.267.bp: √ 835.661 ms.
+[268] reduced.268.bp: - 96.809 ms.
+[269] reduced.269.bp: - 102.575 ms.
+[270] reduced.270.bp: - 59.947 ms.
+[271] reduced.271.bp: - 50.343 ms.
+[272] reduced.272.bp: - 115.936 ms.
+[273] reduced.273.bp: - 113.759 ms.
+*** next quick fixpoint iteration ***
+*** next remaining fixpoint iteration (no success) ***
+[274] reduced.274.bp: √ 841.025 ms.
+[275] reduced.275.bp: - 59.99 ms.
+[276] reduced.276.bp: - 29.36 ms.
+[277] reduced.277.bp: - 99.639 ms.
+[278] reduced.278.bp: - 84.155 ms.
+[279] reduced.279.bp: - 49.387 ms.
+[280] reduced.280.bp: - 61.441 ms.
+[281] reduced.281.bp: - 147.328 ms.
+[282] (cache): -
+[283] reduced.283.bp: - 119.968 ms.
+[284] reduced.284.bp: - 29.903 ms.
+[285] reduced.285.bp: - 56.148 ms.
+[286] (cache): -
+[287] reduced.287.bp: - 151.682 ms.
+[288] reduced.288.bp: - 121.402 ms.
+[289] reduced.289.bp: - 94.508 ms.
+[290] reduced.290.bp: - 102.518 ms.
+[291] reduced.291.bp: - 58.49 ms.
+[292] reduced.292.bp: - 46.687 ms.
+[293] reduced.293.bp: - 107.689 ms.
+[294] reduced.294.bp: - 110.426 ms.
+*** next we just had a quick that did not remove any stmt that ***
+*** influences or is influenced by a stmt, so I'm stopping here ***
+Disconnected from the target VM, address: '127.0.0.1:64906', transport: 'socket'
+
+Process finished with exit code 0

@@ -1,0 +1,280 @@
+Parsing </Users/geri/Documents/bp-reduce/2014-04-06-22-43-01/reduced.208.bp> done.
+Semantic check...  ok.
+Note: Merging disabled (trace requested).
+Transforming program for model-checker... done.
+Configuration:
+Eliminate dead variables: no (will be computed anyway)
+Note: Automatic algorithm selection chose splitglobalscmc.
+Renumbering statements...
+Local types of: main
+Strong locals: b4_0_eq_l, b5_1_eq_l
+Weak locals: b3_l_eq_s
+Life variable analysis...
+Phase 1... done.
+Phase 2... done.
+Computing mod-ref-sets... done.
+Computing read-write-sets... done.
+Building BDD-program...
+FIXME: in order to allow transformation into state-object we allocate more BDD variables...
+Ordering BDD variables for concatenated layout...
+Creating hybrid transition relations...Note: end_thread is treated as goto end
+ done.
+Starting counter abstraction symbolic simulation using BDDs...
+(Abstract transitions are constructed on-the-fly).
+Using static thread creation with 1 threads.
+Variable Configuration:
+Globals:
+b0_s_le_2
+11----------------------------------------  1
+b1
+--------------------------11--------------  1
+b2
+----------------------------11------------  1
+11------------------------1111------------  1
+Thread 0
+Locals:
+b3_l_eq_s$
+--------------11--------------------------  1
+b3_l_eq_s
+--------11--------------------------------  1
+b4_0_eq_l$
+------------------------------11----------  1
+b4_0_eq_l
+--11--------------------------------------  1
+b5_1_eq_l$
+------------------------------------11----  1
+b5_1_eq_l
+--------------------11--------------------  1
+--11----11----11----11--------11----11----  1
+Thread 1
+Locals:
+b3_l_eq_s$
+----------------11------------------------  1
+b3_l_eq_s
+----------11------------------------------  1
+b4_0_eq_l$
+--------------------------------11--------  1
+b4_0_eq_l
+----11------------------------------------  1
+b5_1_eq_l$
+--------------------------------------11--  1
+b5_1_eq_l
+----------------------11------------------  1
+----11----11----11----11--------11----11--  1
+Thread 2
+Locals:
+b3_l_eq_s$
+------------------11----------------------  1
+b3_l_eq_s
+------------11----------------------------  1
+b4_0_eq_l$
+----------------------------------11------  1
+b4_0_eq_l
+------11----------------------------------  1
+b5_1_eq_l$
+----------------------------------------11  1
+b5_1_eq_l
+------------------------11----------------  1
+------11----11----11----11--------11----11  1
+Step 0: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 1, frontier size = 1, elapsed time: 00:00:00.000797
+Step 1: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 2, frontier size = 1, elapsed time: 00:00:00.001202
+Step 2: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 3, frontier size = 1, elapsed time: 00:00:00.001437
+Step 3: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 4, frontier size = 1, elapsed time: 00:00:00.001609
+Step 4: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 5, frontier size = 1, elapsed time: 00:00:00.001801
+Step 5: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 6, frontier size = 1, elapsed time: 00:00:00.002023
+Step 6: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 7, frontier size = 1, elapsed time: 00:00:00.002216
+Step 7: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 8, frontier size = 1, elapsed time: 00:00:00.002417
+Step 8: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 9, frontier size = 1, elapsed time: 00:00:00.002625
+Step 9: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 10, frontier size = 1, elapsed time: 00:00:00.002823
+Note: Dynamic thread creation ignored due to static threads limit (ignored from now on)
+Step 10: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 11, frontier size = 1, elapsed time: 00:00:00.003014
+Step 11: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 14, frontier size = 3, elapsed time: 00:00:00.003538
+Step 12: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 17, frontier size = 3, elapsed time: 00:00:00.004134
+Step 13: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 20, frontier size = 3, elapsed time: 00:00:00.004708
+Step 14: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 23, frontier size = 3, elapsed time: 00:00:00.005271
+Step 15: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 30, frontier size = 7, elapsed time: 00:00:00.006907
+Step 16: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 37, frontier size = 7, elapsed time: 00:00:00.008520
+Step 17: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 44, frontier size = 7, elapsed time: 00:00:00.010016
+Step 18: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 51, frontier size = 7, elapsed time: 00:00:00.011288
+Step 19: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 69, frontier size = 18, elapsed time: 00:00:00.016305
+Step 20: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 89, frontier size = 20, elapsed time: 00:00:00.021219
+Step 21: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 109, frontier size = 20, elapsed time: 00:00:00.026014
+Step 22: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 123, frontier size = 14, elapsed time: 00:00:00.029945
+Step 23: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 144, frontier size = 21, elapsed time: 00:00:00.036945
+Step 24: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 177, frontier size = 33, elapsed time: 00:00:00.046275
+Step 25: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 210, frontier size = 33, elapsed time: 00:00:00.055038
+Step 26: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 2044, reached size = 245, frontier size = 35, elapsed time: 00:00:00.065459
+Step 27: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 4088, reached size = 281, frontier size = 36, elapsed time: 00:00:00.079975
+Step 28: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 4088, reached size = 336, frontier size = 55, elapsed time: 00:00:00.097305
+Step 29: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 4088, reached size = 386, frontier size = 50, elapsed time: 00:00:00.112760
+Step 30: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 5110, reached size = 438, frontier size = 52, elapsed time: 00:00:00.131018
+Step 31: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 5110, reached size = 485, frontier size = 47, elapsed time: 00:00:00.154204
+Step 32: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 5110, reached size = 485, frontier size = 0, elapsed time: 00:00:00.154474
+Elapsed time: 00:00:00.154533
+Note: Violation found (in the last reachable state).
+.
+Verifying trace...
+.
+Trace feasible.
+.
+Verifying trace...
+..
+Trace feasible.
+.
+Verifying trace...
+...
+Trace feasible.
+.
+Verifying trace...
+....
+Trace feasible.
+.
+Verifying trace...
+.....
+Trace feasible.
+.
+Verifying trace...
+......
+Trace feasible.
+.
+Verifying trace...
+.......
+Trace feasible.
+.
+Verifying trace...
+........
+Trace feasible.
+.
+Verifying trace...
+.........
+Trace feasible.
+.
+Verifying trace...
+..........
+Trace feasible.
+.
+Verifying trace...
+...........
+Trace feasible.
+.
+Verifying trace...
+............
+Trace feasible.
+.
+Verifying trace...
+.............
+Trace feasible.
+.
+Verifying trace...
+..............
+Trace feasible.
+.
+Verifying trace...
+...............
+Trace feasible.
+.
+Verifying trace...
+................
+Trace feasible.
+.
+Verifying trace...
+.................
+Trace feasible.
+.
+Verifying trace...
+..................
+Trace feasible.
+.
+Verifying trace...
+...................
+Trace feasible.
+.
+Verifying trace...
+....................
+Trace feasible.
+.
+Verifying trace...
+.....................
+Trace feasible.
+.
+Verifying trace...
+......................
+Trace feasible.
+.
+Verifying trace...
+.......................
+Trace feasible.
+.
+Verifying trace...
+........................
+Trace feasible.
+.
+Verifying trace...
+.........................
+Trace feasible.
+.
+Verifying trace...
+..........................
+Trace feasible.
+.
+Verifying trace...
+...........................
+Trace feasible.
+.
+Verifying trace...
+............................
+Trace feasible.
+.
+Verifying trace...
+.............................
+Trace feasible.
+.
+Verifying trace...
+..............................
+Trace feasible.
+.
+Verifying trace...
+...............................
+Trace feasible.
+**********************************************************
+Trace
+**********************************************************
+TRACE t=0 PC1 b0_s_le_2=0 b1=0 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 
+TRACE t=0 PC2 b0_s_le_2=0 b1=0 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 
+TRACE t=0 l1 PC10 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 
+TRACE t=0 PC11 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 
+TRACE t=0 l5 PC39 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 TAKEN=1
+TRACE t=0 l1 PC10 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 
+TRACE t=0 PC11 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 
+TRACE t=0 l5 PC39 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 TAKEN=1
+TRACE t=0 l1 PC10 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 PC11 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 PC13 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 PC18 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 TAKEN=0
+TRACE t=0 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 PC19 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 TAKEN=1
+TRACE t=0 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 TAKEN=1
+TRACE t=0 l2 PC23 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 l3 PC31 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=0 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 PC13 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 PC18 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 TAKEN=0
+TRACE t=1 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 PC36 b0_s_le_2=0 b1=0 b2=0 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=0 PC38 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 PC19 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 TAKEN=0
+TRACE t=1 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 PC21 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 TAKEN=0
+TRACE t=1 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+TRACE t=1 PC22 b0_s_le_2=0 b1=1 b2=1 main::b3_l_eq_s=0 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=1 main::b5_1_eq_l=0 main::b3_l_eq_s=1 main::b4_0_eq_l=0 main::b5_1_eq_l=0 
+
+Verifying trace...
+...............................
+Trace feasible.
+Elapsed time: 00:00:00.257167
+
+VERIFICATION FAILED

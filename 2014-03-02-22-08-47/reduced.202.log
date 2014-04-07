@@ -1,0 +1,148 @@
+Parsing </Users/geri/Documents/bp-reduce/2014-03-02-22-08-47/reduced.202.bp> done.
+Semantic check...  ok.
+Note: Merging disabled (trace requested).
+Transforming program for model-checker... done.
+Configuration:
+Eliminate dead variables: no (will be computed anyway)
+Note: Automatic algorithm selection chose splitglobalscmc.
+Renumbering statements...
+Local types of: main
+Strong locals: b4_0_eq_l, b5_1_eq_l
+Weak locals: b3_l_eq_s
+Life variable analysis...
+Phase 1... done.
+Phase 2... done.
+Computing mod-ref-sets... done.
+Computing read-write-sets... done.
+Building BDD-program...
+FIXME: in order to allow transformation into state-object we allocate more BDD variables...
+Ordering BDD variables for concatenated layout...
+Creating hybrid transition relations...Note: end_thread is treated as goto end
+ done.
+Starting counter abstraction symbolic simulation using BDDs...
+(Abstract transitions are constructed on-the-fly).
+Using static thread creation with 1 threads.
+Variable Configuration:
+Globals:
+b0_s_le_2
+11----------------------------------------  1
+b1
+--------------------------11--------------  1
+b2
+----------------------------11------------  1
+11------------------------1111------------  1
+Thread 0
+Locals:
+b3_l_eq_s$
+--------------------11--------------------  1
+b3_l_eq_s
+--------------11--------------------------  1
+b4_0_eq_l$
+------------------------------11----------  1
+b4_0_eq_l
+--11--------------------------------------  1
+b5_1_eq_l$
+------------------------------------11----  1
+b5_1_eq_l
+--------11--------------------------------  1
+--11----11----11----11--------11----11----  1
+Thread 1
+Locals:
+b3_l_eq_s$
+----------------------11------------------  1
+b3_l_eq_s
+----------------11------------------------  1
+b4_0_eq_l$
+--------------------------------11--------  1
+b4_0_eq_l
+----11------------------------------------  1
+b5_1_eq_l$
+--------------------------------------11--  1
+b5_1_eq_l
+----------11------------------------------  1
+----11----11----11----11--------11----11--  1
+Thread 2
+Locals:
+b3_l_eq_s$
+------------------------11----------------  1
+b3_l_eq_s
+------------------11----------------------  1
+b4_0_eq_l$
+----------------------------------11------  1
+b4_0_eq_l
+------11----------------------------------  1
+b5_1_eq_l$
+----------------------------------------11  1
+b5_1_eq_l
+------------11----------------------------  1
+------11----11----11----11--------11----11  1
+Step 0: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 1, frontier size = 1, elapsed time: 00:00:00.000814
+Step 1: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 2, frontier size = 1, elapsed time: 00:00:00.001118
+Step 2: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 3, frontier size = 1, elapsed time: 00:00:00.001322
+Step 3: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 4, frontier size = 1, elapsed time: 00:00:00.001485
+Step 4: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 5, frontier size = 1, elapsed time: 00:00:00.001677
+Step 5: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 6, frontier size = 1, elapsed time: 00:00:00.001896
+Step 6: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 7, frontier size = 1, elapsed time: 00:00:00.002088
+Step 7: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 8, frontier size = 1, elapsed time: 00:00:00.002292
+Step 8: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 9, frontier size = 1, elapsed time: 00:00:00.002499
+Step 9: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 10, frontier size = 1, elapsed time: 00:00:00.002694
+Note: Dynamic thread creation ignored due to static threads limit (ignored from now on)
+Step 10: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 11, frontier size = 1, elapsed time: 00:00:00.002884
+Step 11: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 14, frontier size = 3, elapsed time: 00:00:00.003405
+Step 12: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 17, frontier size = 3, elapsed time: 00:00:00.004038
+Step 13: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 20, frontier size = 3, elapsed time: 00:00:00.004625
+Step 14: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 23, frontier size = 3, elapsed time: 00:00:00.005174
+Step 15: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 30, frontier size = 7, elapsed time: 00:00:00.006783
+Step 16: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 37, frontier size = 7, elapsed time: 00:00:00.008249
+Step 17: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 44, frontier size = 7, elapsed time: 00:00:00.009735
+Step 18: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 1022, reached size = 51, frontier size = 7, elapsed time: 00:00:00.010977
+Step 19: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 3066, reached size = 72, frontier size = 21, elapsed time: 00:00:00.017882
+Step 20: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 3066, reached size = 93, frontier size = 21, elapsed time: 00:00:00.023857
+Step 21: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 3066, reached size = 114, frontier size = 21, elapsed time: 00:00:00.029003
+Step 22: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 3066, reached size = 131, frontier size = 17, elapsed time: 00:00:00.033892
+Step 23: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 4088, reached size = 157, frontier size = 26, elapsed time: 00:00:00.043325
+Step 24: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 4088, reached size = 192, frontier size = 35, elapsed time: 00:00:00.053779
+Step 25: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 4088, reached size = 223, frontier size = 31, elapsed time: 00:00:00.063137
+Step 26: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 4088, reached size = 252, frontier size = 29, elapsed time: 00:00:00.072365
+Step 27: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 5110, reached size = 287, frontier size = 35, elapsed time: 00:00:00.088117
+Step 28: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 7154, reached size = 340, frontier size = 53, elapsed time: 00:00:00.108588
+Step 29: reached states = 0, new states = 0, reached thread states = 0, new thread states = 0, peakNodeCount = 7154, reached size = 340, frontier size = 0, elapsed time: 00:00:00.108791
+Elapsed time: 00:00:00.108826
+Note: Violation found (in the last reachable state).
+.
+Verifying trace...
+.
+Trace feasible.
+.
+Verifying trace...
+..
+Trace feasible.
+.
+Verifying trace...
+...
+Trace feasible.
+.
+Verifying trace...
+....
+Trace feasible.
+.
+Verifying trace...
+.....
+Trace feasible.
+.
+Verifying trace...
+......
+Trace feasible.
+.
+Verifying trace...
+.......
+Trace feasible.
+.
+Verifying trace...
+........
+Trace feasible.
+.
+Verifying trace...
+.........
+Trace feasible.
+.Assertion failed: (WP != getVarManager().getManager().bddZero()), function reduce_left_by_right, file /Users/geri/Dropbox/boom-svn/src/Bdd/Concurrent/CounterSplitGlobalsState.cpp, line 1554.

@@ -1,0 +1,40 @@
+decl b0_s_le_2;
+decl b1;
+decl b2;
+void main() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+PC1:	b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l, T constrain !'b3_l_eq_s | !b5_1_eq_l;
+PC2:	b1, b2 := F, F;
+l1: PC10:	skip;
+PC13:	b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain !b0_s_le_2 | !'b4_0_eq_l;
+PC18:	if F then goto l2; fi;
+PC19:	if !b2 then goto l2; fi;
+PC22:	assert F;
+l2: PC23:	skip;
+l3: PC31:	b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, F, b3_l_eq_s;
+PC36:	b1, b2 := T, T;
+PC38:	end_thread;
+l5: PC39:	goto l1;
+end
+void c$$__CPROVER_initialize() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end
+void c$$f() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end
+void c$$rand() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end
+void c$$main() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end

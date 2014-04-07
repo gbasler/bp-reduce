@@ -1,0 +1,42 @@
+decl b0_s_le_2;
+decl b1;
+decl b2;
+void main() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+PC1:	b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := T, b4_0_eq_l, b4_0_eq_l$ constrain !('b3_l_eq_s) | !(b5_1_eq_l);
+PC2:	b1, b2 := F, F constrain !(b4_0_eq_l) | !(b5_1_eq_l);
+PC11:	start_thread goto l5;
+PC13:	b3_l_eq_s, b4_0_eq_l, b5_1_eq_l := *, *, * constrain (!(b0_s_le_2) | !(b3_l_eq_s) | 'b3_l_eq_s | !(b4_0_eq_l) | !('b4_0_eq_l)) & (b0_s_le_2 | !('b3_l_eq_s) | !('b4_0_eq_l)) & (!(b0_s_le_2) | !(b3_l_eq_s) | !('b3_l_eq_s) | b4_0_eq_l | !('b4_0_eq_l)) & (!(b0_s_le_2) | !(b3_l_eq_s$) | !('b3_l_eq_s) | b4_0_eq_l$ | !('b4_0_eq_l));
+PC18:	if !(b1) then goto l2; fi;
+PC19:	if !(b2) then goto l2; fi;
+PC21:	if ((b0_s_le_2 | !(b3_l_eq_s)) & !(b4_0_eq_l) & !(b5_1_eq_l) | !(b4_0_eq_l) & !(b5_1_eq_l) & b0_s_le_2 & b3_l_eq_s) & (!(b4_0_eq_l) & !(b5_1_eq_l) & b0_s_le_2 & b3_l_eq_s | *) then goto l2; fi;
+PC22:	assert F;
+l2: PC23:	skip;
+PC29:	if b4_0_eq_l | b5_1_eq_l then goto l3; fi;
+l3: PC31:	b0_s_le_2, b3_l_eq_s, b3_l_eq_s$ := b4_0_eq_l & b3_l_eq_s | b5_1_eq_l & b3_l_eq_s | !(b0_s_le_2 & b3_l_eq_s & !(b4_0_eq_l) & !(b5_1_eq_l)) & *, !(b0_s_le_2 & b4_0_eq_l & !(b3_l_eq_s) | b5_1_eq_l & !(b0_s_le_2) & !(b3_l_eq_s) | b3_l_eq_s) & *, b4_0_eq_l & b5_1_eq_l$ & b3_l_eq_s & !(b3_l_eq_s$) | !(b0_s_le_2 & b4_0_eq_l$ & !(b3_l_eq_s$) | b4_0_eq_l & b5_1_eq_l$ & !(b3_l_eq_s) & !(b3_l_eq_s$) | b4_0_eq_l & b3_l_eq_s & !(b5_1_eq_l$) & !(b3_l_eq_s$) | b4_0_eq_l$ & b5_1_eq_l & b3_l_eq_s & !(b3_l_eq_s$) | b5_1_eq_l$ & b3_l_eq_s & !(b4_0_eq_l) & !(b3_l_eq_s$) | b5_1_eq_l$ & !(b0_s_le_2) & !(b3_l_eq_s$) | b3_l_eq_s$) & * constrain (!(b4_0_eq_l) | !(b5_1_eq_l)) & (!(b0_s_le_2) | !('b0_s_le_2) | b3_l_eq_s | 'b3_l_eq_s | !(b5_1_eq_l)) & (!(b0_s_le_2) | !(b3_l_eq_s) | !(b3_l_eq_s$) | !(b4_0_eq_l) | b4_0_eq_l$);
+PC36:	b1, b2 := *, * constrain (b1 | !('b1) | b2 | !('b2)) & (!(b0_s_le_2) | b1 | !('b1) | b3_l_eq_s | !(b3_l_eq_s$) | !(b4_0_eq_l$)) & (!(b1) | 'b1 | b2 | !('b2));
+PC38:	end_thread;
+l5: PC39:	skip;
+end
+void c$$__CPROVER_initialize() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end
+void c$$f() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end
+void c$$rand() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end
+void c$$main() begin
+	decl b3_l_eq_s;
+	decl b4_0_eq_l;
+	decl b5_1_eq_l;
+end
