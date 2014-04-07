@@ -48,7 +48,7 @@ object Main {
       opt[File]('o', "output") valueName "<outfile>" action {
         (x, c) =>
           c.copy(outFile = x)
-      } text "directory with logs from a previous run"
+      } text "Output file name"
       arg[File]("<file>...") required() valueName "<file>" action {
         (x, c) =>
           c.copy(file = x)
