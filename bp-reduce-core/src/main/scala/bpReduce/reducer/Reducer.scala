@@ -137,10 +137,13 @@ final case class Reducer(config: ReducerConfig, verbose: Boolean) {
                 println("*** next fixpoint iteration ***")
                 reduceUntilFixpoint(current, Full, iter, fixpoints + 1)
             }
-          } else {
+          } else if(config.smartAcceleration) {
             println("*** next quick fixpoint iteration ***")
             val filter = InfluencedBySymbolFilter(rwSyms)
             reduceUntilFixpoint(current, Quick(filter), iter, fixpoints + 1)
+          } else {
+            println("*** next fixpoint iteration ***")
+            reduceUntilFixpoint(current, Full, iter, fixpoints + 1)
           }
 
         case (None, iter, _) =>
