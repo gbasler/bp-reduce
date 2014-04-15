@@ -163,9 +163,9 @@ object ComposedProgramReducer {
             case Nil      =>
               // last function, no reduction possible
               None
-            case hd :: tl =>
+            case head :: tail =>
               // look at next function
-              findNextStmt(reduced :+ inProgress.function, tl.tail, PartitionedFunction(tl.head))
+              findNextStmt(reduced :+ inProgress.function, tail, PartitionedFunction(head))
           }
         case head :: tail =>
 
