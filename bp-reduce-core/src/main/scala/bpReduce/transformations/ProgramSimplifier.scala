@@ -3,60 +3,17 @@ package transformations
 
 import bpReduce.ast._
 import bpReduce.ast.Stmt._
-import bpReduce.ast.Expr.{True, Var}
-import bpReduce.ast.Function
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.reduction._
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
-import bpReduce.ast.Function
-import scala.Some
-import bpReduce.ast.LabelledStmt
-import bpReduce.ast.Program
+import bpReduce.ast.Expr.True
 import bpReduce.ast.Stmt.Call
 import bpReduce.ast.Stmt.Assume
-import bpReduce.ast.Stmt.Dead
-import bpReduce.ast.Stmt.StartThread
-import bpReduce.ast.Stmt.Goto
 import bpReduce.ast.Function
 import bpReduce.ast.Stmt.Assign
-import scala.Some
-import bpReduce.ast.LabelledStmt
 import bpReduce.ast.Stmt.Assert
 import bpReduce.ast.Stmt.If
 import bpReduce.ast.Stmt.Return
 import bpReduce.ast.Program
+import scala.annotation.tailrec
+import scala.collection.immutable.Queue
 
 /**
  * Checking a program is a very expensive operation.
@@ -87,13 +44,28 @@ object ProgramSimplifier {
   final case class FunctionUnderSimplification(blocks: Seq[Block])
 
   def apply(program: Program): Program = {
+    val transformations = Seq(simplifyStmts _, removeNonTargetSkips _, simplifyExprs _)
+    val simplify = transformations.reduce(_.compose(_))
+
     val functions = for {
       function <- program.functions
-      simplified = simplifyStmts(function)
-      noSkips = removeNonTargetSkips(simplified)
-      simplifiedExprs = simplifyExprs(noSkips)
-    } yield simplifiedExprs
+      simplified = simplify(function)
+    } yield simplified
     program.copy(functions = functions)
+  }
+
+  def simplifyVariablesAndFunctions(program: Program): Program = {
+    val transformations = Seq(simplifyVariables _, removeDeadFunctions _)
+    val simplify = transformations.reduce(_.compose(_))
+
+    simplify(program)
+  }
+
+  def simplifyVariables(program: Program): Program = {
+    val (simplifiedProgam, usedVars) = removeDeadVariables(program)
+
+    // we assume that locals never shadow globals...
+    simplifiedProgam.copy(globals = VariableHolder(simplifiedProgam.globals.vars.filter(usedVars.contains)))
   }
 
   /**
@@ -132,21 +104,75 @@ object ProgramSimplifier {
         }
         val c = constrain.map(ExpressionSimplifier.apply)
         Assign(assigns = a, constrain = c)
-      case assume: Assume             =>
+      case assume: Assume =>
         assume.copy(ExpressionSimplifier(assume.e))
-      case Assert(e)                  =>
+      case Assert(e) =>
         Assert(ExpressionSimplifier(e))
-      case call: Call                 =>
+      case call: Call =>
         val args = call.args.map(ExpressionSimplifier.apply)
         call.copy(args = args)
-      case If(condition, pos, neg)    =>
+      case If(condition, pos, neg) =>
         val transformer = new StmtTransformer
         val c = ExpressionSimplifier(condition)
         val p = pos.map(transformer.transform)
         val n = neg.map(transformer.transform)
         If(c, p, n)
-      case Return(values)             =>
+      case Return(values) =>
         Return(values.map(ExpressionSimplifier.apply))
     }
   }
+
+  private def removeDeadVariables(program: Program): (Program, Set[Sym]) = {
+    val (functions, usedVariables) = {
+      for {
+        function <- program.functions
+      } yield removeDeadVariables(function)
+    }.unzip
+
+    program.copy(functions = functions) -> usedVariables.toSet.flatten
+  }
+
+  /**
+   * Deletes unused variables.
+   */
+  private def removeDeadVariables(function: Function) = {
+    val used: Set[Sym] = {
+      function.collect[Set[Sym]] {
+        case stmt => VariableCollector(stmt)
+      }
+    }.toSet.flatten
+
+    function.modifyVars(h => h.copy(vars = h.vars.filter(used.contains))) -> used
+  }
+
+  /**
+   * Deletes unused functions.
+   */
+  def removeDeadFunctions(program: Program) = {
+
+    def calleesForFunction(function: Function) = {
+      function.collect {
+        case Call(name, _, _) => name
+      }
+    }.toSet
+
+    val calleesForFunctions = program.functions.map(f => f.name -> calleesForFunction(f)).toMap
+
+    @tailrec
+    def reachableFunctions(wl: List[String],
+                           visited: Set[String] = Set()): Set[String] = wl match {
+      case Nil =>
+        visited
+      case next :: frontier =>
+        if (visited.contains(next)) {
+          reachableFunctions(frontier, visited)
+        } else {
+          reachableFunctions(calleesForFunctions(next).toList ::: wl, visited + next)
+        }
+    }
+
+    val usedFunctions = reachableFunctions("main" :: Nil)
+    program.copy(functions = program.functions.filter(f => usedFunctions.contains(f.name)))
+  }
+
 }

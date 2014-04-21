@@ -60,7 +60,7 @@ object Main {
         val checker = config.replay match {
           case Some(replayDir) =>
             ReplayChecker(outputChecker, replayDir.toPath)
-          case None            =>
+          case None =>
             val fmt = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm-ss")
             val logDir = new DateTime().toString(fmt)
             val checker = new BoomChecker(outputChecker, FileSystems.getDefault.getPath(logDir))
@@ -77,7 +77,10 @@ object Main {
         val program = new BooleanProgramParser().parse(content)
         val simplified = ProgramSimplifier(program)
         val reduced = reducer(simplified)
-        Formatter.writeToFile(reduced, config.outFile)
+        // TODO: somehow removing variables during reduction
+        // compromises the algorithm... why?
+        val reducedSimplified = ProgramSimplifier.simplifyVariablesAndFunctions(reduced)
+        Formatter.writeToFile(reducedSimplified, config.outFile)
     } getOrElse {
       // arguments are bad, error message will have been displayed
     }

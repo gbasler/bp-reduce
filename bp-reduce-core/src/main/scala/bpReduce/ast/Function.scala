@@ -26,7 +26,7 @@ final case class Function(name: String,
           case If(_, pos, neg) =>
             collectStmts(pos)
             collectStmts(neg)
-          case _               =>
+          case _ =>
         }
       }
     }
@@ -105,5 +105,7 @@ final case class Function(name: String,
 
     copy(stmts = transformer.transformTrees(stmts))
   }
+
+  def modifyVars(f: VariableHolder => VariableHolder): Function = copy(locals = f(locals))
 
 }

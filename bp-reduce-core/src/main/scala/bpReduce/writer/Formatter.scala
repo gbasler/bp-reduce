@@ -66,41 +66,41 @@ object Formatter {
       val rhs = assigns.unzip._2.map(format).mkString(", ")
       val c = constrain.fold("")(e => " constrain " + format(e))
       s"$lhs := $rhs$c"
-    case Assume(e)                  =>
+    case Assume(e) =>
       s"assume ${format(e)}"
-    case Assert(e)                  =>
+    case Assert(e) =>
       s"assert ${format(e)}"
-    case Call(name, assigns, args)  =>
+    case Call(name, assigns, args) =>
       val lhs = if (assigns.isEmpty) {
         ""
       } else {
         assigns.map {
           case Some(Sym(name)) => name
-          case None            => "_"
+          case None => "_"
         }.mkString(" ", ", ", " := ")
       }
       val params = args.map(format).mkString(", ")
       s"""$lhs$name($params)"""
-    case Dead(vars)                 =>
+    case Dead(vars) =>
       s"""dead ${vars.mkString(", ")}"""
-    case Goto(targets)              =>
+    case Goto(targets) =>
       s"""goto ${targets.mkString(", ")}"""
-    case If(condition, pos, neg)    =>
+    case If(condition, pos, neg) =>
       val p = pos.map(s => format(s.stmt)).mkString("", end, end)
       val n = neg.map(s => format(s.stmt)).mkString("", end, end)
       val alt = if (neg.isEmpty) "" else s" else $n"
       s"""if ${format(condition)} then $p$alt fi"""
-    case Skip                       =>
+    case Skip =>
       "skip"
-    case Return(values)             =>
-      s"""return${if (values.isEmpty) "" else values.mkString(", ")}"""
-    case AtomicBegin                =>
+    case Return(values) =>
+      s"""return${if (values.isEmpty) "" else values.map(format).mkString(" ", ", ", "")}"""
+    case AtomicBegin =>
       "atomic_begin"
-    case AtomicEnd                  =>
+    case AtomicEnd =>
       "atomic_end"
-    case StartThread(label)         =>
+    case StartThread(label) =>
       s"start_thread goto $label"
-    case EndThread                  =>
+    case EndThread =>
       "end_thread"
   }
 
@@ -115,9 +115,9 @@ object Formatter {
     // | or &'s / DNF
 
     def needsWrapping(operator: Expr, operand: Expr) = (operator, operand) match {
-      case (NaryOp(And, _), NaryOp(Or, _))            => true // CNF
+      case (NaryOp(And, _), NaryOp(Or, _)) => true // CNF
       case (_: Not, _: NaryOp | _: BinaryOp | _: Not) => true
-      case _                                          => false
+      case _ => false
     }
 
     def wrapFormatted(operand: Expr) = {
@@ -129,17 +129,17 @@ object Formatter {
     }
 
     e match {
-      case NaryOp(And, ops)            => ops.map(wrapFormatted).mkString(" & ")
-      case NaryOp(Or, ops)             => ops.map(wrapFormatted).mkString(" | ")
-      case BinaryOp(Impl, a, b)        => s"${wrapFormatted(a)} -> ${wrapFormatted(b)}"
-      case BinaryOp(Xor, a, b)         => s"${wrapFormatted(a)} != ${wrapFormatted(b)}"
-      case BinaryOp(Equiv, a, b)       => s"${wrapFormatted(a)} = ${wrapFormatted(b)}"
+      case NaryOp(And, ops) => ops.map(wrapFormatted).mkString(" & ")
+      case NaryOp(Or, ops) => ops.map(wrapFormatted).mkString(" | ")
+      case BinaryOp(Impl, a, b) => s"${wrapFormatted(a)} -> ${wrapFormatted(b)}"
+      case BinaryOp(Xor, a, b) => s"${wrapFormatted(a)} != ${wrapFormatted(b)}"
+      case BinaryOp(Equiv, a, b) => s"${wrapFormatted(a)} = ${wrapFormatted(b)}"
       case BinaryOp(Schoose, pos, neg) => s"schoose [${format(pos)}, ${format(neg)}]"
-      case Not(a)                      => s"!${wrapFormatted(a)}"
-      case True                        => "T"
-      case False                       => "F"
-      case Nondet                      => "*"
-      case Var(sym, primed, mixed)     => primed + sym.name + mixed
+      case Not(a) => s"!${wrapFormatted(a)}"
+      case True => "T"
+      case False => "F"
+      case Nondet => "*"
+      case Var(sym, primed, mixed) => primed + sym.name + mixed
     }
   }
 

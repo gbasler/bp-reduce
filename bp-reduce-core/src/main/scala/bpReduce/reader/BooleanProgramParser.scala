@@ -151,12 +151,12 @@ final class BooleanProgramParser extends RegexParsers {
   lazy val stmtList: Parser[List[Stmt]] = rep(statement <~ ";")
 
   lazy val statement: Parser[Stmt] = jumpStatement |
-    assign |
     assertStmt |
     assume |
     selectionStatement |
     dead |
     call | // important: 'call' stmt must be checked after 'if'
+    assign | // assign must be after call
     jumpStatement |
     startThread |
     endThread |

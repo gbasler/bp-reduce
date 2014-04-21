@@ -178,5 +178,145 @@ class ProgramSimplifierTest extends BaseSpecification {
 
       ProgramSimplifier(program) must beSameProgram(simplified)
     }
+
+    "dead variables" in {
+      val program: Program =
+        """|decl g;
+          |void main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |l1: PC8:	skip;
+          |PC9:	start_thread goto l2;
+          |PC10:	goto l3;
+          |l2: PC11:	skip;
+          |PC17:	b1_l_eq_s, b1_l_eq_s$ := T, !b1_l_eq_s$ | b1_l_eq_s;
+          |PC18:	assert b1_l_eq_s;
+          |l3: PC20:	goto l1;
+          |end
+          |void c$$__CPROVER_initialize() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+          |void c$$f() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+          |void c$$main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+        """.stripMargin
+
+      val simplified: Program =
+        """|void main() begin
+          |	decl b1_l_eq_s;
+          |l1: PC8:	skip;
+          |PC9:	start_thread goto l2;
+          |PC10:	goto l3;
+          |l2: PC11:	skip;
+          |PC17:	b1_l_eq_s, b1_l_eq_s$ := T, !b1_l_eq_s$ | b1_l_eq_s;
+          |PC18:	assert b1_l_eq_s;
+          |l3: PC20:	goto l1;
+          |end
+          |void c$$__CPROVER_initialize() begin
+          |end
+          |void c$$f() begin
+          |end
+          |void c$$main() begin
+          |end
+        """.stripMargin
+
+      ProgramSimplifier.simplifyVariables(program) must beSameProgram(simplified)
+    }
+
+    "dead functions" in {
+      val program: Program =
+        """|void main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |l1: PC8:	skip;
+          |PC9:	start_thread goto l2;
+          |PC10:	goto l3;
+          |l2: PC11:	skip;
+          |PC17:	b1_l_eq_s, b1_l_eq_s$ := T, !b1_l_eq_s$ | b1_l_eq_s;
+          |PC18:	assert b1_l_eq_s;
+          |l3: PC20:	goto l1;
+          |end
+          |void c$$__CPROVER_initialize() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+          |void c$$f() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+          |void c$$main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+        """.stripMargin
+
+      val simplified: Program =
+        """|void main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |l1: PC8:	skip;
+          |PC9:	start_thread goto l2;
+          |PC10:	goto l3;
+          |l2: PC11:	skip;
+          |PC17:	b1_l_eq_s, b1_l_eq_s$ := T, !b1_l_eq_s$ | b1_l_eq_s;
+          |PC18:	assert b1_l_eq_s;
+          |l3: PC20:	goto l1;
+          |end
+        """.stripMargin
+
+      ProgramSimplifier.removeDeadFunctions(program) must beSameProgram(simplified)
+    }
+
+    "not all dead functions" in {
+      val program: Program =
+        """|void main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |l1: PC8:	skip;
+          |PC9:	start_thread goto l2;
+          |PC10:	goto l3;
+          |l2: PC11:	skip;
+          |PC17:	b1_l_eq_s, b1_l_eq_s$ := c$$__CPROVER_initialize();
+          |PC18:	assert b1_l_eq_s;
+          |l3: PC20:	goto l1;
+          |end
+          |bool<2> c$$__CPROVER_initialize() begin
+          |	return F, T;
+          |end
+          |void c$$f() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+          |void c$$main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |end
+        """.stripMargin
+
+      val simplified: Program =
+        """|void main() begin
+          |	decl b0_4_eq_l;
+          |	decl b1_l_eq_s;
+          |l1: PC8:	skip;
+          |PC9:	start_thread goto l2;
+          |PC10:	goto l3;
+          |l2: PC11:	skip;
+          |PC17:	b1_l_eq_s, b1_l_eq_s$ := c$$__CPROVER_initialize();
+          |PC18:	assert b1_l_eq_s;
+          |l3: PC20:	goto l1;
+          |end
+          |bool<2> c$$__CPROVER_initialize() begin
+          |	return F, T;
+          |end
+        """.stripMargin
+
+      ProgramSimplifier.removeDeadFunctions(program) must beSameProgram(simplified)
+    }
   }
 }
