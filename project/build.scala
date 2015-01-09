@@ -9,7 +9,7 @@ object build extends Build {
   val standardSettings: Seq[Def.Setting[_]] =
     Seq[Def.Setting[_]](
       ivyXML := DependencyManagement.ivyExclusionsAndOverrides,
-      scalaVersion := "2.10.3",
+      scalaVersion := "2.11.5",
       resolvers ++= Seq("snapshots" at "http://scala-tools.org/repo-snapshots",
         "releases" at "http://scala-tools.org/repo-releases")
     )
