@@ -229,6 +229,30 @@ class ProgramSimplifierTest extends BaseSpecification {
       ProgramSimplifier.simplifyVariables(program) must beSameProgram(simplified)
     }
 
+    "dead variables with assign" in {
+      val program: Program =
+        """|decl b0_s_le_2;
+          |decl b1;
+          |decl b2;
+          |void main() begin
+          |	decl b3_l_eq_s;
+          |	decl b4_0_eq_l;
+          |PC20:	b3_l_eq_s := T constrain !b4_0_eq_l | b4_0_eq_l$;
+          |end
+        """.stripMargin
+
+      val simplified: Program =
+        """|void main() begin
+          |	decl b3_l_eq_s;
+          |	decl b4_0_eq_l;
+          |PC20:	b3_l_eq_s := T constrain !b4_0_eq_l | b4_0_eq_l$;
+          |end
+          |
+        """.stripMargin
+
+      ProgramSimplifier.simplifyVariables(program) must beSameProgram(simplified)
+    }
+
     "dead functions" in {
       val program: Program =
         """|void main() begin

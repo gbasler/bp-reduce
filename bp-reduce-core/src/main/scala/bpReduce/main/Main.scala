@@ -29,14 +29,23 @@ object Main {
 
     val parser = new OptionParser[Config](name) {
       head(name)
+      // the following options are extremely useful when debugging bp-reduce:
+
+      // a replay is a directory that contains .bp and .log files from a previous run
+      // if a replay is used, then Boom is never called, instead all problems are
+      // expected to be present in the replay
       opt[File]('r', "replay") valueName "<log-dir>" action {
         (x, c) =>
           c.copy(replay = Some(x))
       } text "directory with logs from a previous run"
+
+      // similar to using multiple replays and running Boom for missing problems
+      // thus the cache is built up gradually
       opt[Unit]("disk-cache") action {
         (_, c) =>
           c.copy(diskCache = true)
       } text "does a full recursive search for bp and log files"
+
       opt[Unit]("smart") action {
         (_, c) =>
           c.copy(smartAcceleration = true)

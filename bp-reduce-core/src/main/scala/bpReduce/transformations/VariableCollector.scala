@@ -1,10 +1,11 @@
 package bpReduce
 package transformations
 
-import bpReduce.ast._
-import scala.collection.mutable.ListBuffer
-import bpReduce.ast.LabelledStmt
 import bpReduce.ast.Expr.Var
+import bpReduce.ast.Stmt.Assign
+import bpReduce.ast._
+
+import scala.collection.mutable.ListBuffer
 
 object VariableCollector {
   /**
@@ -16,6 +17,12 @@ object VariableCollector {
     new StmtTraverserForExpr({
       case v: Var => results += v.sym
     }).traverse(stmt)
+
+    stmt match {
+      case Assign(assigns, constrain) =>
+        results ++= assigns.map(_._1.sym)
+      case _ =>
+    }
 
     results.toSet
   }
