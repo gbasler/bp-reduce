@@ -1,4 +1,4 @@
-#BP-Reduce [![Build Status](https://travis-ci.org/gbasler/bp-reduce.png?branch=master)](https://travis-ci.org/gbasler/bp-reduce)
+# BP-Reduce [![Build Status](https://travis-ci.org/gbasler/bp-reduce.png?branch=master)](https://travis-ci.org/gbasler/bp-reduce)
 
 ## Motivation
 
