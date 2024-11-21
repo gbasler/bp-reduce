@@ -24,11 +24,6 @@ object DependencyManagement {
   /** General utilities for Java language */
   def CommonsExec = "org.apache.commons" % "commons-exec" % "1.3"
 
-  /** Scala library providing Actors and Promises (for concurrency), and functional programming tools */
-  def ScalazCore = "org.scalaz" %% "scalaz-core" % "7.1.0"
-
-  def ScalazConcurrent = "org.scalaz" %% "scalaz-concurrent" % "7.1.0"
-
   def SpringCore = "org.springframework" % "spring-core" % "4.1.4.RELEASE"
 
   /**
@@ -36,7 +31,18 @@ object DependencyManagement {
    *
    * http://code.google.com/p/specs/
    */
-  def Specs = "org.specs2" %% "specs2" % "2.4.15" % "test" intransitive()
+  object Specs {
+    def SpecsModule(name: String) = {
+      "org.specs2" %% name % "4.19.2" % "test"
+    }
+
+    lazy val dependencies = Seq(
+      SpecsModule("specs2-core"),
+      SpecsModule("specs2-matcher-extra"),
+      SpecsModule("specs2-scalacheck"),
+      SpecsModule("specs2-junit")
+    )
+  }
 
   def JUnit = "junit" % "junit" % "4.12" % "test" intransitive()
 
@@ -79,5 +85,7 @@ object DependencyManagement {
   /**
    * Scopt, command line parsing
    */
-  def Scopt = "com.github.scopt" %% "scopt" % "3.3.0"
+  def Scopt = "com.github.scopt" %% "scopt" % "3.7.1"
+
+  def ScalaParserCombinators = "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0"
 }

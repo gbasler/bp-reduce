@@ -107,7 +107,7 @@ object ProgramCache {
       } yield {
         val content = FileUtils.readFileToString(candidateFile)
         val log = FileUtils.readFileToString(logFile)
-        content.lines.toIndexedSeq ->(candidateFile.getPath, log)
+        content.lines.toList.asScala.toIndexedSeq ->(candidateFile.getPath, log)
       }
     }.toMap
 
